@@ -45,7 +45,7 @@ namespace PizzaShopApp.Controllers
                 var token = await _loginRepository.GenerateJwtTokenAsync(dbUser.Email, dbUser.Roleid, Response, user.RememberMe);
 
                 TempData["success"] = "Login successful";
-                return RedirectToAction("Privacy", "Home");
+                return RedirectToAction("DashboardView", "Dashboard");
             }
             catch (Exception ex)
             {
