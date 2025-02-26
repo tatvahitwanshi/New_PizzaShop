@@ -19,6 +19,7 @@ public class UserListRepository : IUserList
                          join role in _db.Roles on user.Roleid equals role.Roleid
                          select new UserListViewModel
                          {
+                            Userid=user.Userid,
                              Email = user.Email,
                              Firstname = user.Firstname,
                              Phone = user.Phone,
@@ -65,6 +66,7 @@ public class UserListRepository : IUserList
     {
         var user = new User
         {
+        
             Email = model.Email,
             Username = model.Username,
             Password = model.Password, // Ideally, hash the password before saving

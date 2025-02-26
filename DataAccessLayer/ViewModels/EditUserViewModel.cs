@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.ViewModels;
 
-public class EditUserView
+public class EditUserViewModel
 {
     [Required]
     public string? Email { get; set; }
@@ -12,8 +12,7 @@ public class EditUserView
     public string? Firstname { get; set; }
     [Required]
     public string? Lastname { get; set; }
-    public bool? Isactive { get; set; }
-
+    public bool? Isactive { get; set; } 
     public string? Profilepic { get; set; }
     public int? Zipcode { get; set; }
    [Required]
@@ -30,6 +29,4 @@ public class EditUserView
     public int Roleid {get; set;}
     public string? EditedBy { get; set; }
     public DateTime? EditDate { get; set; }
-
-   
 }

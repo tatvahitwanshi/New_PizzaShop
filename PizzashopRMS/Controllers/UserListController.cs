@@ -100,9 +100,10 @@ public class UserListController : Controller
     }
 
     [HttpGet]
-    public IActionResult EditUserView(int Userid)
-    {
-       
+    public IActionResult EditUserView(int userId)
+    { 
+        Console.WriteLine(userId);
+    
         return View();
     }
 
