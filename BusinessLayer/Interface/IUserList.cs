@@ -12,5 +12,7 @@ public interface IUserList
     List<Country> GetCountries();
     List<State> GetStatesByCountry(int countryId);
     List<City> GetCitiesByState(int stateId);
-    
+    Task<EditUserViewModel> GetUserProfileDetailsAsync(int userId);
+    Task<bool> EditUserProfileDetailsAsync(EditUserViewModel model);
+
 }

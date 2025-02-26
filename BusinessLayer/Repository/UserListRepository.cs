@@ -1,6 +1,7 @@
 using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer.Repository;
 
@@ -19,7 +20,7 @@ public class UserListRepository : IUserList
                          join role in _db.Roles on user.Roleid equals role.Roleid
                          select new UserListViewModel
                          {
-                            Userid=user.Userid,
+                             Userid = user.Userid,
                              Email = user.Email,
                              Firstname = user.Firstname,
                              Phone = user.Phone,
@@ -62,11 +63,11 @@ public class UserListRepository : IUserList
         return _db.Cities.Where(c => c.Stateid == stateId).ToList();
     }
 
-    public void AddUser(AddUserViewModel model , string email)
+    public void AddUser(AddUserViewModel model, string email)
     {
         var user = new User
         {
-        
+
             Email = model.Email,
             Username = model.Username,
             Password = model.Password, // Ideally, hash the password before saving
@@ -81,12 +82,61 @@ public class UserListRepository : IUserList
             Cityid = model.Cityid,
             Roleid = model.Roleid,
             Isactive = true, // Defaulting new users as active
-            CreatedBy=email
+            CreatedBy = email
 
         };
 
         _db.Users.Add(user);
         _db.SaveChanges();
+    }
+
+    public async Task<EditUserViewModel> GetUserProfileDetailsAsync(int userId)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Userid == userId);
+        if (user == null) return null;
+
+        return new EditUserViewModel
+        {
+            Email = user.Email,
+            Username = user.Username,
+            Phone = user.Phone,
+            Firstname = user.Firstname,
+            Lastname = user.Lastname,
+            Address = user.Address,
+            Zipcode = user.Zipcode,
+            Countryid = user.Countryid,
+            Stateid = user.Stateid,
+            Cityid = user.Cityid,
+            Isactive = user.Isactive,
+            Roleid = user.Roleid,
+            Profilepic = user.Profilepic
+
+
+        };
+    }
+    public async Task<bool> EditUserProfileDetailsAsync(EditUserViewModel model)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+        if (user == null) return false;
+
+        user.Firstname = model.Firstname;
+        user.Lastname = model.Lastname;
+        user.Username = model.Username;
+        user.Email = model.Email;
+        user.Phone = model.Phone;
+        user.Address = model.Address;
+        user.Zipcode = model.Zipcode;
+        user.Countryid = model.Countryid;
+        user.Stateid = model.Stateid;
+        user.Cityid = model.Cityid;
+        user.Roleid = model.Roleid;
+        user.Isactive = model.Isactive;
+        user.EditedBy = "Admin";  // Ideally, get from auth
+        user.EditDate = DateTime.UtcNow;
+
+
+        await _db.SaveChangesAsync();
+        return true;
     }
 
 }

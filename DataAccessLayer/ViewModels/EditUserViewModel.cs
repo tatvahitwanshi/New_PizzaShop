@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using DataAccessLayer.Models;
 
 namespace DataAccessLayer.ViewModels;
 
@@ -29,4 +30,8 @@ public class EditUserViewModel
     public int Roleid {get; set;}
     public string? EditedBy { get; set; }
     public DateTime? EditDate { get; set; }
+    public List<Role> Roles { get; set; } = new List<Role>();  
+    public List<Country> Countries { get; set; } = new List<Country>(); 
+    public List<State> States { get; set; } = new List<State>(); 
+    public List<City> Cities { get; set; } = new List<City>(); 
 }

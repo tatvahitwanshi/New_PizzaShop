@@ -77,15 +77,15 @@ public class UserListController : Controller
         return Json(cities);
     }
 
-        private string GetUserEmailFromToken()
-        {
-            var token = Request.Cookies["JWTLogin"];
-            if (string.IsNullOrEmpty(token)) return "";
+    private string GetUserEmailFromToken()
+    {
+        var token = Request.Cookies["JWTLogin"];
+        if (string.IsNullOrEmpty(token)) return "";
 
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            return jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
-        }
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        return jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
+    }
     [HttpPost]
     public IActionResult AddUserView(AddUserViewModel model)
     {
@@ -94,17 +94,37 @@ public class UserListController : Controller
             return View(model);
         }
         string email = GetUserEmailFromToken();
-        _userListRepository.AddUser(model,email);
+        _userListRepository.AddUser(model, email);
 
         return RedirectToAction("UserListView");
     }
 
     [HttpGet]
-    public IActionResult EditUserView(int userId)
-    { 
-        Console.WriteLine(userId);
-    
-        return View();
+    public async Task<IActionResult> EditUserView(int userId)
+    {
+
+        var model = await _userListRepository.GetUserProfileDetailsAsync(userId);
+        if (model == null) return NotFound("User Not Found");
+        model.Roles = _userListRepository.GetRoles();
+        model.Countries = _userListRepository.GetCountries();
+        model.States = _userListRepository.GetStatesByCountry(model.Countryid); 
+        model.Cities = _userListRepository.GetCitiesByState(model.Stateid);  
+        return View(model);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditUserProfileView(EditUserViewModel model)
+    {
+        if (!ModelState.IsValid) return View(model);
+
+        var success = await _userListRepository.EditUserProfileDetailsAsync(model);
+        if (success) return RedirectToAction("UserListView");
+
+        ModelState.AddModelError("", "Failed to update user.");
+        return View(model);
+    }
+
+
 
 }

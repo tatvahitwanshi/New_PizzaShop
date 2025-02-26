@@ -1,4 +1,4 @@
-@model DataAccessLayer.ViewModels.AddUserViewModel
+@model DataAccessLayer.ViewModels.EditUserViewModel
 
 @{
     Layout = "~/Views/Shared/_LayoutCustom.cshtml";
@@ -36,19 +36,20 @@
         <div class="row mt-3 bg-white"
             style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
             <div class="col">
-                <div class="container-fluid">
+                <form method="post" asp-controller="UserList" asp-action="UserProfileView">
+                    <div class="container-fluid">
                     <div class="row mt-3">
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingInput"
-                                    placeholder="name@example.com">
+                                    placeholder="name@example.com" asp-for="Firstname">
                                 <label for="floatingInput">First Name</label>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingInput"
-                                    placeholder="name@example.com">
+                                    placeholder="name@example.com" asp-for="Lastname">
                                 <label for="floatingInput">Last Name</label>
                             </div>
                         </div>
@@ -57,17 +58,18 @@
                         <div class="col-lg-6 col-sm-12">
                             <div class=" form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingInput"
-                                    placeholder="name@example.com">
+                                    placeholder="name@example.com" asp-for="Username">
                                 <label for="floatingInput">Username</label>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class=" form-floating mb-3">
-                                <select class="form-select mb-3" aria-label="Default select example">
-                                    <option selected>Select All</option>
-                                    <option value="1">Chef</option>
-                                    <option value="2">Super admin</option>
-                                    <option value="3">Account Manager</option>
+                                <select asp-for="Roleid" class="form-select mb-3" aria-label="Default select example">
+                                    <option value="">Select Role</option>
+                                    @foreach (var role in Model.Roles)
+                                    {
+                                        <option value="@role.Roleid">@role.Rolename</option>
+                                    }
                                 </select>
                                 <label for="floatingSelect">Role</label>
                             </div>
@@ -77,15 +79,15 @@
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="floatingInput"
-                                    placeholder="name@example.com">
+                                    placeholder="name@example.com" asp-for="Email">
                                 <label for="floatingInput">Email</label>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class=" form-floating mb-3">
                                 <select class="form-select mb-3" aria-label="Default select example">
-                                    <option selected>Active</option>
-                                    <option value="1">Unactive</option>
+                                    <option value="True">Active</option>
+                                    <option value="False">Unactive</option>
                                 </select>
                                 <label for="floatingSelect">Status</label>
                             </div>
@@ -96,40 +98,47 @@
                             <label for="fileUpload" class="btn w-100 p-4"
                                 style=" border: 2px solid rgba(112, 128, 144, 0.123); border-style: dashed; ">
                                 <i class="bi bi-cloud-arrow-up h3"></i><br>Browse File
-                                <input type="file" id="fileUpload" class="d-none">
+                                <input type="file" id="fileUpload" class="d-none" asp-for="Profilepic">
                         </div>
                         </label>
                     </div>
                     <div class="row">
                         <div class="col-lg-4 col-sm-12">
                             <div class=" form-floating mb-3">
-                                <select class="form-select mb-3" aria-label="Default select example">
-                                    <option selected>Select Country</option>
-                                    <option value="1">Chef</option>
-                                    <option value="2">Super admin</option>
-                                    <option value="3">Account Manager</option>
+                                <select asp-for="Countryid" id="countryDropdown" class="form-select mb-3"
+                                    aria-label="Default select example">
+                                    <option value="">Select Country</option>
+                                    @foreach (var country in Model.Countries)
+                                    {
+                                        <option value="@country.Countryid">@country.Countryname</option>
+                                    }
                                 </select>
                                 <label for="floatingSelect">Country</label>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12">
                             <div class=" form-floating mb-3">
-                                <select class="form-select mb-3" aria-label="Default select example">
-                                    <option selected>Select State</option>
-                                    <option value="1">Chef</option>
-                                    <option value="2">Super admin</option>
-                                    <option value="3">Account Manager</option>
+                                <select asp-for="Stateid" id="stateDropdown" class="form-select mb-3"
+                                    aria-label="Default select example">
+                                    <option value="">Select State</option>
+                                    @foreach (var state in Model.States)
+                                    {
+                                        <option value="@state.Stateid">@state.Statename</option>
+                                    }
+
                                 </select>
                                 <label for="floatingSelect">State</label>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12">
                             <div class=" form-floating mb-3">
-                                <select class="form-select mb-3" aria-label="Default select example">
-                                    <option selected>Select City</option>
-                                    <option value="1">Chef</option>
-                                    <option value="2">Super admin</option>
-                                    <option value="3">Account Manager</option>
+                                <select asp-for="Cityid" id="cityDropdown" class="form-select mb-3"
+                                    aria-label="Default select example">
+                                    <option value="">Select City</option>
+                                    @foreach (var city in Model.Cities)
+                                    {
+                                        <option value="@city.Cityid">@city.Cityname</option>
+                                    }
                                 </select>
                                 <label for="floatingSelect">City</label>
                             </div>
@@ -138,22 +147,22 @@
                     <div class="row">
                         <div class="col-lg-4 col-sm-12">
                             <div class="form-floating mb-3">
-                                <input type="text" pattern="[0-9]{5}" class="form-control" id="floatingInput"
-                                    placeholder="name@example.com">
+                                <input type="text" pattern="[0-9]{6}" class="form-control" id="floatingInput"
+                                    placeholder="name@example.com" asp-for="Zipcode">
                                 <label for="floatingInput">Zip Code</label>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="floatingInput"
-                                    placeholder="name@example.com">
+                                    placeholder="name@example.com" asp-for="Address">
                                 <label for="floatingInput">Address</label>
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12">
                             <div class="form-floating mb-3">
-                                <input type="tel" class="form-control" id="floatingInput"
-                                    placeholder="name@example.com">
+                                <input type="tel" class="form-control" id="floatingInput" placeholder="name@example.com"
+                                    asp-for="Phone">
                                 <label for="floatingInput">Phone</label>
                             </div>
                         </div>
@@ -163,13 +172,49 @@
                             <button class="btn text-white " style="background-color: #0066A7;" type="submit">Update
                                 User</button>
                             <button class="btn " style="border-color: #0066A7; color: #0066A7;"
-                                type="submit">Cancel</button>
+                                asp-controller="UserList" asp-action="UserListView">Cancel</button>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
 </body>
 
 </html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#countryDropdown").change(function () {
+            var countryId = $(this).val();
+            if (countryId) {
+                $.getJSON("/UserList/GetStates", { countryId: countryId }, function (data) {
+                    var stateDropdown = $("#stateDropdown");
+                    stateDropdown.empty();
+                    stateDropdown.append('<option value="">Select State</option>');
+                    $.each(data, function (index, item) {
+                        stateDropdown.append('<option value="' + item.stateid + '">' + item.statename + '</option>');
+                    });
+                    $("#cityDropdown").empty().append('<option value="">Select City</option>'); // Reset cities
+                });
+            }
+        });
+
+        $("#stateDropdown").change(function () {
+            var stateId = $(this).val();
+            if (stateId) {
+                $.getJSON("/UserList/GetCities", { stateId: stateId }, function (data) {
+                    var cityDropdown = $("#cityDropdown");
+                    cityDropdown.empty();
+                    cityDropdown.append('<option value="">Select City</option>');
+                    $.each(data, function (index, item) {
+                        cityDropdown.append('<option value="' + item.cityid + '">' + item.cityname + '</option>');
+                    });
+                });
+            }
+        });
+    });
+</script>
+
