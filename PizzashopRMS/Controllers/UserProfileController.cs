@@ -78,7 +78,7 @@ namespace PizzaShopApp.Controllers
 
             string email = GetUserEmailFromToken();
             var success = await _userProfile.ChangePasswordAsync(email, model.OldPassword, model.ConfirmNewPassword);
-
+            TempData["success"] = "Password changed successful";
             if (success) return RedirectToAction("LoginView", "Login");
 
             ModelState.AddModelError("", "Password change failed.");

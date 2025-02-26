@@ -33,7 +33,7 @@ namespace PizzaShopApp.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return View("LoginView", user); 
+                    return View("LoginView", user);
                 }
 
                 var dbUser = await _loginRepository.AuthenticateUserAsync(user.Email, user.Password);
@@ -41,7 +41,7 @@ namespace PizzaShopApp.Controllers
                 if (dbUser == null)
                 {
                     TempData["error"] = "Invalid email or password";
-                    return RedirectToAction("LoginView","Login");
+                    return RedirectToAction("LoginView", "Login");
                 }
 
                 var token = await _loginRepository.GenerateJwtTokenAsync(dbUser.Email, dbUser.Roleid, Response, user.RememberMe);
@@ -134,6 +134,15 @@ namespace PizzaShopApp.Controllers
             }
 
             return View("ResetPasswordView", model);
+        }
+
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("JWTLogin");
+            Response.Cookies.Delete("UserEmail");
+            Response.Cookies.Delete("UserRole");
+            Response.Cookies.Delete("UserName");
+            return View("LoginView");
         }
     }
 }

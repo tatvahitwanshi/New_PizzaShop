@@ -19,7 +19,7 @@ builder.Services.AddScoped<ILogin, LoginRepository>();
 builder.Services.AddSingleton<GenerateJwtTokenHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>(); // Assuming an email service exists
 builder.Services.AddScoped<IUserProfile, UserProfileRepository>();
-
+builder.Services.AddScoped<IUserList, UserListRepository>();
 
 
 
