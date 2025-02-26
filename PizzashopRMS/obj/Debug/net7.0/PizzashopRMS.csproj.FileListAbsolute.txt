@@ -228,3 +228,9 @@ C:\New_PizzaShop\PizzashopRMS\obj\Debug\net7.0\refint\PizzashopRMS.dll
 C:\New_PizzaShop\PizzashopRMS\obj\Debug\net7.0\PizzashopRMS.pdb
 C:\New_PizzaShop\PizzashopRMS\obj\Debug\net7.0\PizzashopRMS.genruntimeconfig.cache
 C:\New_PizzaShop\PizzashopRMS\obj\Debug\net7.0\ref\PizzashopRMS.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\Microsoft.Extensions.ObjectPool.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\System.Text.Encodings.Web.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll
