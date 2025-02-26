@@ -1332,8 +1332,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
+            "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
+              "projectPath": "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
             }
           }
         }

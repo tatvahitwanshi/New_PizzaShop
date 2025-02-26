@@ -115,14 +115,14 @@
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="city" aria-label="Floating label select example" asp-for="Cityid">
-                                        @if (Model.Cityid == null)
+                                        @if (@Model.Cityid == null)
                                         {
                                             <option value="" selected>Select City</option>
                                         }
 
                                         @foreach (var city in Model.CityList)
                                         {
-                                            if (city.Stateid == Model.Stateid)
+                                            if (city.Stateid == @Model.Stateid)
                                             { 
                                                 <option value="@city.Cityid" selected="@(city.Cityid == Model.Cityid ? "selected" : null)">
                                                     @city.Cityname

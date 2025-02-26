@@ -43,13 +43,13 @@ namespace PizzaShopApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserProfileView(UserProfileViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (model.Username == null || model.Countryid== null || model.Cityid==null || model.Stateid==null) return RedirectToAction("UserProfileView");
 
             var success = await _userProfile.UpdateUserProfileAsync(model);
             if (success) return RedirectToAction("UserProfileView");
 
             ModelState.AddModelError("", "Failed to update profile.");
-            return View(model);
+            return RedirectToAction("UserProfileView");
         }
 
         [HttpGet]
@@ -66,6 +66,11 @@ namespace PizzaShopApp.Controllers
             return Json(cities.Select(c => new { cityId = c.Cityid, cityName = c.Cityname }));
         }
 
+        [HttpGet]
+        public IActionResult ChangePasswordView()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -74,7 +79,7 @@ namespace PizzaShopApp.Controllers
             string email = GetUserEmailFromToken();
             var success = await _userProfile.ChangePasswordAsync(email, model.OldPassword, model.ConfirmNewPassword);
 
-            if (success) return RedirectToAction("Login", "Login");
+            if (success) return RedirectToAction("LoginView", "Login");
 
             ModelState.AddModelError("", "Password change failed.");
             return View("ChangePasswordView");
