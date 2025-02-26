@@ -4,7 +4,8 @@ public class UserListViewModel
 {
     private object value;
 
-
+    public int Userid { get; set; }
+ 
     public string? Firstname { get; set;}
     
     public string? Lastname {get; set;}

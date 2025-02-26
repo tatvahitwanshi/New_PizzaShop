@@ -32,8 +32,13 @@
                         <i class="bi bi-search position-absolute search-icon-main"></i>
                     </div>
                     <button class="btn text-white d-none d-md-block" type="submit" style="background-color: #0066A7;">
-                        <a href="@Url.Action("AddUser", "User")" style="text-decoration: none;" class="p-2 text-white">
+                        <a href="@Url.Action("AddUserView", "UserList")" style="text-decoration: none;" class="p-2 text-white">
                             + Add User
+                        </a>
+                    </button>
+                    <button class="btn text-white d-md-none d-sm-block" type="submit" style="background-color: #0066A7;">
+                        <a href="@Url.Action("AddUserView", "UserList")" style="text-decoration: none;" class="p-2 text-white">
+                            + 
                         </a>
                     </button>
                 </form>
@@ -93,7 +98,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex">
-                                            <a href="edituser.html" style="text-decoration: none; color: grey;">
+                                            <a asp-action="EditUserView" asp-controller="UserList" asp-route-Userid="user.Userid" style="text-decoration: none; color: grey;">
                                                 <i class="bi bi-pen"></i>
                                             </a>
                                             <a href="" class="ms-4" style="text-decoration: none; color: grey;"
