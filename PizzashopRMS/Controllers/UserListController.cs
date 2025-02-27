@@ -17,36 +17,22 @@ public class UserListController : Controller
     }
 
 
-    // GET: Retrieve the user list
-    [HttpGet]
-    public IActionResult UserListView(string sortBy = "name", string sortOrder = "asc")
+    public async Task<IActionResult> UserListView(int PageSize = 5, int PageNumber = 1, string sortBy = "name", string sortOrder = "asc", string SearchKey = "")
     {
-        var users = _userListRepository.GetUsers(sortBy, sortOrder);
-        ViewData["SortBy"] = sortBy;
-        ViewData["SortOrder"] = sortOrder;
+        // Get data from repository (returns a tuple)
+        var (users, count, pageSize, pageNumber, sortColumn, sortDirection, searchKey) = await _userListRepository.GetUsers(PageSize, PageNumber, sortBy, sortOrder, SearchKey);
 
+        // Store metadata in ViewData (converted to correct types)
+        ViewData["sortBy"] = sortColumn;
+        ViewData["sortOrder"] = sortDirection;
+        ViewData["PageSize"] = pageSize;
+        ViewData["PageNumber"] = pageNumber;
+        ViewData["SearchKey"] = searchKey;
+        ViewData["Count"] = count;  // Total user count for pagination
+
+        // Pass only the user list (List<UserListViewModel>) to the View
         return View(users);
     }
-
-    // // POST: Handle user search
-    // [HttpPost]
-    // public IActionResult UserListView(string searchQuery, string sortBy = "name", string sortOrder = "asc")
-    // {
-    //     var users = _userListRepository.GetUsers(sortBy, sortOrder);
-
-    //     if (!string.IsNullOrEmpty(searchQuery))
-    //     {
-    //         users = users.FindAll(u =>
-    //             u.Firstname?.ToLower().Contains(searchQuery.ToLower()) == true ||
-    //             u.Email?.ToLower().Contains(searchQuery.ToLower()) == true);
-    //     }
-
-    //     ViewData["SortBy"] = sortBy;
-    //     ViewData["SortOrder"] = sortOrder;
-    //     ViewData["SearchQuery"] = searchQuery;
-
-    //     return View(users);
-    // }
 
     [HttpGet]
     public IActionResult AddUserView()
@@ -96,7 +82,7 @@ public class UserListController : Controller
         string email = GetUserEmailFromToken();
         _userListRepository.AddUser(model, email);
         string callbackUrl = Url.ActionLink("UserListView", "UserList");
-        string newEmail= model.Email;
+        string newEmail = model.Email;
         bool isEmailSent = await _userListRepository.AddUserEmail(newEmail, callbackUrl);
         if (isEmailSent)
         {

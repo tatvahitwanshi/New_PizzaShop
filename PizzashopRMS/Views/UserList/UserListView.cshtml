@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/userlist.css">
+   
     <title>User List</title>
 </head>
 
@@ -32,13 +33,16 @@
                         <i class="bi bi-search position-absolute search-icon-main"></i>
                     </div>
                     <button class="btn text-white d-none d-md-block" type="submit" style="background-color: #0066A7;">
-                        <a href="@Url.Action("AddUserView", "UserList")" style="text-decoration: none;" class="p-2 text-white">
+                        <a href="@Url.Action("AddUserView", "UserList")" style="text-decoration: none;"
+                            class="p-2 text-white">
                             + Add User
                         </a>
                     </button>
-                    <button class="btn text-white d-md-none d-sm-block" type="submit" style="background-color: #0066A7;">
-                        <a href="@Url.Action("AddUserView", "UserList")" style="text-decoration: none;" class="p-2 text-white">
-                            + 
+                    <button class="btn text-white d-md-none d-sm-block" type="submit"
+                        style="background-color: #0066A7;">
+                        <a href="@Url.Action("AddUserView", "UserList")" style="text-decoration: none;"
+                            class="p-2 text-white">
+                            +
                         </a>
                     </button>
                 </form>
@@ -53,7 +57,8 @@
                             <tr>
                                 <th>
                                     Name
-                                    <a href="@Url.Action("UserListView", new { sortBy = "name", sortOrder = "asc" })" style="text-decoration: none;">
+                                    <a href="@Url.Action("UserListView", new { sortBy = "name", sortOrder = "asc" })"
+                                        style="text-decoration: none;">
                                         <i
                                             class="bi bi-arrow-up @(ViewData["SortBy"] as string == "name" && ViewData["SortOrder"] as string == "asc" ? "text-primary" : "text-muted")"></i>
                                     </a>
@@ -66,7 +71,8 @@
                                 <th>Phone</th>
                                 <th>
                                     Role
-                                    <a href="@Url.Action("UserListView", new { sortBy = "role", sortOrder = "asc" }) " style="text-decoration: none;">
+                                    <a href="@Url.Action("UserListView", new { sortBy = "role", sortOrder = "asc" }) "
+                                        style="text-decoration: none;">
                                         <i
                                             class="bi bi-arrow-up @(ViewData["SortBy"] as string == "role" && ViewData["SortOrder"] as string == "asc" ? "text-primary" : "text-muted")"></i>
                                     </a>
@@ -98,11 +104,13 @@
                                     </td>
                                     <td>
                                         <div class="d-flex">
-                                            <a asp-action="EditUserView" asp-controller="UserList" asp-route-userId="@user.Userid" style="text-decoration: none; color: grey;">
+                                            <a asp-action="EditUserView" asp-controller="UserList"
+                                                asp-route-userId="@user.Userid" style="text-decoration: none; color: grey;">
                                                 <i class="bi bi-pen"></i>
                                             </a>
                                             <a href="" class="ms-4 delete-user" style="text-decoration: none; color: grey;"
-                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-userid="@user.Userid">
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
+                                                data-userid="@user.Userid">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>
@@ -119,10 +127,24 @@
                             <div class="pagination ">
                                 <span class="align-self-center">Items Per Page :</span>
                                 <select class="form-select form-select-sm ms-2 align-self-center"
-                                    aria-label="Small select example" style=" width: unset; ">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    aria-label="Small select example" onchange="updateItemsPerPage()"
+                                    style=" width: unset; " id="itemsPerPage">
+                                    @if (ViewData["PageSize"] != null)
+                                    {
+                                        <option value="1"
+                                            selected="@(Convert.ToInt32(ViewData["PageSize"]) == 1 ? true : false)">1
+                                        </option>
+                                        <option value="2"
+                                            selected="@(Convert.ToInt32(ViewData["PageSize"]) == 2 ? true : false)">2
+                                        </option>
+                                        <option value="5"
+                                            selected="@(Convert.ToInt32(ViewData["PageSize"]) == 5 ? true : false)">5
+                                        </option>
+                                        <option value="10"
+                                            selected="@(Convert.ToInt32(ViewData["PageSize"]) == 10 ? true : false)">10
+                                        </option>
+
+                                    }
                                 </select>
                             </div>
                         </nav>
@@ -130,13 +152,42 @@
                     <div class="showing-page">
                         <nav aria-label="Page navigation example ">
                             <div class="pagination ">
-                                <span class="align-self-center ms-2">Showing 1-5 of 13</span>
-                                <button class="btn border ms-2 align-self-center" type="submit"><i
-                                        class="bi bi-chevron-left"></i>
-                                </button>
-                                <button class="btn border ms-2 align-self-center" type="submit"><i
-                                        class="bi bi-chevron-right"></i>
-                                </button>
+                                <span class="align-self-center ms-2">Showing
+                                    @{
+                                        var pageNumber = Convert.ToInt32(ViewData["PageNumber"]);
+                                        var pageSize = Convert.ToInt32(ViewData["PageSize"]);
+                                        var totalCount = Convert.ToInt32(ViewData["Count"]);
+
+                                        var startRecord = (pageNumber - 1) * pageSize + 1;
+                                        var endRecord = pageNumber * pageSize;
+
+                                        if (endRecord > totalCount)
+                                            endRecord = totalCount;
+
+                                        if (totalCount == 0)
+                                        {
+                                            startRecord = 0;
+                                            endRecord = 0;
+                                        }
+                                    }
+                                    <span style="color: green;" class="me-1">@startRecord - @endRecord</span> of
+                                    <span style="color: red;" class="ms-1">@Convert.ToInt32(ViewData["Count"])</span>
+
+                                </span>
+                                <a href="@Url.Action("UserListView")?PageSize=@Convert.ToInt32(ViewData["PageSize"])&PageNumber=@(Convert.ToInt32(ViewData["PageNumber"]) - 1)&SortColumn=@ViewData["sortBy"]&SortDirection=@ViewData["sortOrder"]&SearchKey=@ViewData["SearchKey"]"
+                                    style="text-decoration: none;">
+                                    <button class="btn border ms-2 align-self-center" type="button">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </button>
+                                </a>
+
+                                <!-- Next Button -->
+                                <a href="@Url.Action("UserListView")?PageSize=@Convert.ToInt32(ViewData["PageSize"])&PageNumber=@(Convert.ToInt32(ViewData["PageNumber"]) + 1)&SortColumn=@ViewData["sortBy"]&SortDirection=@ViewData["sortOrder"]&SearchKey=@ViewData["SearchKey"]"
+                                    style="text-decoration: none;">
+                                    <button class="btn border ms-2 align-self-center" type="button">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                </a>
                             </div>
                         </nav>
                     </div>
@@ -148,34 +199,29 @@
 
 </html>
 <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
-                <div class="modal-body ">
-                    <div class="d-flex justify-content-center ">
-                        <img src="~/images/toppng.com-warning-icon-2400x2400.png" alt=""
-                            style="width: 10%; height: 10%;">
-                    </div>
-                    <div class="d-flex justify-content-center mt-3">
-                        <span class="text-muted">Are you sure you want to delete this user ?</span>
-                    </div>
-                    <div class="d-flex justify-content-center mt-3">
-                        <button class="btn text-white" style="background-color: #0066A7;" type="submit" id="deletebtn">Yes</button>
-                        <button class="btn ms-2" style="border-color: #0066A7; color: #0066A7;" type="submit"
-                            data-bs-dismiss="modal">No</button>
-                    </div>
+            <div class="modal-body ">
+                <div class="d-flex justify-content-center ">
+                    <img src="~/images/toppng.com-warning-icon-2400x2400.png" alt="" style="width: 10%; height: 10%;">
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <span class="text-muted">Are you sure you want to delete this user ?</span>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="btn text-white" style="background-color: #0066A7;" type="submit"
+                        id="deletebtn">Yes</button>
+                    <button class="btn ms-2" style="border-color: #0066A7; color: #0066A7;" type="submit"
+                        data-bs-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @* <script>
-    document.getElementById("deletebtn").addEventListener("click", function () {
-        console.log("DeleteUser")
-        window.location.href = "@Url.Action("DeleteUser", "UserList")";
-    });
-</script> *@
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -203,5 +249,35 @@
             }
         });
     });
-</script>
+   
 
+</script>
+@section Scripts {
+  <script>
+        
+        function updateItemsPerPage() {
+            console.log("Hellooooo");
+            var pageSize = document.getElementById("itemsPerPage").value; // Get selected page size
+            var pageNumber = parseInt('@ViewData["PageNumber"]'); // Get current page number
+            var sortBy =' @ViewData["sortBy"]'; // Get current sort column
+            var sortOrder = '@ViewData["sortOrder"]'; // Get current sort order
+            var searchKey = '@ViewData["SearchKey"]'; // Get current search key
+            console.log(pageSize)
+            // Update the URL with the new page size and reload the page
+            window.location.href = '/UserList/UserListView' +
+                '?PageSize=' + pageSize +
+                '&PageNumber=' + pageNumber +
+                '&sortBy=' + encodeURIComponent(sortBy) +
+                '&sortOrder=' + encodeURIComponent(sortOrder) +
+                '&SearchKey=' + encodeURIComponent(searchKey);
+        }
+
+        function searchFunction() {
+            var searchKey = document.getElementById("searchInput").value.toLowerCase();
+            console.log(searchKey);
+            window.location.href = '@Url.Action("UserListView")' + '?PageSize=' + '@ViewData.["PageSize"]' + '&PageNumber=' + '@ViewData.["PageNumber"]' + '&SortColumn=' + '@ViewData.["sortBy"] ' + '&SortDirection=' + '@ViewData.["sortOrder"]' + '&SearchKey=' + searchKey;
+        }
+
+    </script>
+
+}

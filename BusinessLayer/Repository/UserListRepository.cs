@@ -18,11 +18,75 @@ public class UserListRepository : IUserList
 
     }
 
-    public List<UserListViewModel> GetUsers(string sortBy, string sortOrder)
+    // public async Task<(List<UserListViewModel>, int Count, int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey)> GetUsers(int PageSize, int PageNumber,string sortBy, string sortOrder, string SearchKey)
+    // {
+    //     var userslist = (from user in _db.Users
+    //                      join role in _db.Roles on user.Roleid equals role.Roleid
+    //                      where user.Isdeleted == false &&(
+    //                      user.Firstname.ToLower().Contains(SearchKey) ||
+    //                      user.Lastname.ToLower().Contains(SearchKey) ||
+    //                      user.Email.ToLower().Contains(SearchKey) ||
+    //                      role.Rolename.ToLower().Contains(SearchKey) ||
+    //                      user.Phone.ToLower().Contains(SearchKey)
+    //                      )
+    //                      select new UserListViewModel
+    //                      {
+    //                          Userid = user.Userid,
+    //                          Email = user.Email,
+    //                          Firstname = user.Firstname,
+    //                          Phone = user.Phone,
+    //                          RoleName = role.Rolename,
+    //                          Isactive = user.Isactive
+    //                      });
+
+    //     switch (sortBy)
+    //     {
+    //         case "name":
+    //             userslist = (sortOrder == "asc") ? userslist.OrderBy(u => u.Firstname) : userslist.OrderByDescending(u => u.Firstname);
+    //             break;
+    //         case "role":
+    //             userslist = (sortOrder == "asc") ? userslist.OrderBy(u => u.RoleName) : userslist.OrderByDescending(u => u.RoleName);
+    //             break;
+    //         default:
+    //             userslist = userslist.OrderBy(u => u.Firstname);
+    //             break;
+    //     }
+    //     var count = await userslist.CountAsync();
+
+    //     // Ensure the PageNumber is at least 1 (no less than 1)
+    //     if (PageNumber < 1)
+    //     {
+    //         PageNumber = 1;
+    //     }
+
+    //     // Calculate the total number of pages (round up to the nearest whole number)
+    //     var totalPages = (int)Math.Ceiling((double)count / PageSize);
+
+    //     // Ensure the PageNumber does not exceed the total number of pages
+    //     if (PageNumber > totalPages)
+    //     {
+    //         PageNumber = totalPages;
+    //     }
+    //     if (PageNumber < 1)
+    //     {
+    //         PageNumber = 1;
+    //     }
+
+    //     var userList =  userslist.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToListAsync();
+
+    //     return (userslist.ToList(),count, PageSize, PageNumber, sortBy, sortOrder, SearchKey);
+    // }
+    public async Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)>GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey)
     {
         var userslist = (from user in _db.Users
                          join role in _db.Roles on user.Roleid equals role.Roleid
-                         where user.Isdeleted == false
+                         where user.Isdeleted == false && (
+                         user.Firstname.ToLower().Contains(SearchKey) ||
+                         user.Lastname.ToLower().Contains(SearchKey) ||
+                         user.Email.ToLower().Contains(SearchKey) ||
+                         role.Rolename.ToLower().Contains(SearchKey) ||
+                         user.Phone.ToLower().Contains(SearchKey)
+                         )
                          select new UserListViewModel
                          {
                              Userid = user.Userid,
@@ -31,23 +95,45 @@ public class UserListRepository : IUserList
                              Phone = user.Phone,
                              RoleName = role.Rolename,
                              Isactive = user.Isactive
-                         }).ToList();
+                         });
 
         switch (sortBy)
         {
             case "name":
-                userslist = (sortOrder == "asc") ? userslist.OrderBy(u => u.Firstname).ToList() : userslist.OrderByDescending(u => u.Firstname).ToList();
+                userslist = (sortOrder == "asc") ? userslist.OrderBy(u => u.Firstname) : userslist.OrderByDescending(u => u.Firstname);
                 break;
             case "role":
-                userslist = (sortOrder == "asc") ? userslist.OrderBy(u => u.RoleName).ToList() : userslist.OrderByDescending(u => u.RoleName).ToList();
+                userslist = (sortOrder == "asc") ? userslist.OrderBy(u => u.RoleName) : userslist.OrderByDescending(u => u.RoleName);
                 break;
             default:
-                userslist = userslist.OrderBy(u => u.Firstname).ToList();
+                userslist = userslist.OrderBy(u => u.Firstname);
                 break;
         }
 
-        return userslist;
+        var count = await userslist.CountAsync();
+
+        if (PageNumber < 1)
+        {
+            PageNumber = 1;
+        }
+
+        var totalPages = (int)Math.Ceiling((double)count / PageSize);
+
+        if (PageNumber > totalPages)
+        {
+            PageNumber = totalPages;
+        }
+
+        if (PageNumber < 1)
+        {
+            PageNumber = 1;
+        }
+
+        var userList = await userslist.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToListAsync();
+
+        return (userList, count, PageSize, PageNumber, sortBy, sortOrder, SearchKey);
     }
+
     public List<Role> GetRoles()
     {
         return _db.Roles.ToList();

@@ -7,8 +7,6 @@ namespace PizzashopRMS.Controllers;
 // [Authorize (Roles = "admin")]
 public class DashboardController : Controller
 {
-   
-
         public IActionResult DashboardView()
         {
             return View(); 
