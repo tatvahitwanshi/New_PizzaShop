@@ -17,4 +17,6 @@ public class UserListViewModel
     public string? RoleName {get; set; }
 
     public bool? Isactive { get; set; }
+    public bool? Isdeleted { get; set; }
+
 }

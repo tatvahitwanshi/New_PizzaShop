@@ -19,14 +19,14 @@
 
 <body>
 
-    
+
     <div class="container-fluid p-4">
         <div class="row">
             <div class="col-lg-4 col-sm-12 h2 fw-bold" style="color: #0066A7;">
                 My Profile
             </div>
         </div>
-        <form method="post" asp-controller="UserProfile" asp-action="EditUserProfileView">
+        <form method="post" asp-controller="UserProfile" asp-action="UserProfileView">
             <div class="row mt-3 bg-white"
                 style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="col p-0">
@@ -83,13 +83,13 @@
                         <div class="row">
                             <div class="col-lg-4 col-sm-12">
                                 <div class=" form-floating mb-3">
-                                    @* <select class="form-select mb-3" aria-label="" id="country" asp-for="Countryid" onchange="loadStates()"> *@
-                                    <select class="form-select" id="country" aria-label="Floating label select example" onchange="loadStates()" asp-for = "Countryid">
+                                    <select class="form-select" id="country" aria-label="Floating label select example"
+                                        onchange="loadStates()" asp-for="Countryid">
                                         @foreach (var country in Model.CountryList)
                                         {
-                                            
-                                             var isSelected = country.Countryid == @Model.Countryid ? true : false;
-                                            <option value="@country.Countryid" selected="@isSelected">@country.Countryname</option>
+
+                                            @* var isSelected = country.Countryid == @Model.Countryid ? true : false; *@
+                                            <option value="@country.Countryid">@country.Countryname</option>
                                         }
                                     </select>
                                     <label for="floatingSelect">Country</label>
@@ -97,16 +97,17 @@
                             </div>
                             <div class="col-lg-4 col-sm-12">
                                 <div class=" form-floating mb-3">
-                                    <select class="form-select" id="state" aria-label="Floating label select example" onchange="loadCities()" asp-for = "Stateid">                                   
-                                       @foreach (var state in Model.StateList)
+                                    <select class="form-select" id="state" aria-label="Floating label select example"
+                                        onchange="loadCities()" asp-for="Stateid">
+                                        @foreach (var state in Model.StateList)
                                         {
-                                            if(state.Countryid== @Model.Countryid && @Model.Stateid != null)
+                                            if (@Model.Stateid != null)
                                             {
-                                        
-                                            var isSelected = state.Stateid == @Model.Stateid ? true : false;
-                                            <option value="@state.Stateid" selected="@isSelected">@state.Statename</option>
+
+                                                @* var isSelected = state.Stateid == @Model.Stateid ? true : false; *@
+                                                <option value="@state.Stateid">@state.Statename</option>
                                             }
-                                            
+
                                         }
                                     </select>
                                     <label for="floatingSelect">State</label>
@@ -114,20 +115,20 @@
                             </div>
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="city" aria-label="Floating label select example" asp-for="Cityid">
+                                    <select class="form-select" id="city" aria-label="Floating label select example"
+                                        asp-for="Cityid">
                                         @if (@Model.Cityid == null)
                                         {
                                             <option value="" selected>Select City</option>
                                         }
-
+                                        @* selected="@(city.Cityid == Model.Cityid ? "selected" : null)" *@
                                         @foreach (var city in Model.CityList)
                                         {
-                                            if (city.Stateid == @Model.Stateid)
-                                            { 
-                                                <option value="@city.Cityid" selected="@(city.Cityid == Model.Cityid ? "selected" : null)">
-                                                    @city.Cityname
-                                                </option>
-                                            }
+
+                                            <option value="@city.Cityid">
+                                                @city.Cityname
+                                            </option>
+
                                         }
                                     </select>
                                     <label for="city">City</label>
@@ -171,53 +172,53 @@
 </html>
 
 @section Scripts {
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function loadStates() {
-        var countryID = $('#country').val();
-        var stateSelect = $('#state');
-        var citySelect = $('#city');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function loadStates() {
+            var countryID = $('#country').val();
+            var stateSelect = $('#state');
+            var citySelect = $('#city');
 
-        stateSelect.empty();
-        citySelect.empty();
+            stateSelect.empty();
+            citySelect.empty();
 
-        stateSelect.append('<option selected>Select State</option>');
-        citySelect.append('<option selected>Select City</option>');
+            stateSelect.append('<option selected>Select State</option>');
+            citySelect.append('<option selected>Select City</option>');
 
-        if (countryID) {
-            $.ajax({
-                url: '@Url.Action("GetStates", "UserProfile")',
-                data: { countryId: countryID },
-                type: 'GET',
-                success: function(data) {
-                    $.each(data, function(index, state) {
-                        stateSelect.append('<option value="' + state.stateId + '">' + state.stateName + '</option>');
-                    });
-                }
-            });
+            if (countryID) {
+                $.ajax({
+                    url: '@Url.Action("GetStates", "UserProfile")',
+                    data: { countryId: countryID },
+                    type: 'GET',
+                    success: function (data) {
+                        $.each(data, function (index, state) {
+                            stateSelect.append('<option value="' + state.stateId + '">' + state.stateName + '</option>');
+                        });
+                    }
+                });
+            }
         }
-    }
 
-    function loadCities() {
-        var stateID = $('#state').val();
-        var citySelect = $('#city');
+        function loadCities() {
+            var stateID = $('#state').val();
+            var citySelect = $('#city');
 
-        citySelect.empty();
-        citySelect.append('<option selected>Select City</option>');
+            citySelect.empty();
+            citySelect.append('<option selected>Select City</option>');
 
-        if (stateID) {
-            $.ajax({
-                url: '@Url.Action("GetCities", "UserProfile")',
-                data: { stateId: stateID },
-                type: 'GET',
-                success: function(data) {
-                    $.each(data, function(index, city) {
-                        citySelect.append('<option value="' + city.cityid + '">' + city.cityName + '</option>');
-                    });
-                }
-            });
+            if (stateID) {
+                $.ajax({
+                    url: '@Url.Action("GetCities", "UserProfile")',
+                    data: { stateId: stateID },
+                    type: 'GET',
+                    success: function (data) {
+                        $.each(data, function (index, city) {
+                            citySelect.append('<option value="' + city.cityid + '">' + city.cityName + '</option>');
+                        });
+                    }
+                });
+            }
         }
-    }
-</script>
+    </script>
 
 }

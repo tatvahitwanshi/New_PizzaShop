@@ -8,16 +8,21 @@ namespace BusinessLayer.Repository;
 public class UserListRepository : IUserList
 {
     private readonly PizzaShopContext _db;
+    private readonly IEmailService _emailService; // Assuming you have an EmailService
 
-    public UserListRepository(PizzaShopContext db)
+
+    public UserListRepository(PizzaShopContext db, IEmailService emailService)
     {
         _db = db;
+        _emailService = emailService;
+
     }
 
     public List<UserListViewModel> GetUsers(string sortBy, string sortOrder)
     {
         var userslist = (from user in _db.Users
                          join role in _db.Roles on user.Roleid equals role.Roleid
+                         where user.Isdeleted == false
                          select new UserListViewModel
                          {
                              Userid = user.Userid,
@@ -90,6 +95,38 @@ public class UserListRepository : IUserList
         _db.SaveChanges();
     }
 
+    public async Task<bool> AddUserEmail(string newEmail, string callbackUrl)
+    {
+        if (newEmail == null)
+            return false;
+
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == newEmail);
+        if (user == null)
+            return false;
+
+
+        string subject = "Password Reset Request";
+        string message = @$"
+        <div style='padding: 20px; background-color: #0066A7; display: flex; justify-content: center;'>
+            <h1 style='align-items: center; color:white'>PIZZASHOP</h1>
+        </div>
+        <div style='background-color: rgba(128, 128, 128, 0.158); padding: 3%;'>
+            <span><br>Welcome Pizza shop, <br><br> 
+            Please find the details below for the login into your account click <br>
+            <br>
+            <div style='border:solid'>
+                <h2>Login Details</h2>
+                <h4>Username: {newEmail}</h4>
+                <h4>Temporary password: ##Hitwanshi12</h4>
+            </div>
+            <br>
+            If you encounter any issues, please contact our support team. <br>
+            
+        </div>";
+
+        return await _emailService.SendEmailAsync(user.Email, subject, message);
+    }
+
     public async Task<EditUserViewModel> GetUserProfileDetailsAsync(int userId)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Userid == userId);
@@ -132,11 +169,22 @@ public class UserListRepository : IUserList
         user.Roleid = model.Roleid;
         user.Isactive = model.Isactive;
         user.EditedBy = "Admin";  // Ideally, get from auth
-        user.EditDate = DateTime.UtcNow;
+        // user.EditDate = DateTime.UtcNow;
 
 
         await _db.SaveChangesAsync();
         return true;
     }
+    public async Task DeleteUser(int userId)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Userid == userId);
+        if (user != null)
+        {
+            user.Isdeleted = true;
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+        }
+    }
+
 
 }

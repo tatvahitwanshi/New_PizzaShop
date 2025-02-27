@@ -59,6 +59,23 @@
           }
         }
       },
+      "dotMorten.Microsoft.SqlServer.Types/1.5.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Data.SqlClient": "4.8.3",
+          "System.Memory": "4.5.4"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.SqlServer.Types.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.SqlServer.Types.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "EntityFramework/6.5.1": {
         "type": "package",
         "dependencies": {
@@ -87,6 +104,42 @@
         "build": {
           "buildTransitive/net6.0/EntityFramework.props": {},
           "buildTransitive/net6.0/EntityFramework.targets": {}
+        }
+      },
+      "EntityFrameworkCore.SqlServer.HierarchyId/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "EntityFrameworkCore.SqlServer.HierarchyId.Abstractions": "4.0.0",
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.0"
+        },
+        "compile": {
+          "lib/net6.0/EntityFrameworkCore.SqlServer.HierarchyId.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/EntityFrameworkCore.SqlServer.HierarchyId.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/net6.0/_._": {}
+        }
+      },
+      "EntityFrameworkCore.SqlServer.HierarchyId.Abstractions/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "dotMorten.Microsoft.SqlServer.Types": "1.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/EntityFrameworkCore.SqlServer.HierarchyId.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/EntityFrameworkCore.SqlServer.HierarchyId.Abstractions.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Humanizer.Core/2.14.1": {
@@ -2730,6 +2783,7 @@
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
           "DataAccessLayer": "1.0.0",
+          "EntityFrameworkCore.SqlServer.HierarchyId": "4.0.0",
           "MailKit": "4.10.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.2",
           "MimeKit": "4.10.0",
@@ -2820,6 +2874,21 @@
         "packageIcon.png"
       ]
     },
+    "dotMorten.Microsoft.SqlServer.Types/1.5.0": {
+      "sha512": "1c3j8MUhOCMWRQfs19M35ZjjNyxBCkyUTptjkIPKYWyjCNkoDeFL73Kh00td6kOgtvZA6mikdhlORaVJNycRKA==",
+      "type": "package",
+      "path": "dotmorten.microsoft.sqlserver.types/1.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "dotmorten.microsoft.sqlserver.types.1.5.0.nupkg.sha512",
+        "dotmorten.microsoft.sqlserver.types.nuspec",
+        "lib/netstandard2.0/Microsoft.SqlServer.Types.dll",
+        "lib/netstandard2.0/Microsoft.SqlServer.Types.pdb",
+        "lib/netstandard2.0/Microsoft.SqlServer.Types.xml"
+      ]
+    },
     "EntityFramework/6.5.1": {
       "sha512": "sQRP2lWg1i3aAGWqdliAM8zrGx7LHMUk+9/MoxUjwfTZYGMXvZ2JYZTlyTm1PqDxvn3c9E3U76TWDON7Y5+CVA==",
       "type": "package",
@@ -2880,6 +2949,33 @@
         "tools/net6.0/any/ef6.dll",
         "tools/net6.0/any/ef6.pdb",
         "tools/net6.0/any/ef6.runtimeconfig.json"
+      ]
+    },
+    "EntityFrameworkCore.SqlServer.HierarchyId/4.0.0": {
+      "sha512": "/zTuLo1BsnWrohsTj7sfZxjaKQJkNOzz6IAZL+mgwrSqvPDtKrtj1QwdPaET/sBoj46Z6ISso0eI5IM1PyjRHg==",
+      "type": "package",
+      "path": "entityframeworkcore.sqlserver.hierarchyid/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net6.0/EntityFrameworkCore.SqlServer.HierarchyId.targets",
+        "entityframeworkcore.sqlserver.hierarchyid.4.0.0.nupkg.sha512",
+        "entityframeworkcore.sqlserver.hierarchyid.nuspec",
+        "lib/net6.0/EntityFrameworkCore.SqlServer.HierarchyId.dll",
+        "lib/net6.0/EntityFrameworkCore.SqlServer.HierarchyId.xml"
+      ]
+    },
+    "EntityFrameworkCore.SqlServer.HierarchyId.Abstractions/4.0.0": {
+      "sha512": "DsaI2Q6N9xPNSn2cf2IhyZehBHBGj4hlFGOQLZiuAEyvgpZx5Y4geW8YOUloq8V3unnhcFulbvnFpcdoYc/CXA==",
+      "type": "package",
+      "path": "entityframeworkcore.sqlserver.hierarchyid.abstractions/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "entityframeworkcore.sqlserver.hierarchyid.abstractions.4.0.0.nupkg.sha512",
+        "entityframeworkcore.sqlserver.hierarchyid.abstractions.nuspec",
+        "lib/netstandard2.0/EntityFrameworkCore.SqlServer.HierarchyId.Abstractions.dll",
+        "lib/netstandard2.0/EntityFrameworkCore.SqlServer.HierarchyId.Abstractions.xml"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -8458,19 +8554,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Dell\\.nuget\\packages\\": {}
+    "C:\\Users\\pcq112\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
+      "projectUniqueName": "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
       "projectName": "PizzashopRMS",
-      "projectPath": "C:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
-      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "C:\\New_PizzaShop\\PizzashopRMS\\obj\\",
+      "projectPath": "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
+      "packagesPath": "C:\\Users\\pcq112\\.nuget\\packages\\",
+      "outputPath": "D:\\New_PizzaShop\\PizzashopRMS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\pcq112\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -8482,11 +8578,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj": {
-              "projectPath": "C:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj"
+            "D:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj": {
+              "projectPath": "D:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj"
             },
-            "C:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "C:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
+            "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
+              "projectPath": "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
             }
           }
         }

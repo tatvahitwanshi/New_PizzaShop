@@ -87,7 +87,7 @@ public class UserListController : Controller
         return jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
     }
     [HttpPost]
-    public IActionResult AddUserView(AddUserViewModel model)
+    public async Task<IActionResult> AddUserViewAsync(AddUserViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -95,6 +95,17 @@ public class UserListController : Controller
         }
         string email = GetUserEmailFromToken();
         _userListRepository.AddUser(model, email);
+        string callbackUrl = Url.ActionLink("UserListView", "UserList");
+        string newEmail= model.Email;
+        bool isEmailSent = await _userListRepository.AddUserEmail(newEmail, callbackUrl);
+        if (isEmailSent)
+        {
+            TempData["success"] = "A password reset link has been sent to your email.";
+        }
+        else
+        {
+            TempData["error"] = "Email not found!";
+        }
 
         return RedirectToAction("UserListView");
     }
@@ -107,8 +118,8 @@ public class UserListController : Controller
         if (model == null) return NotFound("User Not Found");
         model.Roles = _userListRepository.GetRoles();
         model.Countries = _userListRepository.GetCountries();
-        model.States = _userListRepository.GetStatesByCountry(model.Countryid); 
-        model.Cities = _userListRepository.GetCitiesByState(model.Stateid);  
+        model.States = _userListRepository.GetStatesByCountry(model.Countryid);
+        model.Cities = _userListRepository.GetCitiesByState(model.Stateid);
         return View(model);
     }
 
@@ -116,15 +127,20 @@ public class UserListController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditUserProfileView(EditUserViewModel model)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (model.Username == null || model.Countryid == null || model.Cityid == null || model.Stateid == null || model.Email == null || model.Roles == null) return RedirectToAction("UserListView");
 
         var success = await _userListRepository.EditUserProfileDetailsAsync(model);
         if (success) return RedirectToAction("UserListView");
 
         ModelState.AddModelError("", "Failed to update user.");
-        return View(model);
+        return View("UserListView", model);
     }
 
-
+    [HttpPost]
+    public async Task<IActionResult> DeleteUser(int userId)
+    {
+        await _userListRepository.DeleteUser(userId);
+        return RedirectToAction("UserListView");
+    }
 
 }

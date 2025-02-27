@@ -38,8 +38,8 @@ public class UserProfileRepository : IUserProfile
                 Stateid = user.Stateid,
                 Cityid = user.Cityid,
                 CountryList = await _db.Countries.ToListAsync(),
-                StateList = await _db.States.ToListAsync(),
-                CityList = await _db.Cities.ToListAsync()
+                StateList = await _db.States.Where(country=> country.Countryid==user.Countryid).ToListAsync(),
+                CityList = await _db.Cities.Where(state=> state.Stateid==user.Stateid).ToListAsync()
             };
         }
 

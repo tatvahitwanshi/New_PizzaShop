@@ -68,6 +68,12 @@
           }
         }
       },
+      "dotMorten.Microsoft.SqlServer.Types/1.5.0": {
+        "dependencies": {
+          "System.Data.SqlClient": "4.8.6",
+          "System.Memory": "4.5.4"
+        }
+      },
       "EntityFramework/6.5.1": {
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
@@ -84,6 +90,29 @@
           "lib/netstandard2.1/EntityFramework.dll": {
             "assemblyVersion": "6.0.0.0",
             "fileVersion": "6.500.124.31603"
+          }
+        }
+      },
+      "EntityFrameworkCore.SqlServer.HierarchyId/4.0.0": {
+        "dependencies": {
+          "EntityFrameworkCore.SqlServer.HierarchyId.Abstractions": "4.0.0",
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.1"
+        },
+        "runtime": {
+          "lib/net6.0/EntityFrameworkCore.SqlServer.HierarchyId.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
+          }
+        }
+      },
+      "EntityFrameworkCore.SqlServer.HierarchyId.Abstractions/4.0.0": {
+        "dependencies": {
+          "dotMorten.Microsoft.SqlServer.Types": "1.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/EntityFrameworkCore.SqlServer.HierarchyId.Abstractions.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
           }
         }
       },
@@ -1555,6 +1584,7 @@
       "BusinessLayer/1.0.0": {
         "dependencies": {
           "DataAccessLayer": "1.0.0",
+          "EntityFrameworkCore.SqlServer.HierarchyId": "4.0.0",
           "MailKit": "4.10.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.2",
           "MimeKit": "4.10.0",
@@ -1601,12 +1631,33 @@
       "path": "bouncycastle.cryptography/2.5.0",
       "hashPath": "bouncycastle.cryptography.2.5.0.nupkg.sha512"
     },
+    "dotMorten.Microsoft.SqlServer.Types/1.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1c3j8MUhOCMWRQfs19M35ZjjNyxBCkyUTptjkIPKYWyjCNkoDeFL73Kh00td6kOgtvZA6mikdhlORaVJNycRKA==",
+      "path": "dotmorten.microsoft.sqlserver.types/1.5.0",
+      "hashPath": "dotmorten.microsoft.sqlserver.types.1.5.0.nupkg.sha512"
+    },
     "EntityFramework/6.5.1": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-sQRP2lWg1i3aAGWqdliAM8zrGx7LHMUk+9/MoxUjwfTZYGMXvZ2JYZTlyTm1PqDxvn3c9E3U76TWDON7Y5+CVA==",
       "path": "entityframework/6.5.1",
       "hashPath": "entityframework.6.5.1.nupkg.sha512"
+    },
+    "EntityFrameworkCore.SqlServer.HierarchyId/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/zTuLo1BsnWrohsTj7sfZxjaKQJkNOzz6IAZL+mgwrSqvPDtKrtj1QwdPaET/sBoj46Z6ISso0eI5IM1PyjRHg==",
+      "path": "entityframeworkcore.sqlserver.hierarchyid/4.0.0",
+      "hashPath": "entityframeworkcore.sqlserver.hierarchyid.4.0.0.nupkg.sha512"
+    },
+    "EntityFrameworkCore.SqlServer.HierarchyId.Abstractions/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DsaI2Q6N9xPNSn2cf2IhyZehBHBGj4hlFGOQLZiuAEyvgpZx5Y4geW8YOUloq8V3unnhcFulbvnFpcdoYc/CXA==",
+      "path": "entityframeworkcore.sqlserver.hierarchyid.abstractions/4.0.0",
+      "hashPath": "entityframeworkcore.sqlserver.hierarchyid.abstractions.4.0.0.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",

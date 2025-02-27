@@ -240,3 +240,5 @@ C:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
 C:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
 C:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\System.Text.Encodings.Web.dll
 C:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\EntityFrameworkCore.SqlServer.HierarchyId.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\EntityFrameworkCore.SqlServer.HierarchyId.Abstractions.dll
