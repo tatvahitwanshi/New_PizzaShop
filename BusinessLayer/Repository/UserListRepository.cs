@@ -1,6 +1,8 @@
 using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer.Repository;
@@ -10,73 +12,17 @@ public class UserListRepository : IUserList
     private readonly PizzaShopContext _db;
     private readonly IEmailService _emailService; // Assuming you have an EmailService
 
-
-    public UserListRepository(PizzaShopContext db, IEmailService emailService)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    public UserListRepository(PizzaShopContext db, IEmailService emailService, IWebHostEnvironment webHostEnvironment)
     {
         _db = db;
         _emailService = emailService;
+        _webHostEnvironment = webHostEnvironment;
 
     }
 
-    // public async Task<(List<UserListViewModel>, int Count, int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey)> GetUsers(int PageSize, int PageNumber,string sortBy, string sortOrder, string SearchKey)
-    // {
-    //     var userslist = (from user in _db.Users
-    //                      join role in _db.Roles on user.Roleid equals role.Roleid
-    //                      where user.Isdeleted == false &&(
-    //                      user.Firstname.ToLower().Contains(SearchKey) ||
-    //                      user.Lastname.ToLower().Contains(SearchKey) ||
-    //                      user.Email.ToLower().Contains(SearchKey) ||
-    //                      role.Rolename.ToLower().Contains(SearchKey) ||
-    //                      user.Phone.ToLower().Contains(SearchKey)
-    //                      )
-    //                      select new UserListViewModel
-    //                      {
-    //                          Userid = user.Userid,
-    //                          Email = user.Email,
-    //                          Firstname = user.Firstname,
-    //                          Phone = user.Phone,
-    //                          RoleName = role.Rolename,
-    //                          Isactive = user.Isactive
-    //                      });
 
-    //     switch (sortBy)
-    //     {
-    //         case "name":
-    //             userslist = (sortOrder == "asc") ? userslist.OrderBy(u => u.Firstname) : userslist.OrderByDescending(u => u.Firstname);
-    //             break;
-    //         case "role":
-    //             userslist = (sortOrder == "asc") ? userslist.OrderBy(u => u.RoleName) : userslist.OrderByDescending(u => u.RoleName);
-    //             break;
-    //         default:
-    //             userslist = userslist.OrderBy(u => u.Firstname);
-    //             break;
-    //     }
-    //     var count = await userslist.CountAsync();
-
-    //     // Ensure the PageNumber is at least 1 (no less than 1)
-    //     if (PageNumber < 1)
-    //     {
-    //         PageNumber = 1;
-    //     }
-
-    //     // Calculate the total number of pages (round up to the nearest whole number)
-    //     var totalPages = (int)Math.Ceiling((double)count / PageSize);
-
-    //     // Ensure the PageNumber does not exceed the total number of pages
-    //     if (PageNumber > totalPages)
-    //     {
-    //         PageNumber = totalPages;
-    //     }
-    //     if (PageNumber < 1)
-    //     {
-    //         PageNumber = 1;
-    //     }
-
-    //     var userList =  userslist.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToListAsync();
-
-    //     return (userslist.ToList(),count, PageSize, PageNumber, sortBy, sortOrder, SearchKey);
-    // }
-    public async Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)>GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey)
+    public async Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)> GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey)
     {
         var userslist = (from user in _db.Users
                          join role in _db.Roles on user.Roleid equals role.Roleid
@@ -94,7 +40,8 @@ public class UserListRepository : IUserList
                              Firstname = user.Firstname,
                              Phone = user.Phone,
                              RoleName = role.Rolename,
-                             Isactive = user.Isactive
+                             Isactive = user.Isactive,
+                             Profilepic=user.Profilepic
                          });
 
         switch (sortBy)
@@ -154,7 +101,7 @@ public class UserListRepository : IUserList
         return _db.Cities.Where(c => c.Stateid == stateId).ToList();
     }
 
-    public void AddUser(AddUserViewModel model, string email)
+    public async Task<bool> AddUser(AddUserViewModel model, string email)
     {
         var user = new User
         {
@@ -164,7 +111,7 @@ public class UserListRepository : IUserList
             Password = model.Password, // Ideally, hash the password before saving
             Firstname = model.Firstname,
             Lastname = model.Lastname,
-            Profilepic = model.Profilepic,
+            Profilepic = await UploadPhotoAsync(model.Profilepic),
             Zipcode = model.Zipcode,
             Address = model.Address,
             Phone = model.Phone,
@@ -178,7 +125,8 @@ public class UserListRepository : IUserList
         };
 
         _db.Users.Add(user);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> AddUserEmail(string newEmail, string callbackUrl)
@@ -232,7 +180,7 @@ public class UserListRepository : IUserList
             Cityid = user.Cityid,
             Isactive = user.Isactive,
             Roleid = user.Roleid,
-            Profilepic = user.Profilepic
+            // Profilepic = user.Profilepic
 
 
         };
@@ -254,9 +202,9 @@ public class UserListRepository : IUserList
         user.Cityid = model.Cityid;
         user.Roleid = model.Roleid;
         user.Isactive = model.Isactive;
-        user.EditedBy = "Admin";  // Ideally, get from auth
-        // user.EditDate = DateTime.UtcNow;
-
+        user.EditedBy = "Admin";
+        user.EditDate = DateTime.Now;
+        user.Profilepic=await UploadPhotoAsync(model.Profilepic);
 
         await _db.SaveChangesAsync();
         return true;
@@ -270,6 +218,23 @@ public class UserListRepository : IUserList
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
         }
+    }
+
+    public async Task<string?> UploadPhotoAsync(IFormFile photo)
+    {
+        if (photo == null || photo.Length == 0)
+            return null;
+
+        string folder = "userphoto/";
+        string uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+        string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder, uniqueFileName);
+
+        using (var fileStream = new FileStream(serverFolder, FileMode.Create))
+        {
+            await photo.CopyToAsync(fileStream);
+        }
+
+        return "/" + folder + uniqueFileName;
     }
 
 

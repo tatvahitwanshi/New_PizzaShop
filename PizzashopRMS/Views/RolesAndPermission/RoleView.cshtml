@@ -1,4 +1,4 @@
-@model DataAccessLayer.ViewModels.RoleViewModel
+@model IEnumerable<DataAccessLayer.ViewModels.RoleViewModel>
 
 @{
     Layout = "~/Views/Shared/_LayoutCustom.cshtml";
@@ -29,33 +29,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Admin</td>
-                                <td> <a asp-action="PermissionView" asp-controller="RolesAndPermission" style="text-decoration: none;">
-                                        <button style="text-decoration: none; border: none; background-color: white;">
-                                            <i class="bi bi-pen"></i>
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Account Manager</td>
-                                <td> <a asp-action="PermissionView" asp-controller="RolesAndPermission"  style="text-decoration: none;">
-                                        <button style="text-decoration: none; border: none; background-color: white;">
-                                            <i class="bi bi-pen"></i>
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Chef</td>
-                                <td> <a asp-action="PermissionView" asp-controller="RolesAndPermission"  style="text-decoration: none;">
-                                        <button style="text-decoration: none; border: none; background-color: white;">
-                                            <i class="bi bi-pen"></i>
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
+                            @foreach (var role in Model)
+                            {
+                                <tr>
+                                    <td>@role.Rolename</td>
+                                    <td>
+                                        <a asp-action="PermissionView" asp-controller="RolesAndPermission" style="text-decoration: none;">
+                                            <button style="border: none; background-color: white;">
+                                                <i class="bi bi-pen"></i>
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

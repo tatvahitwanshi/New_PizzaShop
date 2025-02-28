@@ -31,7 +31,7 @@
 
         <div class="row mt-3 bg-white shadow-sm p-4">
             <div class="col">
-                <form asp-action="AddUserView" method="post">
+                <form asp-action="AddUserView" method="post"  enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
@@ -56,22 +56,22 @@
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
-                                
-                                <select class="form-select mb-3" aria-label="Default select example"  asp-for="Roleid"
+
+                                <select class="form-select mb-3" aria-label="Default select example" asp-for="Roleid"
                                     asp-items="@(new SelectList(Model.Roles, "Roleid", "Rolename"))">
                                     <option value="">Select Role</option>
                                 </select>
                                 <label for="floatingSelect">Role</label>
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div class="row">
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
                                 <input asp-for="Email" type="email" class="form-control" placeholder="Email" required>
-                                <label asp-for="Email">Email</label>
+                                <label >Email</label>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
@@ -83,15 +83,19 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col d-flex justify-content-center  mb-3">
-                            <label for="fileUpload" class="btn w-100 p-4"
-                                style=" border: 2px solid rgba(112, 128, 144, 0.123); border-style: dashed; ">
-                                <i class="bi bi-cloud-arrow-up h3"></i><br>Browse File
-                                <input type="file" id="fileUpload" class="d-none">
+                  
+                        <div class="row">
+                            <div class="col d-flex justify-content-center mb-3">
+                                <label for="fileUpload" id="fileLabel" class="btn w-100 p-4"
+                                    style="border: 2px solid rgba(112, 128, 144, 0.123); border-style: dashed;">
+                                    <i class="bi bi-cloud-arrow-up h3"></i><br>Browse File
+                                    <input type="file" id="fileUpload" name="Profilepic" class="d-none"
+                                        asp-for="Profilepic">
+                                </label>
+                            </div>
                         </div>
-                        </label>
-                    </div>
+                     
+
                     <input type="hidden" asp-for="CreatedBy" />
                     <div class="row">
                         <div class="col-lg-4 col-sm-12">
@@ -150,7 +154,8 @@
                         <div class="col mb-3">
                             <button type="submit" class="btn text-white" style="background-color: #0066A7;">Create
                                 User</button>
-                            <a asp-action="UserListView" class="btn btn-outline-primary"  style="bs-btn-hover-border-color: none">Cancel</a>
+                            <a asp-action="UserListView" class="btn btn-outline-primary"
+                                style="bs-btn-hover-border-color: none">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -187,5 +192,15 @@
                 });
             });
         });
+    });
+</script>
+<script>
+    document.getElementById("fileUpload").addEventListener("change", function () {
+        let fileLabel = document.getElementById("fileLabel");
+        if (this.files.length > 0) {
+            fileLabel.style.border = "2px solid green"; // Change border color when a file is selected
+        } else {
+            fileLabel.style.border = "2px solid rgba(112, 128, 144, 0.123)"; // Reset border color
+        }
     });
 </script>

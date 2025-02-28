@@ -421,6 +421,42 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\267465d2-72f2-4613-9473-3dd936914b0d_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\267465d2-72f2-4613-9473-3dd936914b0d_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\4ccd195f-e235-4ebc-b2de-bd849d7e3d0f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\4ccd195f-e235-4ebc-b2de-bd849d7e3d0f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\51ca52e2-7b1f-4b61-9f7b-8e231f7d7b03_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\51ca52e2-7b1f-4b61-9f7b-8e231f7d7b03_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\534eccbe-5d3a-4b40-9136-d35c9af91a61_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\534eccbe-5d3a-4b40-9136-d35c9af91a61_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\71d36e1a-6888-4aa1-b237-e13e10325ebf_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\71d36e1a-6888-4aa1-b237-e13e10325ebf_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\94bc38d7-a61b-4403-98d3-92bf90d3475c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\94bc38d7-a61b-4403-98d3-92bf90d3475c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\bd77036a-5361-4ec5-aa11-df40d9a9e581_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\bd77036a-5361-4ec5-aa11-df40d9a9e581_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\e35610ab-bc71-4ad4-ac79-9833d7675d6a_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\e35610ab-bc71-4ad4-ac79-9833d7675d6a_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\f40d9bcf-775f-4fe4-bccb-df5b3dd989cc_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\f40d9bcf-775f-4fe4-bccb-df5b3dd989cc_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.PizzashopRMS.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

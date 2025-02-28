@@ -24,13 +24,13 @@ public class LoginRepository : ILogin
     }
 
 
-    public async Task<User> AuthenticateUserAsync(string email, string password)
+    public async Task<(User, string)> AuthenticateUserAsync(string email, string password)
     {
         var user = await Task.Run(() => _db.Users.FirstOrDefault(u => u.Email == email));
-        if (user == null) return null;
+        if (user == null) return (null, "User Does not exist");
 
         var hashedPassword = HashingHelper.ComputeSHA256(password);
-        return user.Password == hashedPassword ? user : null;
+        return user.Password == hashedPassword ? (user, "Login Successfull") : (null,"Wrong password");
     }
 
     public async Task<string> GenerateJwtTokenAsync(string email, int roleId, HttpResponse response, bool rememberMe)

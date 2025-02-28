@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace DataAccessLayer.ViewModels;
 
 public class UserListViewModel
@@ -18,5 +20,6 @@ public class UserListViewModel
 
     public bool? Isactive { get; set; }
     public bool? Isdeleted { get; set; }
-
+    
+    public string? Profilepic {get; set;}
 }

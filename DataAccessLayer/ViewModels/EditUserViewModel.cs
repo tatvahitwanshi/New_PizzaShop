@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace DataAccessLayer.ViewModels;
 
@@ -14,7 +15,7 @@ public class EditUserViewModel
 
     public string? Lastname { get; set; }
     public bool? Isactive { get; set; } 
-    public string? Profilepic { get; set; }
+    public IFormFile? Profilepic { get; set; }
     public int? Zipcode { get; set; }
 
     public string? Address { get; set; }

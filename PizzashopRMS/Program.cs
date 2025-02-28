@@ -20,7 +20,7 @@ builder.Services.AddSingleton<GenerateJwtTokenHelper>();
 builder.Services.AddScoped<IEmailService, EmailService>(); // Assuming an email service exists
 builder.Services.AddScoped<IUserProfile, UserProfileRepository>();
 builder.Services.AddScoped<IUserList, UserListRepository>();
-
+builder.Services.AddScoped<IRolesAndPermission, RolesAndPermissionRepository>();
 
 
 // Configure JWT settings from appsettings.json
@@ -67,7 +67,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

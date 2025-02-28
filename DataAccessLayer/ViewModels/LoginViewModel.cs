@@ -28,6 +28,5 @@ public class ResetPasswordViewModel
     [Required]
     [Compare("Password")]
     public string ConfirmPassword { get; set; }= null;
-
     
 }

@@ -3,9 +3,10 @@ using DataAccessLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+
 
 namespace PizzaShopApp.Controllers
 {
@@ -22,6 +23,11 @@ namespace PizzaShopApp.Controllers
 
         public IActionResult LoginView()
         {
+            String req_cookie = Request.Cookies["UserEmail"];
+            if (!String.IsNullOrEmpty(req_cookie))
+            {
+                return RedirectToAction("DashboardView", "Dashboard");
+            }
             return View();
         }
 
@@ -36,17 +42,17 @@ namespace PizzaShopApp.Controllers
                     return View("LoginView", user);
                 }
 
-                var dbUser = await _loginRepository.AuthenticateUserAsync(user.Email, user.Password);
+                var (dbUser, message) = await _loginRepository.AuthenticateUserAsync(user.Email, user.Password);
 
                 if (dbUser == null)
                 {
-                    TempData["error"] = "Invalid email or password";
+                    TempData["error"] = message;
                     return RedirectToAction("LoginView", "Login");
                 }
 
                 var token = await _loginRepository.GenerateJwtTokenAsync(dbUser.Email, dbUser.Roleid, Response, user.RememberMe);
 
-                TempData["success"] = "Login successful";
+                TempData["success"] = message;
                 return RedirectToAction("DashboardView", "Dashboard");
             }
             catch (Exception ex)

@@ -1,3 +1,4 @@
+// using System.IdentityModel.Tokens.Jwt;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using BusinessLayer.Interface;
@@ -16,7 +17,7 @@ public class UserListController : Controller
         _userListRepository = userListRepository;
     }
 
-
+    [HttpGet]
     public async Task<IActionResult> UserListView(int PageSize = 5, int PageNumber = 1, string sortBy = "name", string sortOrder = "asc", string SearchKey = "")
     {
         // Get data from repository (returns a tuple)
@@ -80,7 +81,7 @@ public class UserListController : Controller
             return View(model);
         }
         string email = GetUserEmailFromToken();
-        _userListRepository.AddUser(model, email);
+        bool is_useradded =await _userListRepository.AddUser(model, email);
         string callbackUrl = Url.ActionLink("UserListView", "UserList");
         string newEmail = model.Email;
         bool isEmailSent = await _userListRepository.AddUserEmail(newEmail, callbackUrl);
@@ -113,7 +114,7 @@ public class UserListController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditUserProfileView(EditUserViewModel model)
     {
-        if (model.Username == null || model.Countryid == null || model.Cityid == null || model.Stateid == null || model.Email == null || model.Roles == null) return RedirectToAction("UserListView");
+        if (!ModelState.IsValid) return RedirectToAction("UserListView");
 
         var success = await _userListRepository.EditUserProfileDetailsAsync(model);
         if (success) return RedirectToAction("UserListView");

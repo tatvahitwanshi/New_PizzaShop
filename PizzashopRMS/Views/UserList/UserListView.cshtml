@@ -14,11 +14,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/userlist.css">
-   
+
     <title>User List</title>
 </head>
 
 <body>
+   
 
     <div class="container-fluid p-4">
         <div class="row">
@@ -32,6 +33,8 @@
                             aria-label="Search">
                         <i class="bi bi-search position-absolute search-icon-main"></i>
                     </div>
+
+                    
                     <button class="btn text-white d-none d-md-block" type="submit" style="background-color: #0066A7;">
                         <a href="@Url.Action("AddUserView", "UserList")" style="text-decoration: none;"
                             class="p-2 text-white">
@@ -90,7 +93,15 @@
                             {
                                 <tr>
                                     <td>
+                                        @if (user.Profilepic != null)
+                                        {
+                                            <img src="@Url.Content(user.Profilepic)" alt="" style="height: 3vh;">
+
+                                        }
+                                        else{
                                         <img src="~/images/Default_pfp.svg.png" alt="" style="height: 3vh;">
+
+                                        }
                                         @user.Firstname
                                     </td>
                                     <td>@user.Email</td>
@@ -249,17 +260,17 @@
             }
         });
     });
-   
+
 
 </script>
 @section Scripts {
-  <script>
-        
+    <script>
+
         function updateItemsPerPage() {
             console.log("Hellooooo");
             var pageSize = document.getElementById("itemsPerPage").value; // Get selected page size
             var pageNumber = parseInt('@ViewData["PageNumber"]'); // Get current page number
-            var sortBy =' @ViewData["sortBy"]'; // Get current sort column
+            var sortBy = ' @ViewData["sortBy"]'; // Get current sort column
             var sortOrder = '@ViewData["sortOrder"]'; // Get current sort order
             var searchKey = '@ViewData["SearchKey"]'; // Get current search key
             console.log(pageSize)
