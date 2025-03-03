@@ -1231,19 +1231,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pcq112\\.nuget\\packages\\": {}
+    "C:\\Users\\Dell\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj",
+      "projectUniqueName": "D:\\Pizzashop_daily\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj",
       "projectName": "DataAccessLayer",
-      "projectPath": "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj",
-      "packagesPath": "C:\\Users\\pcq112\\.nuget\\packages\\",
-      "outputPath": "d:\\New_PizzaShop\\DataAccessLayer\\obj\\",
+      "projectPath": "D:\\Pizzashop_daily\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj",
+      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+      "outputPath": "D:\\Pizzashop_daily\\New_PizzaShop\\DataAccessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\pcq112\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"

@@ -23,26 +23,29 @@
                 Add New User
             </div>
             <div class="col-lg-8 col-sm-6 text-end">
-                <a asp-action="UserListView" class="btn btn-outline-primary" style="bs-btn-hover-border-color: none">
-                    <i class="bi bi-chevron-left"></i> Back
+                <a class="btn " style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
+                    asp-action="UserListView" type="submit"><i class="bi bi-chevron-left"></i>Back</a>
                 </a>
             </div>
         </div>
 
         <div class="row mt-3 bg-white shadow-sm p-4">
             <div class="col">
-                <form asp-action="AddUserView" method="post"  enctype="multipart/form-data">
+                <form asp-action="AddUserView" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
                                 <input asp-for="Firstname" class="form-control" placeholder="First Name" required>
                                 <label asp-for="Firstname">First Name</label>
+                                <span asp-validation-for="Firstname" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
                                 <input asp-for="Lastname" class="form-control" placeholder="Last Name">
                                 <label asp-for="Lastname">Last Name</label>
+                                <span asp-validation-for="Lastname" class="text-danger"></span>
+
                             </div>
                         </div>
                     </div>
@@ -52,6 +55,8 @@
                             <div class="form-floating mb-3">
                                 <input asp-for="Username" class="form-control" placeholder="Username" required>
                                 <label asp-for="Username">Username</label>
+                                <span asp-validation-for="Username" class="text-danger"></span>
+
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
@@ -62,6 +67,7 @@
                                     <option value="">Select Role</option>
                                 </select>
                                 <label for="floatingSelect">Role</label>
+                                <span asp-validation-for="Roleid" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -71,7 +77,9 @@
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
                                 <input asp-for="Email" type="email" class="form-control" placeholder="Email" required>
-                                <label >Email</label>
+                                <label>Email</label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-12">
@@ -79,22 +87,23 @@
                                 <input asp-for="Password" type="password" class="form-control" placeholder="Password"
                                     required>
                                 <label asp-for="Password">Password</label>
+                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
 
-                  
-                        <div class="row">
-                            <div class="col d-flex justify-content-center mb-3">
-                                <label for="fileUpload" id="fileLabel" class="btn w-100 p-4"
-                                    style="border: 2px solid rgba(112, 128, 144, 0.123); border-style: dashed;">
-                                    <i class="bi bi-cloud-arrow-up h3"></i><br>Browse File
-                                    <input type="file" id="fileUpload" name="Profilepic" class="d-none"
-                                        asp-for="Profilepic">
-                                </label>
-                            </div>
+
+                    <div class="row">
+                        <div class="col d-flex justify-content-center mb-3">
+                            <label for="fileUpload" id="fileLabel" class="btn w-100 p-4"
+                                style="border: 2px solid rgba(112, 128, 144, 0.123); border-style: dashed;">
+                                <i class="bi bi-cloud-arrow-up h3"></i><br>Browse File
+                                <input type="file" id="fileUpload" name="Profilepic" class="d-none"
+                                    asp-for="Profilepic">
+                            </label>
                         </div>
-                     
+                    </div>
+
 
                     <input type="hidden" asp-for="CreatedBy" />
                     <div class="row">
@@ -116,6 +125,8 @@
                                     <option value="">Select State</option>
                                 </select>
                                 <label asp-for="Stateid">State</label>
+                                <span id="countryError" class="text-danger" style="display:none;"></span>
+
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12">
@@ -124,6 +135,9 @@
                                     <option value="">Select City</option>
                                 </select>
                                 <label asp-for="Cityid">City</label>
+                                <span id="stateError" class="text-danger" style="display:none;"></span>
+                                <!-- Error Message for State -->
+
                             </div>
                         </div>
                     </div>
@@ -154,8 +168,9 @@
                         <div class="col mb-3">
                             <button type="submit" class="btn text-white" style="background-color: #0066A7;">Create
                                 User</button>
-                            <a asp-action="UserListView" class="btn btn-outline-primary"
-                                style="bs-btn-hover-border-color: none">Cancel</a>
+                           
+                            <a class="btn " style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
+                                asp-action="UserListView">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -193,6 +208,35 @@
             });
         });
     });
+
+    $(document).ready(function () {
+        // Toastr configuration
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3000"
+        };
+
+        // When the user selects a state without selecting a country
+        $("#stateDropdown").on("mousedown", function (e) {
+            var countryId = $("#countryDropdown").val();
+            if (!countryId) {
+                e.preventDefault(); // Prevents the dropdown from opening
+                toastr.error("Please select a country first.");
+            }
+        });
+
+        // When the user selects a city without selecting a state
+        $("#cityDropdown").on("mousedown", function (e) {
+            var stateId = $("#stateDropdown").val();
+            if (!stateId) {
+                e.preventDefault(); // Prevents the dropdown from opening
+                toastr.error("Please select a state first.");
+            }
+        });
+    });
+
 </script>
 <script>
     document.getElementById("fileUpload").addEventListener("change", function () {
@@ -204,3 +248,8 @@
         }
     });
 </script>
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

@@ -6,6 +6,8 @@ namespace DataAccessLayer.Models;
 
 public partial class PizzaShopContext : DbContext
 {
+    public readonly object ResetPasswordTokens;
+
     public PizzaShopContext()
     {
     }

@@ -8,36 +8,37 @@ public class AddUserViewModel
 {
     [Required]
     public string? Email { get; set; }
-     [Required]
+    [Required]
     public string Username { get; set; }
-     [Required]
+    [Required]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$", ErrorMessage = "Password must be between 6 and 20 characters and contain one uppercase letter, one lowercase letter, one digit and one special character.")]
     public string Password { get; set; } = null!;
     [Required]
     public string? Firstname { get; set; }
-   [Required]
+    [Required]
     public string? Lastname { get; set; }
 
     public IFormFile? Profilepic { get; set; }
 
     public int? Zipcode { get; set; }
-   [Required]
+    [Required]
     public string? Address { get; set; }
-   [Required]
+    [Required]
     public string? Phone { get; set; }
-   [Required]
+    [Required]
     public int Countryid { get; set; }
-   [Required]
+    [Required]
     public int Stateid { get; set; }
-   [Required]
+    [Required]
     public int Cityid { get; set; }
     [Required]
-    public int Roleid {get; set;}
+    public int Roleid { get; set; }
     public string? CreatedBy { get; set; }
     // Dropdown lists
     public List<Role> Roles { get; set; } = new();
     public List<Country> Countries { get; set; } = new();
     public List<State> States { get; set; } = new();
     public List<City> Cities { get; set; } = new();
-    
 
-} 
+
+}

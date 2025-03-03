@@ -1,0 +1,144 @@
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                    <a href="@Url.Action("UserListView", new { sortBy = "name", sortOrder = "asc" })"
+                        style="text-decoration: none;">
+                        <i
+                            class="bi bi-arrow-up @(ViewData["SortBy"] as string == "name" && ViewData["SortOrder"] as string == "asc" ? "text-primary" : "text-muted")"></i>
+                    </a>
+                    <a href="@Url.Action("UserListView", new { sortBy = "name", sortOrder = "desc" })">
+                        <i
+                            class="bi bi-arrow-down @(ViewData["SortBy"] as string == "name" && ViewData["SortOrder"] as string == "desc" ? "text-primary" : "text-muted")"></i>
+                    </a>
+                </th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>
+                    Role
+                    <a href="@Url.Action("UserListView", new { sortBy = "role", sortOrder = "asc" }) "
+                        style="text-decoration: none;">
+                        <i
+                            class="bi bi-arrow-up @(ViewData["SortBy"] as string == "role" && ViewData["SortOrder"] as string == "asc" ? "text-primary" : "text-muted")"></i>
+                    </a>
+                    <a href="@Url.Action("UserListView", new { sortBy = "role", sortOrder = "desc" })">
+                        <i
+                            class="bi bi-arrow-down @(ViewData["SortBy"] as string == "role" && ViewData["SortOrder"] as string == "desc" ? "text-primary" : "text-muted")"></i>
+                    </a>
+                </th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>
+                        @if (user.Profilepic != null)
+                        {
+                            <img src="@Url.Content(user.Profilepic)" alt="" style="height: 3vh;">
+
+                        }
+                        else
+                        {
+                            <img src="~/images/Default_pfp.svg.png" alt="" style="height: 3vh;">
+
+                        }
+                        @user.Firstname
+                    </td>
+                    <td>@user.Email</td>
+                    <td>@user.Phone</td>
+                    <td>@user.RoleName</td>
+                    <td>
+                        <button class="rounded-pill text-white align-self-center"
+                            style="background-color: @((user.Isactive ?? false) ? "rgba(148, 193, 80, 0.845)" : "red"); border: none; width: 80px;">
+                            @((user.Isactive ?? false) ? "Active" : "Inactive")
+                        </button>
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            <a asp-action="EditUserView" asp-controller="UserList" asp-route-userId="@user.Userid"
+                                style="text-decoration: none; color: grey;">
+                                <i class="bi bi-pen"></i>
+                            </a>
+                            <a href="" class="ms-4 delete-user" style="text-decoration: none; color: grey;"
+                                data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-userid="@user.Userid">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<div class="main-pagination  p-1">
+    <div class="item-show ">
+        <nav aria-label="Page navigation example">
+            <div class="pagination ">
+                <span class="align-self-center">Items Per Page :</span>
+                <select class="form-select form-select-sm ms-2 align-self-center" aria-label="Small select example"
+                    onchange="updateItemsPerPage()" style=" width: unset; " id="itemsPerPage">
+                    @if (ViewData["PageSize"] != null)
+                    {
+                        <option value="1" selected="@(Convert.ToInt32(ViewData["PageSize"]) == 1 ? true : false)">1
+                        </option>
+                        <option value="2" selected="@(Convert.ToInt32(ViewData["PageSize"]) == 2 ? true : false)">2
+                        </option>
+                        <option value="5" selected="@(Convert.ToInt32(ViewData["PageSize"]) == 5 ? true : false)">5
+                        </option>
+                        <option value="10" selected="@(Convert.ToInt32(ViewData["PageSize"]) == 10 ? true : false)">10
+                        </option>
+
+                    }
+                </select>
+            </div>
+        </nav>
+    </div>
+    <div class="showing-page">
+        <nav aria-label="Page navigation example ">
+            <div class="pagination ">
+                <span class="align-self-center ms-2">Showing
+                    @{
+                        var pageNumber = Convert.ToInt32(ViewData["PageNumber"]);
+                        var pageSize = Convert.ToInt32(ViewData["PageSize"]);
+                        var totalCount = Convert.ToInt32(ViewData["Count"]);
+
+                        var startRecord = (pageNumber - 1) * pageSize + 1;
+                        var endRecord = pageNumber * pageSize;
+
+                        if (endRecord > totalCount)
+                            endRecord = totalCount;
+
+                        if (totalCount == 0)
+                        {
+                            startRecord = 0;
+                            endRecord = 0;
+                        }
+                    }
+                    <span style="color: green;" class="me-1">@startRecord - @endRecord</span> of
+                    <span style="color: red;" class="ms-1">@Convert.ToInt32(ViewData["Count"])</span>
+
+                </span>
+                <a href="@Url.Action("UserListView")?PageSize=@Convert.ToInt32(ViewData["PageSize"])&PageNumber=@(Convert.ToInt32(ViewData["PageNumber"]) - 1)&SortColumn=@ViewData["sortBy"]&SortDirection=@ViewData["sortOrder"]&SearchKey=@ViewData["SearchKey"]"
+                    style="text-decoration: none;">
+                    <button class="btn border ms-2 align-self-center" type="button">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                </a>
+
+                <!-- Next Button -->
+                <a href="@Url.Action("UserListView")?PageSize=@Convert.ToInt32(ViewData["PageSize"])&PageNumber=@(Convert.ToInt32(ViewData["PageNumber"]) + 1)&SortColumn=@ViewData["sortBy"]&SortDirection=@ViewData["sortOrder"]&SearchKey=@ViewData["SearchKey"]"
+                    style="text-decoration: none;">
+                    <button class="btn border ms-2 align-self-center" type="button">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </a>
+            </div>
+        </nav>
+    </div>
+</div>

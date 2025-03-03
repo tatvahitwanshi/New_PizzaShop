@@ -1,0 +1,20 @@
+.card {
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    
+    justify-content: space-between;
+}
+.circle-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    
+    background-color: #e0e0e0;
+}
+.icon-green { background-color: #D4EDDA; }
+.icon-purple { background-color: #E8DAEF; }
+.icon-blue { background-color: #D6EAF8; }
+.icon-red { background-color: #FADBD8; }
+.text1 { font-size: 1.5rem; font-weight: bold; }
+.text2 { font-size: 1rem; color: #555; }

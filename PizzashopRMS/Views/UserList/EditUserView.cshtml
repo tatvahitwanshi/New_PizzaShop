@@ -27,7 +27,7 @@
                     <div class="col">
                         <form class="d-flex " role="search">
                             <a class="btn " style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
-                                href="user.html" type="submit"><i class="bi bi-chevron-left"></i>Back</a>
+                                asp-action="UserListView" type="submit"><i class="bi bi-chevron-left"></i>Back</a>
                         </form>
                     </div>
                 </div>
@@ -172,8 +172,8 @@
                         <div class="col mb-3">
                             <button class="btn text-white " style="background-color: #0066A7;" type="submit">Update
                                 User</button>
-                            <button class="btn " style="border-color: #0066A7; color: #0066A7;"
-                                asp-controller="UserList" asp-action="UserListView">Cancel</button>
+                            <a class="btn " style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
+                                asp-action="UserListView">Cancel</a>
                         </div>
                     </div>
                 </div>

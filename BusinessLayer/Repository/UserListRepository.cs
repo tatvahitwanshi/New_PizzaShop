@@ -41,7 +41,7 @@ public class UserListRepository : IUserList
                              Phone = user.Phone,
                              RoleName = role.Rolename,
                              Isactive = user.Isactive,
-                             Profilepic=user.Profilepic
+                             Profilepic = user.Profilepic
                          });
 
         switch (sortBy)
@@ -103,6 +103,11 @@ public class UserListRepository : IUserList
 
     public async Task<bool> AddUser(AddUserViewModel model, string email)
     {
+        bool emailExists = await _db.Users.AnyAsync(u => u.Email == model.Email);
+        if (emailExists)
+        {
+            return false; // Email already exists, return false or handle appropriately
+        }
         var user = new User
         {
 
@@ -204,7 +209,7 @@ public class UserListRepository : IUserList
         user.Isactive = model.Isactive;
         user.EditedBy = "Admin";
         user.EditDate = DateTime.Now;
-        user.Profilepic=await UploadPhotoAsync(model.Profilepic);
+        user.Profilepic = await UploadPhotoAsync(model.Profilepic);
 
         await _db.SaveChangesAsync();
         return true;

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/userlist.css">
-
+   
     <title>User List</title>
 </head>
 
@@ -54,7 +54,7 @@
 
         <div class="row mt-3 bg-white">
             <div class="col">
-                <div class="table-responsive">
+                @* <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
@@ -202,7 +202,8 @@
                             </div>
                         </nav>
                     </div>
-                </div>
+                </div> *@
+                <partial name="~/Views/UserList/_PartialUserList.cshtml" />
             </div>
         </div>
     </div>
@@ -232,10 +233,9 @@
     </div>
 </div>
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
         let userIdToDelete = null;
 
         // Capture userId when delete icon is clicked
@@ -260,13 +260,7 @@
             }
         });
     });
-
-
-</script>
-@section Scripts {
-    <script>
-
-        function updateItemsPerPage() {
+ function updateItemsPerPage() {
             console.log("Hellooooo");
             var pageSize = document.getElementById("itemsPerPage").value; // Get selected page size
             var pageNumber = parseInt('@ViewData["PageNumber"]'); // Get current page number
@@ -289,6 +283,4 @@
             window.location.href = '@Url.Action("UserListView")' + '?PageSize=' + '@ViewData.["PageSize"]' + '&PageNumber=' + '@ViewData.["PageNumber"]' + '&SortColumn=' + '@ViewData.["sortBy"] ' + '&SortDirection=' + '@ViewData.["sortOrder"]' + '&SearchKey=' + searchKey;
         }
 
-    </script>
-
-}
+</script>

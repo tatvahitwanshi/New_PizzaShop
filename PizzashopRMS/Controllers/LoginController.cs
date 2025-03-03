@@ -90,6 +90,7 @@ namespace PizzaShopApp.Controllers
                     TempData["error"] = "Email not found!";
                 }
 
+                var token = await _loginRepository.GenerateJwtTokenAsync(model.Email);
                 return View("LoginView");
             }
             catch (Exception ex)
@@ -138,7 +139,6 @@ namespace PizzaShopApp.Controllers
                 _logger.LogError(ex, "Error during password reset.");
                 throw; // Rethrow the exception
             }
-
             return View("ResetPasswordView", model);
         }
 
@@ -149,6 +149,10 @@ namespace PizzaShopApp.Controllers
             Response.Cookies.Delete("UserRole");
             Response.Cookies.Delete("UserName");
             return View("LoginView");
+        }
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

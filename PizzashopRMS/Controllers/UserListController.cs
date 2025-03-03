@@ -81,7 +81,12 @@ public class UserListController : Controller
             return View(model);
         }
         string email = GetUserEmailFromToken();
-        bool is_useradded =await _userListRepository.AddUser(model, email);
+        bool is_useradded = await _userListRepository.AddUser(model, email);
+        if (!is_useradded)
+        {
+            TempData["error"] = "This email already exist.";
+            return RedirectToAction("UserListView"); // Redirect and show error message
+        }
         string callbackUrl = Url.ActionLink("UserListView", "UserList");
         string newEmail = model.Email;
         bool isEmailSent = await _userListRepository.AddUserEmail(newEmail, callbackUrl);
