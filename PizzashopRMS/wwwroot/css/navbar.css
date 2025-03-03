@@ -6,6 +6,9 @@
 .navbar{
     height: 70px;
     background-color: #0066A7;
+    
+    top: 0;
+    left: 0;
 }
 .company-logo{
     background-color: white;

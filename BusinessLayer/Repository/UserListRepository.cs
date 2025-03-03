@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
@@ -24,7 +25,7 @@ public class UserListRepository : IUserList
 
     public async Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)> GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey)
     {
-        var userslist = (from user in _db.Users
+        var  userslist = (from user in _db.Users
                          join role in _db.Roles on user.Roleid equals role.Roleid
                          where user.Isdeleted == false && (
                          user.Firstname.ToLower().Contains(SearchKey) ||
@@ -41,7 +42,7 @@ public class UserListRepository : IUserList
                              Phone = user.Phone,
                              RoleName = role.Rolename,
                              Isactive = user.Isactive,
-                             Profilepic = user.Profilepic
+                             Profilepic = user.Profilepic,
                          });
 
         switch (sortBy)

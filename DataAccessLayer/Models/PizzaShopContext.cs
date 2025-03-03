@@ -6,8 +6,6 @@ namespace DataAccessLayer.Models;
 
 public partial class PizzaShopContext : DbContext
 {
-    public readonly object ResetPasswordTokens;
-
     public PizzaShopContext()
     {
     }
@@ -52,6 +50,8 @@ public partial class PizzaShopContext : DbContext
     public virtual DbSet<Payment> Payments { get; set; }
 
     public virtual DbSet<Permission> Permissions { get; set; }
+
+    public virtual DbSet<Permissionlist> Permissionlists { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
@@ -548,11 +548,13 @@ public partial class PizzaShopContext : DbContext
 
         modelBuilder.Entity<Permission>(entity =>
         {
-            entity.HasKey(e => e.Permissionid).HasName("permission_pkey");
+            entity.HasKey(e => e.Id).HasName("permission_pkey");
 
             entity.ToTable("permission");
 
-            entity.Property(e => e.Permissionid).HasColumnName("permissionid");
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("nextval('permission_permissionid_seq'::regclass)")
+                .HasColumnName("id");
             entity.Property(e => e.Canaddedit)
                 .HasDefaultValueSql("true")
                 .HasColumnName("canaddedit");
@@ -575,12 +577,31 @@ public partial class PizzaShopContext : DbContext
             entity.Property(e => e.EditedBy)
                 .HasMaxLength(50)
                 .HasColumnName("edited_by");
+            entity.Property(e => e.IsEnable).HasDefaultValueSql("true");
+            entity.Property(e => e.Permissionid).HasColumnName("permissionid");
             entity.Property(e => e.Roleid).HasColumnName("roleid");
+
+            entity.HasOne(d => d.PermissionNavigation).WithMany(p => p.Permissions)
+                .HasForeignKey(d => d.Permissionid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("permissionlist_roleid_fkey");
 
             entity.HasOne(d => d.Role).WithMany(p => p.Permissions)
                 .HasForeignKey(d => d.Roleid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("permission_roleid_fkey");
+        });
+
+        modelBuilder.Entity<Permissionlist>(entity =>
+        {
+            entity.HasKey(e => e.Permissionid).HasName("permissionlist_pkey");
+
+            entity.ToTable("permissionlist");
+
+            entity.Property(e => e.Permissionid).HasColumnName("permissionid");
+            entity.Property(e => e.Permissionname)
+                .HasMaxLength(50)
+                .HasColumnName("permissionname");
         });
 
         modelBuilder.Entity<Role>(entity =>

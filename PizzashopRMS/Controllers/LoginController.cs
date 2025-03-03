@@ -53,6 +53,8 @@ namespace PizzaShopApp.Controllers
                 var token = await _loginRepository.GenerateJwtTokenAsync(dbUser.Email, dbUser.Roleid, Response, user.RememberMe);
 
                 TempData["success"] = message;
+                ViewData["Email"]=user.Email;
+                
                 return RedirectToAction("DashboardView", "Dashboard");
             }
             catch (Exception ex)
@@ -77,8 +79,10 @@ namespace PizzaShopApp.Controllers
                 {
                     return View("ForgotPasswordView", model);
                 }
+                var token1 = await _loginRepository.ResetEmailToken(model.Email, 0, Response, false);
+                TempData["Email"]=model.Email;
 
-                var callbackUrl = Url.ActionLink("ResetPasswordView", "Login");
+                var callbackUrl = Url.ActionLink("ResetPasswordView", "Login", new { token1 = token1 });
                 bool isEmailSent = await _loginRepository.ForgotPasswordAsync(model, callbackUrl);
 
                 if (isEmailSent)
@@ -90,7 +94,6 @@ namespace PizzaShopApp.Controllers
                     TempData["error"] = "Email not found!";
                 }
 
-                var token = await _loginRepository.GenerateJwtTokenAsync(model.Email);
                 return View("LoginView");
             }
             catch (Exception ex)
@@ -100,8 +103,9 @@ namespace PizzaShopApp.Controllers
             }
         }
 
-        public IActionResult ResetPasswordView()
+        public IActionResult ResetPasswordView(string token1)
         {
+            ViewData["ResetPasswordEmail"]=token1;
             return View();
         }
 
@@ -110,11 +114,18 @@ namespace PizzaShopApp.Controllers
         {
             try
             {
+                var token1=model.token1;
+                var validate = await _loginRepository.ValidateToken(token1);
+                if (!validate.valid)
+                {
+                    TempData["error"] = "Link got expired generate new link";
+                    return RedirectToAction("ForgotPasswordView", "Login");
+                }
                 if (!ModelState.IsValid)
                 {
                     return View("ResetPasswordView", model);
                 }
-
+                
                 var email = TempData["email"] as string;
                 if (string.IsNullOrEmpty(email))
                 {

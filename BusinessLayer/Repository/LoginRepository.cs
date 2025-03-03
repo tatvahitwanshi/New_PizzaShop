@@ -1,4 +1,7 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Claims;
 using BusinessLayer.Helper;
 using BusinessLayer.Interface;
 using DataAccessLayer.Models;
@@ -30,22 +33,37 @@ public class LoginRepository : ILogin
         if (user == null) return (null, "User Does not exist");
 
         var hashedPassword = HashingHelper.ComputeSHA256(password);
-        return user.Password == hashedPassword ? (user, "Login Successfull") : (null,"Wrong password");
+        return user.Password == hashedPassword ? (user, "Login Successfull") : (null, "Wrong password");
     }
 
     public async Task<string> GenerateJwtTokenAsync(string email, int roleId, HttpResponse response, bool rememberMe)
     {
+        
         var userRole = _db.Roles.FirstOrDefault(r => r.Roleid == roleId);
         if (userRole == null) return null;
+        
 
         var token = _jwtTokenHelper.GenerateJwtToken(email, userRole.Rolename);
-
-        response.Cookies.Append("JWTLogin", token, new CookieOptions
+        if (rememberMe == true)
         {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict
-        });
+            response.Cookies.Append("JWTLogin", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(30)
+            });
+        }
+        else
+        {
+            response.Cookies.Append("JWTLogin", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(1)
+            });
+        }
 
         if (rememberMe)
         {
@@ -57,8 +75,24 @@ public class LoginRepository : ILogin
                 Expires = DateTime.UtcNow.AddDays(30)
             });
         }
-
         return token;
+
+    
+    }
+
+    public async Task<string> ResetEmailToken(string email, int roleId, HttpResponse response, bool rememberMe)
+    {
+        var token1 = _jwtTokenHelper.GenerateJwtToken(email, "");
+        response.Cookies.Append("ResetToken", token1, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddMinutes(1)
+        });
+        return token1;
+
+    
     }
     public async Task<bool> ForgotPasswordAsync(ForgetPasswordViewModel model, string callbackUrl)
     {
@@ -69,7 +103,7 @@ public class LoginRepository : ILogin
         if (user == null)
             return false;
 
-    
+
 
         string subject = "Password Reset Request";
         string message = @$"
@@ -107,7 +141,34 @@ public class LoginRepository : ILogin
             return false;
         }
     }
-    
+     public async Task<TokenViewModel> ValidateToken(string ResetToken)
+    {
+        TokenViewModel token = new TokenViewModel();
+        try
+        {
+            
+            var handler = new JwtSecurityTokenHandler();
+            var JwtToken = handler.ReadJwtToken(ResetToken);
+
+            Console.WriteLine(JwtToken.ValidTo);
+            Console.WriteLine(DateTime.UtcNow);
+            if (JwtToken.ValidTo <DateTime.UtcNow)
+            {
+                token.valid = false;
+                return token;
+            }
+
+            // token.Email = JwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "unknown";
+            token.valid=true;
+            return token;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("error: while validating try again later");
+            return token;
+        }
+    }
+
 
 
 }

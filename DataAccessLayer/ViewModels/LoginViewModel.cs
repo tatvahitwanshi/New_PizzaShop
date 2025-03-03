@@ -29,7 +29,7 @@ public class ResetPasswordViewModel
     [Compare("Password", ErrorMessage = "Passwords do not match.")]
     public string ConfirmPassword { get; set; }= null;
     
-     public string token{get;set;}
+     public string token1{get;set;}
 
     
 }

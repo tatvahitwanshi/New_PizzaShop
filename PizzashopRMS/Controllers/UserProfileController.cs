@@ -30,8 +30,13 @@ namespace PizzaShopApp.Controllers
         [HttpGet]
         public async Task<IActionResult> UserProfileView()
         {
+            var token = Request.Cookies["JWTLogin"];
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var role= jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value ?? "";
+            ViewData["Role"]=role;
             string email = GetUserEmailFromToken();
-            if (string.IsNullOrEmpty(email)) return RedirectToAction("Login", "Login");
+            if (string.IsNullOrEmpty(email)) return RedirectToAction("LoginView", "Login");
 
             var model = await _userProfile.GetUserProfileAsync(email);
             if (model == null) return NotFound("User Not Found");
@@ -43,7 +48,7 @@ namespace PizzaShopApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserProfileView(UserProfileViewModel model)
         {
-            if (model.Username == null || model.Countryid== null || model.Cityid==null || model.Stateid==null) return RedirectToAction("UserProfileView");
+            if (model.Username == null || model.Countryid == null || model.Cityid == null || model.Stateid == null) return RedirectToAction("UserProfileView");
 
             var success = await _userProfile.UpdateUserProfileAsync(model);
             if (success) return RedirectToAction("UserProfileView");

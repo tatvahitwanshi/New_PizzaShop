@@ -14,27 +14,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/userlist.css">
-   
+
     <title>User List</title>
 </head>
 
 <body>
-   
 
-    <div class="container-fluid p-4">
+
+    <div class="container-fluid p-4" style="z-index: -100;">
         <div class="row">
             <div class="col-lg-4 col-sm-12 h2 fw-bold" style="color: #0066A7;">
                 Users
             </div>
             <div class="col-lg-8 col-sm-12 inner-nav d-flex justify-content-end">
                 <form class="d-flex" role="search">
-                    <div class="d-flex me-2 p-1 position-relative">
-                        <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
-                            aria-label="Search">
-                        <i class="bi bi-search position-absolute search-icon-main"></i>
+                    <div class="d-flex me-2 p-1 position-relative " >
+                        <input class="search_input form-control me-2 border-0" value="@ViewData["SearchKey"]"
+                            id="searchInput" type="text" placeholder="Search" aria-label="Search" >
+                        <i class="bi bi-search position-absolute search-icon-main" onclick="searchFunction()"></i>
                     </div>
 
-                    
                     <button class="btn text-white d-none d-md-block" type="submit" style="background-color: #0066A7;">
                         <a href="@Url.Action("AddUserView", "UserList")" style="text-decoration: none;"
                             class="p-2 text-white">
@@ -54,156 +53,9 @@
 
         <div class="row mt-3 bg-white">
             <div class="col">
-                @* <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                    <a href="@Url.Action("UserListView", new { sortBy = "name", sortOrder = "asc" })"
-                                        style="text-decoration: none;">
-                                        <i
-                                            class="bi bi-arrow-up @(ViewData["SortBy"] as string == "name" && ViewData["SortOrder"] as string == "asc" ? "text-primary" : "text-muted")"></i>
-                                    </a>
-                                    <a href="@Url.Action("UserListView", new { sortBy = "name", sortOrder = "desc" })">
-                                        <i
-                                            class="bi bi-arrow-down @(ViewData["SortBy"] as string == "name" && ViewData["SortOrder"] as string == "desc" ? "text-primary" : "text-muted")"></i>
-                                    </a>
-                                </th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>
-                                    Role
-                                    <a href="@Url.Action("UserListView", new { sortBy = "role", sortOrder = "asc" }) "
-                                        style="text-decoration: none;">
-                                        <i
-                                            class="bi bi-arrow-up @(ViewData["SortBy"] as string == "role" && ViewData["SortOrder"] as string == "asc" ? "text-primary" : "text-muted")"></i>
-                                    </a>
-                                    <a href="@Url.Action("UserListView", new { sortBy = "role", sortOrder = "desc" })">
-                                        <i
-                                            class="bi bi-arrow-down @(ViewData["SortBy"] as string == "role" && ViewData["SortOrder"] as string == "desc" ? "text-primary" : "text-muted")"></i>
-                                    </a>
-                                </th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @if (user.Profilepic != null)
-                                        {
-                                            <img src="@Url.Content(user.Profilepic)" alt="" style="height: 3vh;">
-
-                                        }
-                                        else{
-                                        <img src="~/images/Default_pfp.svg.png" alt="" style="height: 3vh;">
-
-                                        }
-                                        @user.Firstname
-                                    </td>
-                                    <td>@user.Email</td>
-                                    <td>@user.Phone</td>
-                                    <td>@user.RoleName</td>
-                                    <td>
-                                        <button class="rounded-pill text-white align-self-center"
-                                            style="background-color: @((user.Isactive ?? false) ? "rgba(148, 193, 80, 0.845)" : "red"); border: none; width: 80px;">
-                                            @((user.Isactive ?? false) ? "Active" : "Inactive")
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <a asp-action="EditUserView" asp-controller="UserList"
-                                                asp-route-userId="@user.Userid" style="text-decoration: none; color: grey;">
-                                                <i class="bi bi-pen"></i>
-                                            </a>
-                                            <a href="" class="ms-4 delete-user" style="text-decoration: none; color: grey;"
-                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
-                                                data-userid="@user.Userid">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-
-                    </table>
+                <div id="userListContainer">
+                    <partial name="~/Views/UserList/_PartialUserList.cshtml" />
                 </div>
-                <div class="main-pagination  p-1">
-                    <div class="item-show ">
-                        <nav aria-label="Page navigation example">
-                            <div class="pagination ">
-                                <span class="align-self-center">Items Per Page :</span>
-                                <select class="form-select form-select-sm ms-2 align-self-center"
-                                    aria-label="Small select example" onchange="updateItemsPerPage()"
-                                    style=" width: unset; " id="itemsPerPage">
-                                    @if (ViewData["PageSize"] != null)
-                                    {
-                                        <option value="1"
-                                            selected="@(Convert.ToInt32(ViewData["PageSize"]) == 1 ? true : false)">1
-                                        </option>
-                                        <option value="2"
-                                            selected="@(Convert.ToInt32(ViewData["PageSize"]) == 2 ? true : false)">2
-                                        </option>
-                                        <option value="5"
-                                            selected="@(Convert.ToInt32(ViewData["PageSize"]) == 5 ? true : false)">5
-                                        </option>
-                                        <option value="10"
-                                            selected="@(Convert.ToInt32(ViewData["PageSize"]) == 10 ? true : false)">10
-                                        </option>
-
-                                    }
-                                </select>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="showing-page">
-                        <nav aria-label="Page navigation example ">
-                            <div class="pagination ">
-                                <span class="align-self-center ms-2">Showing
-                                    @{
-                                        var pageNumber = Convert.ToInt32(ViewData["PageNumber"]);
-                                        var pageSize = Convert.ToInt32(ViewData["PageSize"]);
-                                        var totalCount = Convert.ToInt32(ViewData["Count"]);
-
-                                        var startRecord = (pageNumber - 1) * pageSize + 1;
-                                        var endRecord = pageNumber * pageSize;
-
-                                        if (endRecord > totalCount)
-                                            endRecord = totalCount;
-
-                                        if (totalCount == 0)
-                                        {
-                                            startRecord = 0;
-                                            endRecord = 0;
-                                        }
-                                    }
-                                    <span style="color: green;" class="me-1">@startRecord - @endRecord</span> of
-                                    <span style="color: red;" class="ms-1">@Convert.ToInt32(ViewData["Count"])</span>
-
-                                </span>
-                                <a href="@Url.Action("UserListView")?PageSize=@Convert.ToInt32(ViewData["PageSize"])&PageNumber=@(Convert.ToInt32(ViewData["PageNumber"]) - 1)&SortColumn=@ViewData["sortBy"]&SortDirection=@ViewData["sortOrder"]&SearchKey=@ViewData["SearchKey"]"
-                                    style="text-decoration: none;">
-                                    <button class="btn border ms-2 align-self-center" type="button">
-                                        <i class="bi bi-chevron-left"></i>
-                                    </button>
-                                </a>
-
-                                <!-- Next Button -->
-                                <a href="@Url.Action("UserListView")?PageSize=@Convert.ToInt32(ViewData["PageSize"])&PageNumber=@(Convert.ToInt32(ViewData["PageNumber"]) + 1)&SortColumn=@ViewData["sortBy"]&SortDirection=@ViewData["sortOrder"]&SearchKey=@ViewData["SearchKey"]"
-                                    style="text-decoration: none;">
-                                    <button class="btn border ms-2 align-self-center" type="button">
-                                        <i class="bi bi-chevron-right"></i>
-                                    </button>
-                                </a>
-                            </div>
-                        </nav>
-                    </div>
-                </div> *@
-                <partial name="~/Views/UserList/_PartialUserList.cshtml" />
             </div>
         </div>
     </div>
@@ -235,7 +87,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
         let userIdToDelete = null;
 
         // Capture userId when delete icon is clicked
@@ -260,27 +112,62 @@
             }
         });
     });
- function updateItemsPerPage() {
-            console.log("Hellooooo");
-            var pageSize = document.getElementById("itemsPerPage").value; // Get selected page size
-            var pageNumber = parseInt('@ViewData["PageNumber"]'); // Get current page number
-            var sortBy = ' @ViewData["sortBy"]'; // Get current sort column
-            var sortOrder = '@ViewData["sortOrder"]'; // Get current sort order
-            var searchKey = '@ViewData["SearchKey"]'; // Get current search key
-            console.log(pageSize)
-            // Update the URL with the new page size and reload the page
-            window.location.href = '/UserList/UserListView' +
-                '?PageSize=' + pageSize +
-                '&PageNumber=' + pageNumber +
-                '&sortBy=' + encodeURIComponent(sortBy) +
-                '&sortOrder=' + encodeURIComponent(sortOrder) +
-                '&SearchKey=' + encodeURIComponent(searchKey);
-        }
+    function updateItemsPerPage() {
+        var pageSize = $("#itemsPerPage").val(); // Get selected page size
+        var pageNumber = '@ViewData["PageNumber"]'; // Get current page number
+        var sortBy = '@ViewData["SortBy"]'; // Get current sort column
+        var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
+        var searchKey = '@ViewData["SearchKey"]'; // Get current search key
 
-        function searchFunction() {
-            var searchKey = document.getElementById("searchInput").value.toLowerCase();
-            console.log(searchKey);
-            window.location.href = '@Url.Action("UserListView")' + '?PageSize=' + '@ViewData.["PageSize"]' + '&PageNumber=' + '@ViewData.["PageNumber"]' + '&SortColumn=' + '@ViewData.["sortBy"] ' + '&SortDirection=' + '@ViewData.["sortOrder"]' + '&SearchKey=' + searchKey;
-        }
+        $.ajax({
+            url: "/UserList/UserListView",
+            type: "GET",
+            data: {
+                PageSize: pageSize,
+                PageNumber: pageNumber,
+                SortColumn: sortBy,
+                SortDirection: sortOrder,
+                SearchKey: searchKey
+            },
+            success: function (data) {
+                $("#userListContainer").html(data); // Update only the partial view
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    }
 
+    function searchFunction() {
+        var searchKey = document.getElementById("searchInput").value.toLowerCase();
+        console.log(searchKey);
+        window.location.href = '@Url.Action("UserListView")' + '?PageSize=' + '@ViewData.["PageSize"]' + '&PageNumber=' + '@ViewData.["PageNumber"]' + '&SortColumn=' + '@ViewData.["sortBy"] ' + '&SortDirection=' + '@ViewData.["sortOrder"]' + '&SearchKey=' + searchKey;
+    }
+   $(document).on("click", ".pagination-button", function (event) {
+    event.preventDefault(); // Prevent full page reload
+
+    var pageNumber = $(this).data("page"); // Get the new page number
+    var pageSize = $("#itemsPerPage").val(); // Get current page size
+    var sortBy = '@ViewData["SortBy"]'; // Get current sort column
+    var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
+    var searchKey = $("#searchInput").val(); // Get the search key
+
+    $.ajax({
+        url: "/UserList/UserListView",
+        type: "GET",
+        data: {
+            PageSize: pageSize,
+            PageNumber: pageNumber,
+            SortColumn: sortBy,
+            SortDirection: sortOrder,
+            SearchKey: searchKey
+        },
+        success: function (data) {
+            $("#userListContainer").html(data); // Update only the partial view
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+});
 </script>

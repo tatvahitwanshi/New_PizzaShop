@@ -20,7 +20,7 @@ public class CustomAuthoriseAttribute : Attribute, IAuthorizationFilter
         var token = context.HttpContext.Request.Cookies["JWTLogin"];
         if (token == null)
         {
-            context.Result = new RedirectToRouteResult(new { controller = "Login", action = "Login" });
+            context.Result = new RedirectToRouteResult(new { controller = "Login", action = "LoginView" });
             return;
         }
         var configuration = context.HttpContext.RequestServices.GetService<IConfiguration>();

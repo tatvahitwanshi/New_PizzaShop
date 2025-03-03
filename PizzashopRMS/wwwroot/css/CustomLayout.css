@@ -1,0 +1,9 @@
+.main-block{
+    flex-grow: 1;
+    height: 100vh;
+    background-color: #6c757d23; 
+    margin-left: 250px;
+    @media screen and (max-width:991px) {
+        margin-left: 0;
+    }
+}

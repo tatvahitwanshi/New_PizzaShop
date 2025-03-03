@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+namespace DataAccessLayer.ViewModels;
 
-namespace DataAccessLayer.Models;
-
-public partial class Permission
+public class PermissionViewModel
 {
     public int Id { get; set; }
 
@@ -26,8 +23,4 @@ public partial class Permission
     public int Permissionid { get; set; }
 
     public bool? IsEnable { get; set; }
-
-    public virtual Permissionlist PermissionNavigation { get; set; } = null!;
-
-    public virtual Role Role { get; set; } = null!;
 }

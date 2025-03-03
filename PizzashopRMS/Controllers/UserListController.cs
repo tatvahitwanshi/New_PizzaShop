@@ -30,7 +30,10 @@ public class UserListController : Controller
         ViewData["PageNumber"] = pageNumber;
         ViewData["SearchKey"] = searchKey;
         ViewData["Count"] = count;  // Total user count for pagination
-
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView("_PartialUserList", users); // Return partial view for AJAX
+        }
         // Pass only the user list (List<UserListViewModel>) to the View
         return View(users);
     }

@@ -35,8 +35,19 @@
                     </div>
                     <div class="container-fluid">
                         <div class="row mt-3 ">
-                            <img src="~/images/Default_pfp.svg.png" id="profile-pic1" alt="" class=""
-                                style="height: 8%; width: 6%;">
+                            @if (Model.Profilepic != null)
+                            {
+                                <img src="@Url.Content(Model.Profilepic)" id="profile-pic1" alt=""
+                                    style="height: 8%; width: 6%;">
+
+                            }
+                            else
+                            {
+                                <img src="~/images/Default_pfp.svg.png" id="profile-pic1" alt=""
+                                    style="height: 8%; width: 6%;">
+
+                            }
+
                             <div class="col " style="display: grid;">
                                 <span class="h2">@Model.Username</span>
                                 <span>@ViewData["Role"]</span>
@@ -54,6 +65,8 @@
                                     <input type="text" class="form-control" placeholder="name@example.com"
                                         asp-for="@Model.Firstname">
                                     <label for="floatingInput">First Name</label>
+                                    <span asp-validation-for="Firstname" class="text-danger"></span>
+
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12">
@@ -61,6 +74,8 @@
                                     <input type="text" class="form-control" placeholder="name@example.com"
                                         asp-for="@Model.Lastname">
                                     <label for="floatingInput">Last Name</label>
+                                    <span asp-validation-for="Lastname" class="text-danger"></span>
+
                                 </div>
                             </div>
                         </div>
@@ -70,6 +85,8 @@
                                     <input type="text" class="form-control" placeholder="name@example.com"
                                         asp-for="@Model.Username">
                                     <label for="floatingInput">Username</label>
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12">
@@ -93,6 +110,8 @@
                                         }
                                     </select>
                                     <label for="floatingSelect">Country</label>
+                                    <span asp-validation-for="Countryid" class="text-danger"></span>
+
                                 </div>
                             </div>
                             <div class="col-lg-4 col-sm-12">
@@ -111,6 +130,8 @@
                                         }
                                     </select>
                                     <label for="floatingSelect">State</label>
+                                    <span asp-validation-for="Stateid" class="text-danger"></span>
+
                                 </div>
                             </div>
                             <div class="col-lg-4 col-sm-12">
@@ -132,6 +153,8 @@
                                         }
                                     </select>
                                     <label for="city">City</label>
+                                    <span asp-validation-for="Cityid" class="text-danger"></span>
+
                                 </div>
 
                             </div>
@@ -157,7 +180,8 @@
                                 <button class="btn text-white " style="background-color: #0066A7;" type="submit">
                                     Update User</button>
                                 <button class="btn ms-2" style="border-color: #0066A7; color: #0066A7;" type=""
-                                    asp-controller="UserProfile" asp-action="UserProfileView">Cancel</button>
+                                    asp-controller="Dashboard" asp-action="DashboardView">Cancel</button>
+                                    
                             </div>
                         </div>
                     </div>
@@ -172,6 +196,7 @@
 </html>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function loadStates() {
