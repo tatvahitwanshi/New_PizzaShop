@@ -20,8 +20,13 @@ public class UserListController : Controller
     [HttpGet]
     public async Task<IActionResult> UserListView(int PageSize = 5, int PageNumber = 1, string sortBy = "name", string sortOrder = "asc", string SearchKey = "")
     {
+        var token = Request.Cookies["JWTLogin"];
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        var email = jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
+
         // Get data from repository (returns a tuple)
-        var (users, count, pageSize, pageNumber, sortColumn, sortDirection, searchKey) = await _userListRepository.GetUsers(PageSize, PageNumber, sortBy, sortOrder, SearchKey);
+        var (users, count, pageSize, pageNumber, sortColumn, sortDirection, searchKey) = await _userListRepository.GetUsers(PageSize, PageNumber, sortBy, sortOrder, SearchKey, email);
 
         // Store metadata in ViewData (converted to correct types)
         ViewData["sortBy"] = sortColumn;
@@ -83,23 +88,29 @@ public class UserListController : Controller
         {
             return View(model);
         }
+
         string email = GetUserEmailFromToken();
-        bool is_useradded = await _userListRepository.AddUser(model, email);
-        if (!is_useradded)
+        string resultMessage = await _userListRepository.AddUser(model, email);
+
+        TempData["message"] = resultMessage; // Store the message for toast notification
+
+        if (resultMessage != "User added successfully")
         {
-            TempData["error"] = "This email already exist.";
-            return RedirectToAction("UserListView"); // Redirect and show error message
+            TempData["error"] = resultMessage;
+            return RedirectToAction("UserListView");
         }
+
         string callbackUrl = Url.ActionLink("UserListView", "UserList");
         string newEmail = model.Email;
         bool isEmailSent = await _userListRepository.AddUserEmail(newEmail, callbackUrl);
+
         if (isEmailSent)
         {
-            TempData["success"] = "A password reset link has been sent to your email.";
+            TempData["success"] = "New user is added successfully, and an email has been sent!";
         }
         else
         {
-            TempData["error"] = "Email not found!";
+            TempData["error"] = "Email could not be sent!";
         }
 
         return RedirectToAction("UserListView");
@@ -122,13 +133,28 @@ public class UserListController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditUserProfileView(EditUserViewModel model)
     {
-        if (!ModelState.IsValid) return RedirectToAction("UserListView");
+
+        if (!ModelState.IsValid)
+        {
+            TempData["error"] = "Enter data was not proper";
+            return RedirectToAction("EditUserView");
+        }
+
 
         var success = await _userListRepository.EditUserProfileDetailsAsync(model);
-        if (success) return RedirectToAction("UserListView");
+        if (success)
+        {
+            TempData["success"] = "User Updated Successfully";
+            return RedirectToAction("UserListView");
+        }
+        else
+        {
+            TempData["Error"] = "Failed to update user.";
+            ModelState.AddModelError("", "Failed to update user.");
+            return View("UserListView", model);
+        }
 
-        ModelState.AddModelError("", "Failed to update user.");
-        return View("UserListView", model);
+
     }
 
     [HttpPost]

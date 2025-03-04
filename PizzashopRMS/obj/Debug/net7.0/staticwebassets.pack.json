@@ -201,6 +201,10 @@
       "PackagePath": "staticwebassets\\js\\login.js"
     },
     {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\js\\permission.js",
+      "PackagePath": "staticwebassets\\js\\permission.js"
+    },
+    {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\js\\reset.js",
       "PackagePath": "staticwebassets\\js\\reset.js"
     },
@@ -441,8 +445,16 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\21dc5435-6230-4b26-967d-2fd075881b01_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\21dc5435-6230-4b26-967d-2fd075881b01_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\267465d2-72f2-4613-9473-3dd936914b0d_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
       "PackagePath": "staticwebassets\\userphoto\\267465d2-72f2-4613-9473-3dd936914b0d_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\480a725f-ecf7-45e3-a335-fecd97abeb8f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\480a725f-ecf7-45e3-a335-fecd97abeb8f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
     },
     {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\4ccd195f-e235-4ebc-b2de-bd849d7e3d0f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
@@ -467,6 +479,10 @@
     {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\bd77036a-5361-4ec5-aa11-df40d9a9e581_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
       "PackagePath": "staticwebassets\\userphoto\\bd77036a-5361-4ec5-aa11-df40d9a9e581_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\c2156ee9-d48d-4afd-b9d1-3062ded22aec_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\c2156ee9-d48d-4afd-b9d1-3062ded22aec_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
     },
     {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\e35610ab-bc71-4ad4-ac79-9833d7675d6a_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",

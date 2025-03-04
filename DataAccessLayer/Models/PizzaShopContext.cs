@@ -6,6 +6,8 @@ namespace DataAccessLayer.Models;
 
 public partial class PizzaShopContext : DbContext
 {
+    public readonly IEnumerable<object> Permissionlist;
+
     public PizzaShopContext()
     {
     }

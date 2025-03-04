@@ -154,7 +154,6 @@
                                     </select>
                                     <label for="city">City</label>
                                     <span asp-validation-for="Cityid" class="text-danger"></span>
-
                                 </div>
 
                             </div>
@@ -165,6 +164,8 @@
                                     <input type="text" class="form-control" placeholder="name@example.com"
                                         asp-for="@Model.Address">
                                     <label for="floatingInput">Address</label>
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12">
@@ -172,6 +173,8 @@
                                     <input type="text" pattern="[0-9]{5}" class="form-control"
                                         placeholder="name@example.com" asp-for="@Model.Zipcode">
                                     <label for="floatingInput">Zip Code</label>
+                                    <span asp-validation-for="Zipcode" class="text-danger"></span>
+
                                 </div>
                             </div>
                         </div>
@@ -181,7 +184,7 @@
                                     Update User</button>
                                 <button class="btn ms-2" style="border-color: #0066A7; color: #0066A7;" type=""
                                     asp-controller="Dashboard" asp-action="DashboardView">Cancel</button>
-                                    
+
                             </div>
                         </div>
                     </div>

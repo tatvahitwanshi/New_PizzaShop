@@ -6,6 +6,7 @@ public class PermissionViewModel
 
     public int Roleid { get; set; }
 
+    public string Permissionname { get; set; }
     public bool? Canview { get; set; }
 
     public bool? Canaddedit { get; set; }

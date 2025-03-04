@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutCustom.cshtml";
     ViewData["Title"] = "User List Page";
+    ViewBag.Active="UserList";
 }
 
 <!DOCTYPE html>
@@ -19,8 +20,6 @@
 </head>
 
 <body>
-
-
     <div class="container-fluid p-4" style="z-index: -100;">
         <div class="row">
             <div class="col-lg-4 col-sm-12 h2 fw-bold" style="color: #0066A7;">
@@ -28,9 +27,9 @@
             </div>
             <div class="col-lg-8 col-sm-12 inner-nav d-flex justify-content-end">
                 <form class="d-flex" role="search">
-                    <div class="d-flex me-2 p-1 position-relative " >
+                    <div class="d-flex me-2 p-1 position-relative ">
                         <input class="search_input form-control me-2 border-0" value="@ViewData["SearchKey"]"
-                            id="searchInput" type="text" placeholder="Search" aria-label="Search" >
+                            id="searchInput" type="text" placeholder="Search" aria-label="Search">
                         <i class="bi bi-search position-absolute search-icon-main" onclick="searchFunction()"></i>
                     </div>
 
@@ -138,36 +137,70 @@
         });
     }
 
-    function searchFunction() {
+    $(document).ready(function () {
+        // Listen for 'input' event on search input
+        $('#searchInput').on('input', function () {
+            var searchKey = $('#searchInput').val().toLowerCase();
+            console.log("Search Key:", searchKey);
+
+            // Get the current page size, sort column, and sort direction from ViewData
+            var pageSize = $("#itemsPerPage").val(); // Get selected page size
+            var pageNumber = 1; // Reset to page 1 for new search
+            var sortBy = '@ViewData["SortBy"]'; // Get current sort column
+            var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
+
+            // Perform AJAX request to fetch filtered user list
+            $.ajax({
+                url: "/UserList/UserListView",
+                type: "GET",
+                data: {
+                    PageSize: pageSize,
+                    PageNumber: pageNumber,
+                    SortColumn: sortBy,
+                    SortDirection: sortOrder,
+                    SearchKey: searchKey
+                },
+                success: function (data) {
+                    $("#userListContainer").html(data); // Update only the partial view
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        });
+    });
+
+    @* function searchFunction() {
         var searchKey = document.getElementById("searchInput").value.toLowerCase();
         console.log(searchKey);
         window.location.href = '@Url.Action("UserListView")' + '?PageSize=' + '@ViewData.["PageSize"]' + '&PageNumber=' + '@ViewData.["PageNumber"]' + '&SortColumn=' + '@ViewData.["sortBy"] ' + '&SortDirection=' + '@ViewData.["sortOrder"]' + '&SearchKey=' + searchKey;
-    }
-   $(document).on("click", ".pagination-button", function (event) {
-    event.preventDefault(); // Prevent full page reload
+    } *@
 
-    var pageNumber = $(this).data("page"); // Get the new page number
-    var pageSize = $("#itemsPerPage").val(); // Get current page size
-    var sortBy = '@ViewData["SortBy"]'; // Get current sort column
-    var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
-    var searchKey = $("#searchInput").val(); // Get the search key
+        $(document).on("click", ".pagination-button", function (event) {
+            event.preventDefault(); // Prevent full page reload
 
-    $.ajax({
-        url: "/UserList/UserListView",
-        type: "GET",
-        data: {
-            PageSize: pageSize,
-            PageNumber: pageNumber,
-            SortColumn: sortBy,
-            SortDirection: sortOrder,
-            SearchKey: searchKey
-        },
-        success: function (data) {
-            $("#userListContainer").html(data); // Update only the partial view
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-});
+            var pageNumber = $(this).data("page"); // Get the new page number
+            var pageSize = $("#itemsPerPage").val(); // Get current page size
+            var sortBy = '@ViewData["SortBy"]'; // Get current sort column
+            var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
+            var searchKey = $("#searchInput").val(); // Get the search key
+
+            $.ajax({
+                url: "/UserList/UserListView",
+                type: "GET",
+                data: {
+                    PageSize: pageSize,
+                    PageNumber: pageNumber,
+                    SortColumn: sortBy,
+                    SortDirection: sortOrder,
+                    SearchKey: searchKey
+                },
+                success: function (data) {
+                    $("#userListContainer").html(data); // Update only the partial view
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        });
 </script>

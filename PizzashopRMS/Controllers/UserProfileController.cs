@@ -33,8 +33,8 @@ namespace PizzaShopApp.Controllers
             var token = Request.Cookies["JWTLogin"];
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
-            var role= jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value ?? "";
-            ViewData["Role"]=role;
+            var role = jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value ?? "";
+            ViewData["Role"] = role;
             string email = GetUserEmailFromToken();
             if (string.IsNullOrEmpty(email)) return RedirectToAction("LoginView", "Login");
 
@@ -48,13 +48,43 @@ namespace PizzaShopApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserProfileView(UserProfileViewModel model)
         {
-            if (model.Username == null || model.Countryid == null || model.Cityid == null || model.Stateid == null) return RedirectToAction("UserProfileView");
+            if (model.Username == null || model.Countryid == 0 || model.Cityid == 0 || model.Stateid == 0)
+            {
+                if (model.Countryid == 0)
+                {
+                    TempData["error"] = "Please Select the country";
+                    return RedirectToAction("UserProfileView");
+                }
+                if (model.Stateid == 0)
+                {
+                    TempData["error"] = "Please Select the state";
+                    return RedirectToAction("UserProfileView");
+
+                }
+                if (model.Stateid == 0)
+                {
+                    TempData["error"] = "Please Select the city";
+                    return RedirectToAction("UserProfileView");
+
+                }
+
+            }
+            // if(!ModelState.IsValid) return RedirectToAction("UserProfileView");
 
             var success = await _userProfile.UpdateUserProfileAsync(model);
-            if (success) return RedirectToAction("UserProfileView");
+            if (success)
+            {
+                TempData["success"] = "User Updated successfully";
+                return RedirectToAction("UserProfileView");
+            }
+            else
+            {
+                TempData["error"] = "User Updated successfully";
+                ModelState.AddModelError("", "Failed to update profile.");
+                return RedirectToAction("UserProfileView");
+            }
 
-            ModelState.AddModelError("", "Failed to update profile.");
-            return RedirectToAction("UserProfileView");
+
         }
 
         [HttpGet]
@@ -79,15 +109,28 @@ namespace PizzaShopApp.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            if (!ModelState.IsValid) return View("ChangePasswordView");
+            if (!ModelState.IsValid)
+            {
+                TempData["error"] = "Enter the password in proper formate";
+                return View("ChangePasswordView");
+            }
 
             string email = GetUserEmailFromToken();
             var success = await _userProfile.ChangePasswordAsync(email, model.OldPassword, model.ConfirmNewPassword);
-            TempData["success"] = "Password changed successful";
-            if (success) return RedirectToAction("LoginView", "Login");
+            
+            if (success)
+            {
+                TempData["success"] = "Password changed successful";
+                return RedirectToAction("LoginView", "Login");
 
-            ModelState.AddModelError("", "Password change failed.");
-            return View("ChangePasswordView");
+            }
+            else{
+                TempData["error"] = "Old Password does not match";
+                return View("ChangePasswordView");
+
+            }
+           
+            
         }
     }
 }

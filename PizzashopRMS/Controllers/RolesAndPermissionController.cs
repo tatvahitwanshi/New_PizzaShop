@@ -19,8 +19,49 @@ public class RolesAndPermissionController : Controller
         return View(roles);
     }
 
-    public IActionResult PermissionView()
+
+    [HttpGet]
+    public async Task<IActionResult> PermissionView(int roleid)
     {
-        return View();
+        var role = await _roleAndPermission.GetRoleByIdAsync(roleid);
+        var permissions = await _roleAndPermission.GetPermissionsByRoleIdAsync(roleid);
+
+        var viewModel = new PermissionViewModel
+        {
+            Roleid = roleid,
+            CreatedBy = "Admin",
+            CreatedDate = DateTime.Now,
+            IsEnable = true
+        };
+
+        ViewBag.RoleName = role?.Rolename;
+        ViewBag.Permissions = permissions; // Pass permissions to the view
+
+        return View(viewModel);
     }
+    [HttpPost]
+    public async Task<IActionResult> UpdatePermissionView(PermissionUpdateRequest model)
+    {
+        try
+        {
+            bool isUpdated = await _roleAndPermission.UpdatePermissionsAsync(model);
+
+            if (isUpdated)
+            {
+                TempData["success"] = "Permissions updated successfully!";
+            }
+            else
+            {
+                TempData["error"] = "Failed to update permissions!";
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["error"] = "An error occurred while updating permissions: " + ex.Message;
+        }
+
+        return RedirectToAction("PermissionView", new { roleid = model.RoleId });
+    }
+
+
 }

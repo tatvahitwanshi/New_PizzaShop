@@ -9219,11 +9219,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\New_PizzaShop\\PizzaShopRMS\\PizzashopRMS.csproj",
+      "projectUniqueName": "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
       "projectName": "PizzashopRMS",
-      "projectPath": "D:\\New_PizzaShop\\PizzaShopRMS\\PizzashopRMS.csproj",
+      "projectPath": "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
       "packagesPath": "C:\\Users\\pcq112\\.nuget\\packages\\",
-      "outputPath": "D:\\New_PizzaShop\\PizzaShopRMS\\obj\\",
+      "outputPath": "D:\\New_PizzaShop\\PizzashopRMS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pcq112\\AppData\\Roaming\\NuGet\\NuGet.Config"

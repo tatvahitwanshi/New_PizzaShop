@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutCustom.cshtml";
     ViewData["Title"] = " Role Page";
+    ViewBag.Active= "RoleAndPermission";
 }
 
 <!DOCTYPE html>
@@ -34,8 +35,8 @@
                                 <tr>
                                     <td>@role.Rolename</td>
                                     <td>
-                                        <a asp-action="PermissionView" asp-controller="RolesAndPermission" style="text-decoration: none;">
-                                            <button style="border: none; background-color: white;">
+                                        <a asp-action="PermissionView" asp-controller="RolesAndPermission" style="text-decoration: none;" asp-route-roleid="@role.Roleid">
+                                            <button style="border: none; background-color: white;" >
                                                 <i class="bi bi-pen"></i>
                                             </button>
                                         </a>

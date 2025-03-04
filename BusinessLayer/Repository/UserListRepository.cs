@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using BusinessLayer.Helper;
 using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
@@ -23,11 +24,11 @@ public class UserListRepository : IUserList
     }
 
 
-    public async Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)> GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey)
+    public async Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)> GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey,string email)
     {
         var  userslist = (from user in _db.Users
                          join role in _db.Roles on user.Roleid equals role.Roleid
-                         where user.Isdeleted == false && (
+                         where user.Isdeleted == false&& user.Email!=email && (
                          user.Firstname.ToLower().Contains(SearchKey) ||
                          user.Lastname.ToLower().Contains(SearchKey) ||
                          user.Email.ToLower().Contains(SearchKey) ||
@@ -102,19 +103,35 @@ public class UserListRepository : IUserList
         return _db.Cities.Where(c => c.Stateid == stateId).ToList();
     }
 
-    public async Task<bool> AddUser(AddUserViewModel model, string email)
+     public async Task<string> AddUser(AddUserViewModel model, string email)
     {
+        // Check if email already exists
         bool emailExists = await _db.Users.AnyAsync(u => u.Email == model.Email);
         if (emailExists)
         {
-            return false; // Email already exists, return false or handle appropriately
+            return "Email already exists";
         }
+
+        // Check if username already exists
+        bool userExists = await _db.Users.AnyAsync(u => u.Username == model.Username);
+        if (userExists)
+        {
+            return "Username already exists";
+        }
+
+        // Validate file extension
+        var ext = Path.GetExtension(model.Profilepic.FileName);
+        if (!ext.Equals(".jpg") && !ext.Equals(".png") && !ext.Equals(".jpeg"))
+        {
+            return "File uploaded should be of JPG, PNG, or JPEG format only";
+        }
+
+        // Create user object
         var user = new User
         {
-
             Email = model.Email,
             Username = model.Username,
-            Password = model.Password, // Ideally, hash the password before saving
+            Password = HashingHelper.ComputeSHA256(model.Password),
             Firstname = model.Firstname,
             Lastname = model.Lastname,
             Profilepic = await UploadPhotoAsync(model.Profilepic),
@@ -125,14 +142,14 @@ public class UserListRepository : IUserList
             Stateid = model.Stateid,
             Cityid = model.Cityid,
             Roleid = model.Roleid,
-            Isactive = true, // Defaulting new users as active
+            Isactive = true, // Default to active
             CreatedBy = email
-
         };
 
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
-        return true;
+        
+        return "User added successfully";
     }
 
     public async Task<bool> AddUserEmail(string newEmail, string callbackUrl)

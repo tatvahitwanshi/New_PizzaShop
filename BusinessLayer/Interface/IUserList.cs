@@ -6,9 +6,8 @@ namespace BusinessLayer.Interface;
 
 public interface IUserList
 {
-    // Task<(List<UserListViewModel>, int, int, int, string, string, string)> GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey);
-    Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)>GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey);
-    Task<bool> AddUser(AddUserViewModel model, string email); // Method to add a user
+    Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)>GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey , string email);
+    Task<string> AddUser(AddUserViewModel model, string email); // Method to add a user
 
     Task<bool> AddUserEmail(string newEmail, string callbackUrl);
 

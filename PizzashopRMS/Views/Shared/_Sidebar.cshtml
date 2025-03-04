@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,26 +16,27 @@
 </head>
 <body>
     <div class=" sidebar d-none d-lg-flex flex-column   pt-4 ">
-        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box "
+          
+        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box @(ViewBag.Active == "Dashboard"? "active-sidebar" :" ")"
             style="text-decoration: none;" asp-action="DashboardView" asp-controller="Dashboard">
-            <img src="~/images/sidebar icons/dashboard.png" alt="" class="sidebar-icons ps-3 ">
-            <div class="name-sidebar ps-3">Dashboard</div>
+            <img src="~/images/sidebar icons/dashboard.png" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "Dashboard"? "active-icon" :" ")">
+            <div class="name-sidebar ps-3  @(ViewBag.Active == "Dashboard"? "active-name" :" ")">Dashboard</div>
         </a>
-        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
+        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box @(ViewBag.Active == "UserList"? "active-sidebar" :" ")"
             style="text-decoration: none;" asp-action="UserListView" asp-controller="UserList">
-            <img src="~/images/sidebar icons/users.png" alt="" class="sidebar-icons ps-3 ">
-            <div class="name-sidebar ps-3">Users</div>
+            <img src="~/images/sidebar icons/users.png" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "UserList"? "active-icon" :" ") ">
+            <div class="name-sidebar ps-3  @(ViewBag.Active == "UserList"? "active-name" :" ")">Users</div>
         </a>
-        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
+        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box @(ViewBag.Active == "RoleAndPermission"? "active-sidebar" :" ")"
             style="text-decoration: none; " asp-action="RoleView" asp-controller="RolesAndPermission">
             <img src="~/images/sidebar icons/roles_permission.png" alt=""
-                class="sidebar-icons ps-3 ">
-            <div class="name-sidebar ps-3">Role and Permission</div>
+                class="sidebar-icons ps-3 @(ViewBag.Active == "RoleAndPermission"? "active-icon" :" ")">
+            <div class="name-sidebar ps-3  @(ViewBag.Active == "RoleAndPermission"? "active-name" :" ")">Role and Permission</div>
         </a>
-        <a class="d-flex mb-3 justify-content-start align-items-center active-sidebar sidebar-inner-box"
+        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
             style="text-decoration: none;" href="menu.html">
-            <img src="~/images/sidebar icons/menu.png" alt="" class="sidebar-icons ps-3 active-icon">
-            <div class="name-sidebar ps-3  active-name">Menu</div>
+            <img src="~/images/sidebar icons/menu.png" alt="" class="sidebar-icons ps-3">
+            <div class="name-sidebar ps-3  ">Menu</div>
         </a>
         <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
             style="text-decoration: none;">
