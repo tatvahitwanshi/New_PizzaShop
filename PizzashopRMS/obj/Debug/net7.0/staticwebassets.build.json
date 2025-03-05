@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "R4Cr1Z2zLAdRKfdDVws9pZ/H1LJZa/El4j4YCgVHeBk=",
+  "Hash": "bsMYmKCLX6TTrmoHUJdmu+UZPlwHm3hL+05szL0xAzs=",
   "Source": "PizzashopRMS",
   "BasePath": "_content/PizzashopRMS",
   "Mode": "Default",
@@ -134,6 +134,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\login.css"
+    },
+    {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\css\\menu.css",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "css/menu.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\menu.css"
     },
     {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\css\\navbar.css",
@@ -2123,6 +2140,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\userphoto\\f40d9bcf-775f-4fe4-bccb-df5b3dd989cc_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\fe5641fd-3a0a-47ee-b4e9-249061b4635c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/fe5641fd-3a0a-47ee-b4e9-249061b4635c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\fe5641fd-3a0a-47ee-b4e9-249061b4635c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
     }
   ]
 }

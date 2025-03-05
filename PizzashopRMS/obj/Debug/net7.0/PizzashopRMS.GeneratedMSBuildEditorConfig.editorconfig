@@ -44,6 +44,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUmVzZXRQYXNzd29yZFZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/New_PizzaShop/PizzashopRMS/Views/Menu/MenuView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxNZW51Vmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New_PizzaShop/PizzashopRMS/Views/Menu/_PartialItems.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxfUGFydGlhbEl0ZW1zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New_PizzaShop/PizzashopRMS/Views/Menu/_PartialViewTab.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxfUGFydGlhbFZpZXdUYWIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/New_PizzaShop/PizzashopRMS/Views/RolesAndPermission/PermissionView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNBbmRQZXJtaXNzaW9uXFBlcm1pc3Npb25WaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

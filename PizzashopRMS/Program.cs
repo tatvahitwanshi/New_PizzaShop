@@ -21,6 +21,7 @@ builder.Services.AddScoped<IEmailService, EmailService>(); // Assuming an email 
 builder.Services.AddScoped<IUserProfile, UserProfileRepository>();
 builder.Services.AddScoped<IUserList, UserListRepository>();
 builder.Services.AddScoped<IRolesAndPermission, RolesAndPermissionRepository>();
+builder.Services.AddScoped<IMenu, MenuRepository>();
 
 
 // Configure JWT settings from appsettings.json

@@ -133,6 +133,7 @@ public class UserListController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditUserProfileView(EditUserViewModel model)
     {
+        // Thread.Sleep(1000);
 
         if (!ModelState.IsValid)
         {

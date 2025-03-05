@@ -106,7 +106,7 @@ public class UserListRepository : IUserList
      public async Task<string> AddUser(AddUserViewModel model, string email)
     {
         // Check if email already exists
-        bool emailExists = await _db.Users.AnyAsync(u => u.Email == model.Email);
+        bool emailExists = await _db.Users.AnyAsync(u => u.Email == model.Email.ToLower());
         if (emailExists)
         {
             return "Email already exists";
@@ -129,11 +129,11 @@ public class UserListRepository : IUserList
         // Create user object
         var user = new User
         {
-            Email = model.Email,
+            Email = model.Email.ToLower(),
             Username = model.Username,
             Password = HashingHelper.ComputeSHA256(model.Password),
-            Firstname = model.Firstname,
-            Lastname = model.Lastname,
+            Firstname = model.Firstname.Trim(),
+            Lastname = model.Lastname.Trim(),
             Profilepic = await UploadPhotoAsync(model.Profilepic),
             Zipcode = model.Zipcode,
             Address = model.Address,

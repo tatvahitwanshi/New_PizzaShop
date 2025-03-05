@@ -1,0 +1,123 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+.navbar{
+    height: 70px;
+    background-color: #0066A7;
+}
+.company-logo{
+    background-color: white;
+    height: 100%;
+    width: 250px;
+    padding: 15px;
+
+    @media screen and (max-width: 992px){
+        background-color: #0066A7;  
+    }
+}
+#sidebar-logo{
+    height: 35px;
+}
+#company-logo-img{
+    height: 50px;
+}
+#profile-pic{
+    height: 45px;
+    background-color: white;
+    border-radius: 50%;
+}
+.sidebar{
+    width: 250px;
+    height: 100vh;
+    font-weight: 500;
+    letter-spacing: 1.10px;
+}
+.category{
+    width: 250px;
+    height: 400px;
+    font-weight: 500;
+    letter-spacing: 1.10px;
+}
+.sidebar-inner-box{
+    height: 40px;
+}
+.category-inner-box{
+    height: 40px;
+}
+.sidebar-inner-box:hover{
+    background-color: rgba(128, 128, 128, 0.5);
+}
+.sidebar-icons{
+    height: 20px;
+}
+.active-icon{
+    filter: invert(27%) sepia(100%) saturate(500%) hue-rotate(160deg) brightness(90%) contrast(90%);
+}
+.name-sidebar{
+    color: #6C757D;
+}
+.active-name{
+    color: #0066A7;
+    font-weight: 600;
+}
+.main-block{
+    overflow-y: auto;
+    flex-grow: 1;
+    height: 100vh;
+    background-color: #6c757d23;
+}
+.nav-link{
+    color:  black var(--bs-nav-link-color) !important;   
+    
+}
+.nav-link.active{
+    color:   #0066A7 !important;   
+    
+}
+.search-icon-main{
+    top:10px;
+    right: 16px;
+
+}
+@media only screen and (max-width: 992px) {
+    #company-name{
+        color: white;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+    }
+}
+@media only screen and (min-width: 993px) {
+    #company-name{
+        color: #0066A7;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+    }
+}
+@media only screen and (min-width: 993px) {
+    .main-pagination {
+        display: flex;
+        justify-content: end;
+    }
+}
+@media only screen and (max-width: 992px) {
+    .main-pagination {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+@media only screen and (min-width: 993px) {
+    .showing-page {
+        margin-top: 0%;
+    }
+}
+@media only screen and (max-width: 992px) {
+    .showing-page {
+        margin-top: 5px;
+    }
+}
+

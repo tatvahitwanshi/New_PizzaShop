@@ -29,7 +29,7 @@ public class LoginRepository : ILogin
 
     public async Task<(User, string)> AuthenticateUserAsync(string email, string password)
     {
-        var user = await Task.Run(() => _db.Users.FirstOrDefault(u => u.Email == email));
+        var user = await Task.Run(() => _db.Users.FirstOrDefault(u => u.Email == email.ToLower()));
         if (user == null) return (null, "User Does not exist");
 
         var hashedPassword = HashingHelper.ComputeSHA256(password);

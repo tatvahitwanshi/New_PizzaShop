@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\css\\login.css"
     },
     {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\css\\menu.css",
+      "PackagePath": "staticwebassets\\css\\menu.css"
+    },
+    {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\css\\navbar.css",
       "PackagePath": "staticwebassets\\css\\navbar.css"
     },
@@ -491,6 +495,10 @@
     {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\f40d9bcf-775f-4fe4-bccb-df5b3dd989cc_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
       "PackagePath": "staticwebassets\\userphoto\\f40d9bcf-775f-4fe4-bccb-df5b3dd989cc_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\fe5641fd-3a0a-47ee-b4e9-249061b4635c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
+      "PackagePath": "staticwebassets\\userphoto\\fe5641fd-3a0a-47ee-b4e9-249061b4635c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.PizzashopRMS.Microsoft.AspNetCore.StaticWebAssets.props",

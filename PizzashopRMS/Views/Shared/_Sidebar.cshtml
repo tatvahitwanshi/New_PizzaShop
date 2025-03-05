@@ -33,10 +33,10 @@
                 class="sidebar-icons ps-3 @(ViewBag.Active == "RoleAndPermission"? "active-icon" :" ")">
             <div class="name-sidebar ps-3  @(ViewBag.Active == "RoleAndPermission"? "active-name" :" ")">Role and Permission</div>
         </a>
-        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
-            style="text-decoration: none;" href="menu.html">
-            <img src="~/images/sidebar icons/menu.png" alt="" class="sidebar-icons ps-3">
-            <div class="name-sidebar ps-3  ">Menu</div>
+        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box @(ViewBag.Active == "Menu"? "active-sidebar" :" ")"
+            style="text-decoration: none;" asp-action="MenuView" asp-controller="Menu">
+            <img src="~/images/sidebar icons/menu.png" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "Menu"? "active-icon" :" ")">
+            <div class="name-sidebar ps-3 @(ViewBag.Active == "Menu"? "active-name" :" ") ">Menu</div>
         </a>
         <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
             style="text-decoration: none;">
