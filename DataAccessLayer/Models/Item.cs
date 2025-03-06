@@ -37,6 +37,12 @@ public partial class Item
 
     public DateTime? EditDate { get; set; }
 
+    public bool? Defaulttax { get; set; }
+
+    public decimal? Taxpercentage { get; set; }
+
+    public string? Shortcode { get; set; }
+
     public virtual Category Category { get; set; } = null!;
 
     public virtual ICollection<MapItemsModifiersgroup> MapItemsModifiersgroups { get; } = new List<MapItemsModifiersgroup>();

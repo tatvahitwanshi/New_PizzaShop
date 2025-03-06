@@ -9,7 +9,7 @@ public class EditUserViewModel
     [Required]
     public string? Email { get; set; }
     [Required]
-    public string Username { get; set; }
+    public string? Username { get; set; }
 
     public string? Firstname { get; set; }
 

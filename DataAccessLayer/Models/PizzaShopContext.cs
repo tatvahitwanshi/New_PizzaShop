@@ -6,8 +6,6 @@ namespace DataAccessLayer.Models;
 
 public partial class PizzaShopContext : DbContext
 {
-    public readonly IEnumerable<object> Permissionlist;
-
     public PizzaShopContext()
     {
     }
@@ -216,6 +214,10 @@ public partial class PizzaShopContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_date");
+            entity.Property(e => e.Defaulttax)
+                .IsRequired()
+                .HasDefaultValueSql("true")
+                .HasColumnName("defaulttax");
             entity.Property(e => e.EditDate)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("edit_date");
@@ -235,14 +237,20 @@ public partial class PizzaShopContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("itemimage");
             entity.Property(e => e.Itemname)
-                .HasMaxLength(20)
+                .HasMaxLength(100)
                 .HasColumnName("itemname");
             entity.Property(e => e.Itemtype)
                 .HasMaxLength(20)
                 .HasColumnName("itemtype");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Rate).HasColumnName("rate");
+            entity.Property(e => e.Shortcode)
+                .HasMaxLength(10)
+                .HasColumnName("shortcode");
             entity.Property(e => e.Taxesid).HasColumnName("taxesid");
+            entity.Property(e => e.Taxpercentage)
+                .HasPrecision(5, 2)
+                .HasColumnName("taxpercentage");
             entity.Property(e => e.Unitid).HasColumnName("unitid");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Items)

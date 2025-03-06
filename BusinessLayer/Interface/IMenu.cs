@@ -10,5 +10,7 @@ public interface IMenu
     Categories GetCategoryById(int id); // Get category by ID
     void UpdateCategory(Category category); // Update category
     bool SoftDeleteCategory(int categoryId);
+    List<ItemsView> GetItemsByCategory(int categoryId);
+
 
 }

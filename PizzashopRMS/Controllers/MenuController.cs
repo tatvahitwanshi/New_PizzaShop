@@ -14,25 +14,26 @@ public class MenuController : Controller
     }
     public IActionResult MenuView()
     {
+        var model = new MenuViewModel();
 
-        var model = new MenuViewModel
-        {
-            Categories = _menu.GetCategories()
-        };
+        model.Categories = _menu.GetCategories();
+        model.Items = _menu.GetItemsByCategory(model.Categories[0].Categoryid); // Pass items for a default category or all items
+
+
 
         return View(model);
     }
     [HttpPost]
     public IActionResult AddCategory(Category category)
     {
-        if (ModelState.IsValid)
+        if (category.Categorydescription != null && category.Categoryname != null)
         {
             var newCategory = new Category
             {
                 Categoryname = category.Categoryname,
                 Categorydescription = category.Categorydescription
             };
-
+            TempData["success"] = "Category added successfully!";
             _menu.AddCategory(newCategory);
             return RedirectToAction("MenuView");
         }
@@ -98,6 +99,14 @@ public class MenuController : Controller
             return Json(new { success = false });
         }
     }
-
-
+    public IActionResult GetItemsByCategory(int categoryId)
+    {
+        var model = new MenuViewModel
+        {
+            Categories = _menu.GetCategories(),
+            Items = _menu.GetItemsByCategory(categoryId)
+        };
+        return PartialView("~/Views/Menu/_PartialItems.cshtml", model);
+    }
 }
+    

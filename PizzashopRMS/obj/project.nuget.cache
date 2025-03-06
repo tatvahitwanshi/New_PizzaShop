@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gcDj9Mv5Ubv0j6Ou6keqIXRe/3NvS2GSLisnHcg9HIs6lYnRmzsm85Gkqw3PwWAhZHOnduQHb5NgqRsEoX6dfA==",
+  "dgSpecHash": "QwuSXDn0CoC/t4kdE0fHxrbgEunzKZ89uaCuYxl0nwJJMH0Q6tvWRMzBKyaNKgpLfUALihzOwiRirQPF2yUAYA==",
   "success": true,
-  "projectFilePath": "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
+  "projectFilePath": "d:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pcq112\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\pcq112\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

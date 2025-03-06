@@ -8,7 +8,7 @@ public class UserProfileViewModel
 {
     
     public string? Email { get; set; }
-    public string Username { get; set; }
+    public string? Username { get; set; }
 
     public string? Firstname { get; set; }
 
@@ -28,9 +28,9 @@ public class UserProfileViewModel
 
     public int Cityid { get; set; }
     
-    public List<Country> CountryList {get; set;}
-    public List<State> StateList {get; set;}
-    public List<City> CityList {get; set;}
+    public List<Country>? CountryList {get; set;}
+    public List<State>? StateList {get; set;}
+    public List<City>? CityList {get; set;}
 }
 public class ChangePasswordViewModel{
 

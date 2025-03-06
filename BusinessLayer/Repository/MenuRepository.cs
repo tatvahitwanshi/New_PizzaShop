@@ -15,8 +15,8 @@ public class MenuRepository : IMenu
     public List<Categories> GetCategories()
     {
         return _db.Categories
-            .Where(c => c.Isdeleted != true) 
-            .OrderBy(c => c.Categoryname) 
+            .Where(c => c.Isdeleted != true)
+            .OrderBy(c => c.Categoryname)
             .Select(c => new Categories
             {
                 Categoryid = c.Categoryid,
@@ -40,7 +40,7 @@ public class MenuRepository : IMenu
     public Categories GetCategoryById(int id)
     {
         var category = _db.Categories.FirstOrDefault(c => c.Categoryid == id);
-        if (category == null) return null;
+        if (category == null) throw new KeyNotFoundException($"Category with ID {id} not found.");
 
         return new Categories
         {
@@ -72,6 +72,22 @@ public class MenuRepository : IMenu
         return false;
     }
 
-
+    public List<ItemsView> GetItemsByCategory(int categoryId)
+    {
+        return _db.Items
+            .Where(i => i.Categoryid == categoryId && i.Isdeleted != true)
+            .Select(i => new ItemsView
+            {
+                Itemid = i.Itemid,
+                Itemname = i.Itemname,
+                Rate = i.Rate,
+                Itemtype = i.Itemtype,
+                Quantity = i.Quantity,
+                Isavailable = i.Isavailable,
+                Itemdescription = i.Itemdescription,
+                Itemimage = i.Itemimage,
+                Categoryid = i.Categoryid
+            }).ToList();
+    }
 
 }

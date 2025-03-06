@@ -1,144 +1,305 @@
-<div class="col-xl-10 ">
-                <div class="row">
-                    <div class="col">
-                        <span class="h4 fw-bold " style="color: #0066A7;" data-bs-toggle="offcanvas"
-                            href="#offcanvasExample1" role="button1" aria-controls="offcanvasExample1">Items</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 d-flex justify-content-end">
-                        <form class="d-flex " role="search">
-                            <div class="d-flex  me-2 p-1 position-relative">
-                                <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
-                                    aria-label="Search">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
-                                    class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                                </svg>
-                            </div>
-                            <button class="btn border " type="submit"><i class="bi bi-trash h4 text-muted"></i></button>
-                            <button class="btn text-white d-none d-md-block ms-2" type="submit"
-                                style=" background-color: #0066A7;">+New
-                                Item</button>
-                            <button class="btn text-white d-md-none ms-2" type="submit"
-                                style=" background-color: #0066A7;">+</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"><input class="form-check-input main-check" type="checkbox"
-                                                value="" id="flexCheckDefault"></th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Item Type</th>
-                                        <th scope="col">Rate </th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Available</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+@model DataAccessLayer.ViewModels.MenuViewModel
 
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input inner-check" type="checkbox" value=""
-                                                id="flexCheckDefault">
-                                        </td>
-                                        <td>
-                                            <img src="pizzashop_images/images/dining-menu.png" alt="" width="30px">
-                                            Aaloo Sandwich
-                                        </td>
-                                        <td><img src="pizzashop_images\images\icons\veg-icon.svg" width="20px" alt="">
-                                        </td>
-                                        <td>200</td>
-                                        <td>1</td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" style="width: 2.5rem; height: 25px;"
-                                                    type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex">
-                                                <a href="" style="text-decoration: none; color: grey;"><i
-                                                        class="bi bi-pen"></i>
-                                                </a>
-                                                <a href="" class="ms-4" style="text-decoration: none; color: grey;"
-                                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
-                                                        class="bi bi-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input class="form-check-input inner-check" type="checkbox" value=""
-                                                id="flexCheckDefault">
-                                        </td>
-                                        <td>
-                                            <img src="pizzashop_images/images/dining-menu.png" alt="" width="30px">
-                                            Black Bean Sandwich
-                                        </td>
-                                        <td><img src="pizzashop_images\images\icons\veg-icon.svg" width="20px" alt="">
-                                        </td>
-                                        <td>200</td>
-                                        <td>1</td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" style="width: 2.5rem; height: 25px;"
-                                                    type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex">
-                                                <a href="" style="text-decoration: none; color: grey;"><i
-                                                        class="bi bi-pen"></i>
-                                                </a>
-                                                <a href="" class="ms-4" style="text-decoration: none; color: grey;"
-                                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
-                                                        class="bi bi-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+<div class="row">
+    <div class="col">
+        <span class="h4 fw-bold " style="color: #0066A7;" data-bs-toggle="offcanvas" href="#offcanvasExample1"
+            role="button1" aria-controls="offcanvasExample1">Items</span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 d-flex justify-content-end">
+        <form class="d-flex " role="search">
+            <div class="d-flex  me-2 p-1 position-relative">
+                <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
+                    aria-label="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                    class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16">
+                    <path
+                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                </svg>
+            </div>
+            <button class="btn border " type="submit"><i class="bi bi-trash h4 text-muted"></i></button>
+            <button class="btn text-white d-none d-md-block ms-2" style=" background-color: #0066A7;" type="button"
+                data-bs-toggle="modal" data-bs-target="#additemModal">
+                +New Item</button>
+            <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;">+</button>
+        </form>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"><input class="form-check-input main-check" type="checkbox" value=""
+                                id="flexCheckDefault"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Item Type</th>
+                        <th scope="col">Rate </th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Available</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="itemsTableBody">
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <input class="form-check-input inner-check" type="checkbox" value="" id="flexCheckDefault">
+                            </td>
+                            <td>
+                                @* src="@item.Itemimage" *@
+                                <img src="~/images/dining-menu.png" alt="" width="30px"> @item.Itemname
+                            </td>
+                            <td>
+                                <img src="~/images/icons/@(item.Itemtype == "veg" ? "veg-icon.svg" : "non-veg-icon.svg")"
+                                    width="20px" alt="">
+                            </td>
+                            <td>@item.Rate</td>
+                            <td>@item.Quantity</td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" style="width: 2.5rem; height: 25px;" type="checkbox"
+                                        role="switch" @(item.Isavailable ?? false ? "checked" : "")>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <a href="#" style="text-decoration: none; color: grey;"><i class="bi bi-pen"></i></a>
+                                    <a href="#" class="ms-4" style="text-decoration: none; color: grey;"
+                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
+                                            class="bi bi-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+        <div class="main-pagination  ">
+            <div class="item-show ">
+                <nav aria-label="Page navigation example">
+                    <div class="pagination ">
+                        <span class="align-self-center">Items Per Page
+                            :</span>
+                        <select class="form-select form-select-sm ms-2 align-self-center"
+                            aria-label="Small select example" style=" width: unset; ">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                </nav>
+            </div>
+            <div class="showing-page">
+                <nav aria-label="Page navigation example">
+                    <div class="pagination ">
+                        <span class=" ms-2  align-self-center">Showing 1-5
+                            of 13</span>
+                        <button class="btn border ms-2  align-self-center" type="submit"><i
+                                class="bi bi-chevron-left "></i>
+                        </button>
+                        <button class="btn border ms-2  align-self-center" type="submit"><i
+                                class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="additemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel aria-hidden=" true">
+    <div class="modal-dialog modal-dialog-centered w-75" style="max-width: 100% !important">
+        <div class="modal-content">
+            <form class="modal-body additemform" enctype="multipart/form-data">
+                <div class="d-flex justify-content-between">
+                    <div class="special-color fw-bold fs-4">Add Item</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="row pe-2 mt-2">
+                    <div class="col-md-8 col-12">
+                        <div class="row">
+                            <div class="col-md-6 col-12 form-floating mt-3">
+                                <select class="form-select" id="categoryDropdown" name="ItemCategory" required>
+                                    <option value="" selected disabled>Loading...</option>
+                                </select>
+                                <label for="categoryDropdown">Food Category</label>
+                            </div>
+
+                            <div class="col-md-6 col-12 form-floating mt-3">
+                                <input type="text" class="form-control" id="name" placeholder="Name" name="ItemName"
+                                    required>
+                                <label for="name">Name*</label>
+                            </div>
                         </div>
-                        <div class="main-pagination  ">
-                            <div class="item-show ">
-                                <nav aria-label="Page navigation example">
-                                    <div class="pagination ">
-                                        <span class="align-self-center">Items Per Page
-                                            :</span>
-                                        <select class="form-select form-select-sm ms-2 align-self-center"
-                                            aria-label="Small select example" style=" width: unset; ">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
+
+                        <div class="row">
+                            <div class="col-xl-6 col-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <select class="form-select" id="itemTypeDropdown" name="ItemType" required>
+                                            <option value="" selected disabled>Loading...</option>
                                         </select>
+                                        <label for="itemTypeDropdown">Item Type</label>
                                     </div>
-                                </nav>
-                            </div>
-                            <div class="showing-page">
-                                <nav aria-label="Page navigation example">
-                                    <div class="pagination ">
-                                        <span class=" ms-2  align-self-center">Showing 1-5
-                                            of 13</span>
-                                        <button class="btn border ms-2  align-self-center" type="submit"><i
-                                                class="bi bi-chevron-left "></i>
-                                        </button>
-                                        <button class="btn border ms-2  align-self-center" type="submit"><i
-                                                class="bi bi-chevron-right"></i>
-                                        </button>
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <input type="number" class="form-control" id="name" placeholder="Name" min="0"
+                                            step="1" name="ItemRate" required>
+                                        <label for="name">Rate*</label>
                                     </div>
-                                </nav>
+                                </div>
                             </div>
+                            <div class="col-xl-6 col-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <input type="number" class="form-control" id="quantity" placeholder="Name"
+                                            min="0" step="1" name="ItemQuantity" required>
+                                        <label for="quantity">Quantity*</label>
+                                    </div>
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <select class="form-select" id="unitDropdown" name="ItemUnit" required>
+                                            <option value="" selected disabled>Loading...</option>
+                                        </select>
+                                        <label for="unitDropdown">Unit</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6 col-12 mt-3">
+                                <div class="row">
+                                    <div
+                                        class="col-6 form-check form-switch d-flex justify-content-center align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="availableToggle"
+                                            style="height: 30px; width: 3.5rem;" name="ItemAvailable">
+                                        <label class="form-check-label ms-2" for="availableToggle">Available</label>
+                                        <input type="hidden" name="ItemAvailable" value="false">
+                                    </div>
+                                    <div
+                                        class="col-6 form-check form-switch d-flex justify-content-center align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="defaultTaxToggle"
+                                            style="height: 30px; width: 3.5rem;" name="DefaultTax">
+                                        <label class="form-check-label ms-2" for="defaultTaxToggle">Default Tax</label>
+                                        <input type="hidden" name="DefaultTax" value="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <input type="number" class="form-control" id="taxpercentage" placeholder="Name"
+                                            min="0" step="0.01" name="ItemTaxPercentage">
+                                        <label for="taxpercentage">Tax Percentage</label>
+                                    </div>
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <input type="text" class="form-control" id="shortcode" placeholder="Name"
+                                            name="ItemShortCode">
+                                        <label for="shortcode">Short Code</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="form-floating">
+                                <textarea class="form-control" id="description" placeholder="Enter description" rows="5"
+                                    style="height: 100px;" name="ItemDescription" required></textarea>
+                                <label for="description">Description</label>
+                            </div>
+                        </div>
+
+
+                        <div class="mt-3 fs-6" style="opacity: 0.75;">Upload Image</div>
+                        <div class="row mt-0">
+                            <div style="position: relative;">
+                                <input type="file" class="form-control" id="itemImage" placeholder=""
+                                    style="height: 90px; position: absolute; opacity: 0;" name="ItemImage">
+                                <div id="file-box"
+                                    style="height: 90px; border: 1px dashed rgb(173, 170, 170); border-radius: 5px;"
+                                    class="d-flex justify-content-center align-items-center">
+                                    <i class="bi bi-cloud-arrow-up h4 mt-3 me-2"></i>Drag and Drop or Browse files
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
+                        <div class="mod-group-select mt-2">
+                            <select class="form-select" id="ModifierGroupDropdown" aria-label="Select Food Category">
+                                <option value="" selected disabled>Select Modifier Group</option>
+                                <option value="mod1">Modifier 1</option>
+                                <option value="mod2">Modifier 2</option>
+                            </select>
+
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="submit" class="btn text-white" style="background-color: #0066A7;"
+                        type="submit">Save</button>
+                    <button type="button" class="btn ms-2"
+                        style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
+                        data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function () {
+    $('#additemModal').on('show.bs.modal', function () {
+        $.ajax({
+            url: '/Item/GetDropdownData', // API route in the controller
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                populateDropdown('#categoryDropdown', data.categories);
+                populateDropdown('#itemTypeDropdown', data.itemTypes);
+                populateDropdown('#unitDropdown', data.units);
+            },
+            error: function () {
+                console.log('Error loading dropdown data.');
+            }
+        });
+    });
+
+    function populateDropdown(selector, items) {
+        var dropdown = $(selector);
+        dropdown.empty().append('<option value="" selected disabled>Select</option>');
+        $.each(items, function (index, item) {
+            dropdown.append($('<option></option>').attr('value', item.Id).text(item.Name));
+        });
+    }
+});
+
+$('.additemform').submit(function (event) {
+    event.preventDefault();
+    
+    var formData = new FormData(this);
+    
+    $.ajax({
+        url: '/Item/SaveItem',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            alert('Item saved successfully!');
+            $('#additemModal').modal('hide');
+            location.reload();
+        },
+        error: function () {
+            alert('Error saving item.');
+        }
+    });
+});
+
+</script>

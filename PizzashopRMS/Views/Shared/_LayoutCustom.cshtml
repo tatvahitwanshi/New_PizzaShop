@@ -21,21 +21,21 @@
     <div class="" style="position: sticky; top: 0; left: 0;  ">
         @Html.Partial("_Navbar.cshtml")
     </div>
-     @* @Html.Partial("_Navbar.cshtml")  *@
+    @* @Html.Partial("_Navbar.cshtml")  *@
     <div class="d-flex ">
         <!-- sidebar -->
         <div class="" style="position: fixed; top:70px; overflow-y: auto;">
             @Html.Partial("_Sidebar.cshtml")
         </div>
-         @* @Html.Partial("_Sidebar.cshtml")  *@
+        @* @Html.Partial("_Sidebar.cshtml")  *@
         <!-- Main block  -->
         <div class="border  main-block" style="">
-            
+
             <partial name="_Notification.cshtml" />
             @RenderBody()
         </div>
     </div>
-     @* @Html.Partial("_Navbar.cshtml")
+    @* @Html.Partial("_Navbar.cshtml")
     <div class="d-flex ">
         <!-- sidebar -->
         @Html.Partial("_Sidebar.cshtml")
@@ -56,27 +56,27 @@
 </body>
 
 </html>
- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body ">
-                    <div class="d-flex justify-content-center ">
-                        <img src="~/images/toppng.com-warning-icon-2400x2400.png" alt=""
-                            style="width: 10%; height: 10%;">
-                    </div>
-                    <div class="d-flex justify-content-center mt-3">
-                        <span class="text-muted">Are you sure you want Logout ?</span>
-                    </div>
-                    <div class="d-flex justify-content-center mt-3">
-                        <button class="btn text-white" style="background-color: #0066A7;" type="submit" id="loginbtn">Yes</button>
-                        <button class="btn ms-2" style="border-color: #0066A7; color: #0066A7;" type="submit"
-                            data-bs-dismiss="modal">No</button>
-                    </div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body ">
+                <div class="d-flex justify-content-center ">
+                    <img src="~/images/toppng.com-warning-icon-2400x2400.png" alt="" style="width: 10%; height: 10%;">
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <span class="text-muted">Are you sure you want Logout ?</span>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="btn text-white" style="background-color: #0066A7;" type="submit"
+                        id="loginbtn">Yes</button>
+                    <button class="btn ms-2" style="border-color: #0066A7; color: #0066A7;" type="submit"
+                        data-bs-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 <script>
     document.getElementById("loginbtn").addEventListener("click", function () {
         console.log("Logout")
