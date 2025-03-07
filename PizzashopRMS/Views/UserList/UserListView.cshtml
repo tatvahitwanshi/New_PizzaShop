@@ -3,7 +3,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutCustom.cshtml";
     ViewData["Title"] = "User List Page";
-    ViewBag.Active="UserList";
+    ViewBag.Active = "UserList";
 }
 
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
                     <div class="d-flex me-2 p-1 position-relative ">
                         <input class="search_input form-control me-2 border-0" value="@ViewData["SearchKey"]"
                             id="searchInput" type="text" placeholder="Search" aria-label="Search">
-                        <i class="bi bi-search position-absolute search-icon-main" onclick="searchFunction()"></i>
+                        <i class="bi bi-search position-absolute search-icon-main"></i>
                     </div>
 
                     <button class="btn text-white d-none d-md-block" type="submit" style="background-color: #0066A7;">
@@ -112,31 +112,32 @@
             }
         });
     });
-      var pageSize = 5  // Get selected page size
-        var pageNumber = 1; // Get current page number
-        var sortBy = '@ViewData["SortBy"]'; // Get current sort column
-        var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
-        var searchKey = ''; // Get current search key
+    var pageSize = 5  // Get selected page size
+    var pageNumber = 1; // Get current page number
+    var sortBy = '@ViewData["SortBy"]'; // Get current sort column
+    var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
+    var searchKey = ''; // Get current search key
 
-        function getdata(){
-            $.ajax({
-                url: "/UserList/UserListView",
-                type: "GET",
-                data: {
-                    PageSize: pageSize,
-                    PageNumber: pageNumber,
-                    SortColumn: sortBy,
-                    SortDirection: sortOrder,
-                    SearchKey: searchKey
-                },
-                success: function (data) {
-                    $("#userListContainer").html(data); // Update only the partial view
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching data:", error);
-                }
-            });
-        }
+    function getdata() {
+        console.log("Get Data Called");
+        $.ajax({
+            url: "/UserList/UserListView",
+            type: "GET",
+            data: {
+                PageSize: pageSize,
+                PageNumber: pageNumber,
+                SortColumn: sortBy,
+                SortDirection: sortOrder,
+                SearchKey: searchKey
+            },
+            success: function (data) {
+                $("#userListContainer").html(data); // Update only the partial view
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    }
 
     @* function updateItemsPerPage() {
         var pageSize = $("#itemsPerPage").val(); // Get selected page size
@@ -163,15 +164,15 @@
             }
         });
     } *@
-    function updateItemsPerPage() {
-      pageSize = $("#itemsPerPage").val(); // Get selected page size
-        @* var pageNumber = '@ViewData["PageNumber"]'; // Get current page number
+        function updateItemsPerPage() {
+            pageSize = $("#itemsPerPage").val(); // Get selected page size
+            @* var pageNumber = '@ViewData["PageNumber"]'; // Get current page number
         var sortBy = '@ViewData["SortBy"]'; // Get current sort column
         var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
         var searchKey = '@ViewData["SearchKey"]'; // Get current search key *@
-        
-        getdata();
-    }
+
+                getdata();
+        }
 
     $(document).ready(function () {
         // Listen for 'input' event on search input
@@ -206,13 +207,23 @@
         });
     });
 
-    @* function searchFunction() {
-        var searchKey = document.getElementById("searchInput").value.toLowerCase();
-        console.log(searchKey);
-        window.location.href = '@Url.Action("UserListView")' + '?PageSize=' + '@ViewData.["PageSize"]' + '&PageNumber=' + '@ViewData.["PageNumber"]' + '&SortColumn=' + '@ViewData.["sortBy"] ' + '&SortDirection=' + '@ViewData.["sortOrder"]' + '&SearchKey=' + searchKey;
+
+
+    @* function pagination(element) {
+        console.log("Pagination Clicked");
+        var pageNumber = element.getAttribute("data-page") // Get the new page number
+        var pageSize = $("#itemsPerPage").val(); // Get current page size
+        var sortBy = '@ViewData["SortBy"]'; // Get current sort column
+        var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
+        var searchKey = $("#searchInput").val(); // Get the search key
+        console.log("Page Number:", pageNumber);
+        console.log("Page Size:", pageSize);
+        console.log("Search Key:", searchKey);
+        getdata();
+
     } *@
 
-        $(document).on("click", ".pagination-button", function (event) {
+    $(document).on("click", ".pagination-button", function (event) {
             event.preventDefault(); // Prevent full page reload
 
             var pageNumber = $(this).data("page"); // Get the new page number

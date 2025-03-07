@@ -29,11 +29,8 @@ public class UserListRepository : IUserList
         var  userslist = (from user in _db.Users
                          join role in _db.Roles on user.Roleid equals role.Roleid
                          where user.Isdeleted == false&& user.Email!=email && (
-                         user.Firstname.ToLower().Contains(SearchKey) ||
-                         user.Lastname.ToLower().Contains(SearchKey) ||
-                         user.Email.ToLower().Contains(SearchKey) ||
-                         role.Rolename.ToLower().Contains(SearchKey) ||
-                         user.Phone.ToLower().Contains(SearchKey)
+                         user.Firstname.ToLower().Contains(SearchKey) 
+                         
                          )
                          select new UserListViewModel
                          {

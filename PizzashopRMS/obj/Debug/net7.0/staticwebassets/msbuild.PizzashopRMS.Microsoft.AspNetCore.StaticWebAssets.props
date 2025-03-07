@@ -1808,6 +1808,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\21dc5435-6230-4b26-967d-2fd075881b01_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\265aaa10-5e4a-4303-b7a1-385a4493409e_dominos_background.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/265aaa10-5e4a-4303-b7a1-385a4493409e_dominos_background.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\265aaa10-5e4a-4303-b7a1-385a4493409e_dominos_background.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\267465d2-72f2-4613-9473-3dd936914b0d_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
       <SourceId>PizzashopRMS</SourceId>
@@ -1824,6 +1840,54 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\267465d2-72f2-4613-9473-3dd936914b0d_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\3018f411-8ed6-4f87-bd75-3333a4ddf674_transperent-pizza.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/3018f411-8ed6-4f87-bd75-3333a4ddf674_transperent-pizza.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\3018f411-8ed6-4f87-bd75-3333a4ddf674_transperent-pizza.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\33ca7daf-91ec-40d8-93b4-2fcc05a5857a_QR.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/33ca7daf-91ec-40d8-93b4-2fcc05a5857a_QR.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\33ca7daf-91ec-40d8-93b4-2fcc05a5857a_QR.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\3d17826a-0db3-45c1-8cc6-868d55500c30_dominos_background.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/3d17826a-0db3-45c1-8cc6-868d55500c30_dominos_background.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\3d17826a-0db3-45c1-8cc6-868d55500c30_dominos_background.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\480a725f-ecf7-45e3-a335-fecd97abeb8f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
       <SourceId>PizzashopRMS</SourceId>
@@ -1839,6 +1903,38 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\480a725f-ecf7-45e3-a335-fecd97abeb8f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\4a4fa992-510f-4050-9403-00132c4ed043_qr-code.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/4a4fa992-510f-4050-9403-00132c4ed043_qr-code.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\4a4fa992-510f-4050-9403-00132c4ed043_qr-code.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\4ac93973-0eea-46dd-ac02-f14114c3bb3a_transperent-pizza.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/4ac93973-0eea-46dd-ac02-f14114c3bb3a_transperent-pizza.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\4ac93973-0eea-46dd-ac02-f14114c3bb3a_transperent-pizza.png))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\4ccd195f-e235-4ebc-b2de-bd849d7e3d0f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
@@ -1872,6 +1968,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\51ca52e2-7b1f-4b61-9f7b-8e231f7d7b03_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\53304f2d-4b2f-41ac-be35-c806e7da9968_transperent-pizza.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/53304f2d-4b2f-41ac-be35-c806e7da9968_transperent-pizza.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\53304f2d-4b2f-41ac-be35-c806e7da9968_transperent-pizza.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\534eccbe-5d3a-4b40-9136-d35c9af91a61_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
       <SourceId>PizzashopRMS</SourceId>
@@ -1887,6 +1999,102 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\534eccbe-5d3a-4b40-9136-d35c9af91a61_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\58d409f7-8933-4079-9b59-a6f94281f66c_QR.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/58d409f7-8933-4079-9b59-a6f94281f66c_QR.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\58d409f7-8933-4079-9b59-a6f94281f66c_QR.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\5a3c277d-1ba1-412e-80be-e572c8c180d8_QR.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/5a3c277d-1ba1-412e-80be-e572c8c180d8_QR.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\5a3c277d-1ba1-412e-80be-e572c8c180d8_QR.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\656d3359-ebf5-40c4-8d0d-b4db89cac2c5_transperent-pizza.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/656d3359-ebf5-40c4-8d0d-b4db89cac2c5_transperent-pizza.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\656d3359-ebf5-40c4-8d0d-b4db89cac2c5_transperent-pizza.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\676f2662-02d0-4d5e-89b4-9fec716f0ab3_toppng.com-warning-icon-2400x2400.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/676f2662-02d0-4d5e-89b4-9fec716f0ab3_toppng.com-warning-icon-2400x2400.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\676f2662-02d0-4d5e-89b4-9fec716f0ab3_toppng.com-warning-icon-2400x2400.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\6db17f97-dc5d-43c0-804c-4ece86b5e3bc_transperent-pizza.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/6db17f97-dc5d-43c0-804c-4ece86b5e3bc_transperent-pizza.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\6db17f97-dc5d-43c0-804c-4ece86b5e3bc_transperent-pizza.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\6ec65f1d-6383-4f72-b338-82c293767c8e_dominos_background.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/6ec65f1d-6383-4f72-b338-82c293767c8e_dominos_background.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\6ec65f1d-6383-4f72-b338-82c293767c8e_dominos_background.jpg))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\71d36e1a-6888-4aa1-b237-e13e10325ebf_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
@@ -1904,6 +2112,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\71d36e1a-6888-4aa1-b237-e13e10325ebf_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\79ab0703-0166-48ff-aca6-75860c93afaa_QR.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/79ab0703-0166-48ff-aca6-75860c93afaa_QR.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\79ab0703-0166-48ff-aca6-75860c93afaa_QR.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\94bc38d7-a61b-4403-98d3-92bf90d3475c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
       <SourceId>PizzashopRMS</SourceId>
@@ -1919,6 +2143,86 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\94bc38d7-a61b-4403-98d3-92bf90d3475c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\9c08ebd1-fa7c-465f-986d-c4be0c5feeff_qr-code.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/9c08ebd1-fa7c-465f-986d-c4be0c5feeff_qr-code.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\9c08ebd1-fa7c-465f-986d-c4be0c5feeff_qr-code.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\9e1c9ea5-d245-43ca-a22b-3e662990206f_dominos_background.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/9e1c9ea5-d245-43ca-a22b-3e662990206f_dominos_background.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\9e1c9ea5-d245-43ca-a22b-3e662990206f_dominos_background.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\b04f81fd-efe4-48ed-91d9-4310f5947505_qr-code.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/b04f81fd-efe4-48ed-91d9-4310f5947505_qr-code.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\b04f81fd-efe4-48ed-91d9-4310f5947505_qr-code.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\b3978469-b5fe-48e2-8253-27ba733e7a98_dominos_background.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/b3978469-b5fe-48e2-8253-27ba733e7a98_dominos_background.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\b3978469-b5fe-48e2-8253-27ba733e7a98_dominos_background.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\b9ec6a76-ff03-4280-b37b-db5add1f968b_qr-code.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/b9ec6a76-ff03-4280-b37b-db5add1f968b_qr-code.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\b9ec6a76-ff03-4280-b37b-db5add1f968b_qr-code.png))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\bd77036a-5361-4ec5-aa11-df40d9a9e581_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
@@ -1952,6 +2256,70 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\c2156ee9-d48d-4afd-b9d1-3062ded22aec_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\cf4ce749-44a0-4c0a-be37-1b68f48b6a41_transperent-pizza.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/cf4ce749-44a0-4c0a-be37-1b68f48b6a41_transperent-pizza.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\cf4ce749-44a0-4c0a-be37-1b68f48b6a41_transperent-pizza.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\cf85feda-3f8c-4c70-8178-6975c92269a6_dominos_background.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/cf85feda-3f8c-4c70-8178-6975c92269a6_dominos_background.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\cf85feda-3f8c-4c70-8178-6975c92269a6_dominos_background.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\d426ffde-5a8d-40d3-8916-4c5e0d1d5c1c_dominos_background.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/d426ffde-5a8d-40d3-8916-4c5e0d1d5c1c_dominos_background.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\d426ffde-5a8d-40d3-8916-4c5e0d1d5c1c_dominos_background.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\ddd9ae06-0892-4d9c-8ecb-4aa9c767994e_QR.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/ddd9ae06-0892-4d9c-8ecb-4aa9c767994e_QR.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\ddd9ae06-0892-4d9c-8ecb-4aa9c767994e_QR.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\e35610ab-bc71-4ad4-ac79-9833d7675d6a_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
       <SourceId>PizzashopRMS</SourceId>
@@ -1968,6 +2336,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\e35610ab-bc71-4ad4-ac79-9833d7675d6a_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\e6c3339e-ead9-4d45-bd47-326881c518e3_profile_div_bg.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/e6c3339e-ead9-4d45-bd47-326881c518e3_profile_div_bg.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\e6c3339e-ead9-4d45-bd47-326881c518e3_profile_div_bg.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\f40d9bcf-775f-4fe4-bccb-df5b3dd989cc_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>
       <SourceId>PizzashopRMS</SourceId>
@@ -1983,6 +2367,38 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\f40d9bcf-775f-4fe4-bccb-df5b3dd989cc_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\f8b5bd92-ddf9-4c85-b01e-e59941b075fc_transperent-pizza.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/f8b5bd92-ddf9-4c85-b01e-e59941b075fc_transperent-pizza.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\f8b5bd92-ddf9-4c85-b01e-e59941b075fc_transperent-pizza.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\f954e922-a60c-4f36-a7ae-7d580ba62a75_transperent-pizza.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>PizzashopRMS</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/PizzashopRMS</BasePath>
+      <RelativePath>userphoto/f954e922-a60c-4f36-a7ae-7d580ba62a75_transperent-pizza.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\f954e922-a60c-4f36-a7ae-7d580ba62a75_transperent-pizza.png))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\userphoto\fe5641fd-3a0a-47ee-b4e9-249061b4635c_Face-Profile-User-Man-Boy-Person-Avatar-512.webp))">
       <SourceType>Package</SourceType>

@@ -48,3 +48,9 @@
     color: #0066A7;
     font-weight: 600;
 }
+.modal-backdrop{
+    opacity: 0.5 !important;
+}
+.offcanvas-backdrop{
+    opacity: 0 !important;
+} 

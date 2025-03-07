@@ -11,6 +11,7 @@ public interface IMenu
     void UpdateCategory(Category category); // Update category
     bool SoftDeleteCategory(int categoryId);
     List<ItemsView> GetItemsByCategory(int categoryId);
-
+    List<ItemsUnit> GetUnits();
+    Task<string> AddItems(AddItemsViewModel model);
 
 }

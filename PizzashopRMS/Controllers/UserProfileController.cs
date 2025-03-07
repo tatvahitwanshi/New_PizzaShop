@@ -80,7 +80,6 @@ namespace PizzaShopApp.Controllers
             else
             {
                 TempData["error"] = "User Updated successfully";
-                ModelState.AddModelError("", "Failed to update profile.");
                 return RedirectToAction("UserProfileView");
             }
 

@@ -1,14 +1,17 @@
 
+using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Http;
+
 namespace DataAccessLayer.ViewModels;
 
 public class MenuViewModel
 {
     public List<Categories> Categories { get; set; } = new List<Categories>();
     public List<ItemsView> Items { get; set; } = new List<ItemsView>();
+    public List<ItemsUnit> ItemsUnit { get; set; } = new List<ItemsUnit>();
 
-
+    public List<AddItemsViewModel> AddItemsList { get; set; } = new List<AddItemsViewModel>();
 }
-
 public class Categories
 {
     public int Categoryid { get; set; }
@@ -63,7 +66,7 @@ public class AddItemsViewModel
 
     public string? Itemdescription { get; set; }
 
-    public string? Itemimage { get; set; }
+    public IFormFile? Itemimage { get; set; }
 
     public int UnitId { get; set; }
 
@@ -75,7 +78,7 @@ public class AddItemsViewModel
     public bool? Defaulttax { get; set; }
     public decimal? Taxpercentage { get; set; }
     public string? Shortcode { get; set; }
-     public List<Categories> Categories { get; set; } = new List<Categories>();
+    public List<Categories> Categories { get; set; } = new List<Categories>();
     public List<ItemsView> Items { get; set; } = new List<ItemsView>();
 
 }

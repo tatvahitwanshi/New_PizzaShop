@@ -205,6 +205,8 @@ public partial class PizzaShopContext : DbContext
 
             entity.ToTable("items");
 
+            entity.HasIndex(e => e.Itemname, "itemname").IsUnique();
+
             entity.Property(e => e.Itemid).HasColumnName("itemid");
             entity.Property(e => e.Categoryid).HasColumnName("categoryid");
             entity.Property(e => e.CreatedBy)
@@ -260,7 +262,6 @@ public partial class PizzaShopContext : DbContext
 
             entity.HasOne(d => d.Taxes).WithMany(p => p.Items)
                 .HasForeignKey(d => d.Taxesid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("items_taxesid_fkey");
 
             entity.HasOne(d => d.Unit).WithMany(p => p.Items)

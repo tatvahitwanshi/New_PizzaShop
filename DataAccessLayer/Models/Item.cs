@@ -25,7 +25,7 @@ public partial class Item
 
     public int Categoryid { get; set; }
 
-    public int Taxesid { get; set; }
+    public int? Taxesid { get; set; }
 
     public int Unitid { get; set; }
 
@@ -49,7 +49,7 @@ public partial class Item
 
     public virtual ICollection<Orderapp> Orderapps { get; } = new List<Orderapp>();
 
-    public virtual Taxis Taxes { get; set; } = null!;
+    public virtual Taxis? Taxes { get; set; }
 
     public virtual ItemsUnit Unit { get; set; } = null!;
 }

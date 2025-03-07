@@ -18,8 +18,7 @@ public class MenuController : Controller
 
         model.Categories = _menu.GetCategories();
         model.Items = _menu.GetItemsByCategory(model.Categories[0].Categoryid); // Pass items for a default category or all items
-
-
+        model.ItemsUnit = _menu.GetUnits();
 
         return View(model);
     }
@@ -104,9 +103,40 @@ public class MenuController : Controller
         var model = new MenuViewModel
         {
             Categories = _menu.GetCategories(),
-            Items = _menu.GetItemsByCategory(categoryId)
+            Items = _menu.GetItemsByCategory(categoryId),
+            ItemsUnit = _menu.GetUnits()
         };
         return PartialView("~/Views/Menu/_PartialItems.cshtml", model);
     }
+
+    [HttpGet]
+    public IActionResult AddItemsView()
+    {
+        // var model = new MenuViewModel();
+        // model.Categories = _menu.GetCategories();
+        // model.ItemsUnit = _menu.GetUnits();
+        return PartialView("~/Views/Menu/_PartialItems.cshtml");
+    }
+
+    [HttpPost]
+    public async Task<JsonResult> AddItemsPost(AddItemsViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Invalid data. Please check the inputs." });
+            }
+
+            var success = await _menu.AddItems(model);
+            TempData["success"] = "Item added successfully!";
+            return Json(new { success = true, redirectUrl = "/Menu/MenuView" });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "An error occurred while adding the item." });
+        }
+    }
+
+
 }
-    

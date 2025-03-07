@@ -7,10 +7,13 @@ namespace BusinessLayer.Repository;
 public class MenuRepository : IMenu
 {
     private readonly PizzaShopContext _db;
-    public MenuRepository(PizzaShopContext db)
+    private readonly IUserList _userListRepository;
+    public MenuRepository(PizzaShopContext db , IUserList userListRepository)
     {
         _db = db;
+        _userListRepository = userListRepository;
     }
+    
 
     public List<Categories> GetCategories()
     {
@@ -26,6 +29,20 @@ public class MenuRepository : IMenu
             .ToList();
     }
 
+    public List<ItemsUnit> GetUnits()
+    {
+      return _db.ItemsUnits
+          .OrderBy(i => i.Unitname)
+          .Select(i => new ItemsUnit
+          {
+              Unitid = i.Unitid,
+              Unitname = i.Unitname,
+             
+          })
+        .ToList(); 
+           
+    }
+    
     public void AddCategory(Category category)
     {
         var newCategory = new Category
@@ -89,5 +106,32 @@ public class MenuRepository : IMenu
                 Categoryid = i.Categoryid
             }).ToList();
     }
+    public async Task<string> AddItems(AddItemsViewModel model){
+        Item Uniqueitem= _db.Items.FirstOrDefault(i=>i.Itemname==model.Itemname);
+        if(Uniqueitem!=null){
+            return "Item already exists!";
+        }
+        var item = new Item
+        {
+            Itemname = model.Itemname,
+            Rate = model.Rate,
+            Itemtype = model.Itemtype,
+            Quantity = model.Quantity,
+            Isavailable = model.Isavailable,
+            Itemdescription = model.Itemdescription,
+            Itemimage = await _userListRepository.UploadPhotoAsync(model.Itemimage),
+            Categoryid = model.CategoryId,
+            Itemid = model.ItemId,
+            Unitid = model.UnitId,
+            Defaulttax=model.Defaulttax,
+            Taxpercentage=model.Taxpercentage,
+            Shortcode=model.Shortcode
+            
+        };
+        _db.Add(item);
+        await _db.SaveChangesAsync();
+        return "Item added successfully!";
+    }
+
 
 }

@@ -6,7 +6,7 @@ namespace DataAccessLayer.ViewModels;
 
 public class UserProfileViewModel
 {
-    
+
     public string? Email { get; set; }
     public string? Username { get; set; }
 
@@ -20,6 +20,8 @@ public class UserProfileViewModel
 
     public string? Address { get; set; }
 
+    [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+                       ErrorMessage = "Entered phone format is not valid.")]
     public string? Phone { get; set; }
 
     public int Countryid { get; set; }
@@ -27,15 +29,16 @@ public class UserProfileViewModel
     public int Stateid { get; set; }
 
     public int Cityid { get; set; }
-    
-    public List<Country>? CountryList {get; set;}
-    public List<State>? StateList {get; set;}
-    public List<City>? CityList {get; set;}
+
+    public List<Country>? CountryList { get; set; }
+    public List<State>? StateList { get; set; }
+    public List<City>? CityList { get; set; }
 }
-public class ChangePasswordViewModel{
+public class ChangePasswordViewModel
+{
 
     [Required]
-    public string OldPassword{get; set;}
+    public string OldPassword { get; set; }
 
     [Required]
     [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$", ErrorMessage = "Password must be between 6 and 20 characters and contain one uppercase letter, one lowercase letter, one digit and one special character.")]

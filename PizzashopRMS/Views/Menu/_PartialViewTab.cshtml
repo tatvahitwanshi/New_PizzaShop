@@ -19,21 +19,24 @@
                             style="text-decoration: none;" href="javascript:void(0);"
                             onclick="LoadPartialView(@category.Categoryid)">
 
-                            <div class="mb-3 name-sidebar ms-1 active-name">
+                            <div class="mb-3 name-sidebar ms-1 active-name" id="category-container">
                                 <img src="~/images/logos/sixdot.png" alt="" style="width:20px; height: 15px;"
                                     class="active-icon">
                                 @category.Categoryname
 
-                                <a href="javascript:void(0);" style="text-decoration: none; color: grey;" id="editCategory"
-                                    onclick="openEditModal(@category.Categoryid)" data-bs-target="#staticBackdrop2"
-                                    data-bs-toggle="modal">
-                                    <i class="bi bi-pen float-end"></i>
-                                </a>
-                                <a href="javascript:void(0);" style="text-decoration: none; color: grey;"
-                                    data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                    onclick="openDeleteModal(@category.Categoryid)">
-                                    <i class="bi bi-trash float-end"></i>
-                                </a>
+                                
+                                    <a class="editButtom" href="javascript:void(0);" style="text-decoration: none; color: grey;"
+                                        id="editCategory" onclick="openEditModal(@category.Categoryid)"
+                                        data-bs-target="#staticBackdrop2" data-bs-toggle="modal">
+                                        <i class="bi bi-pen float-end"></i>
+                                    </a>
+                                    <a class="deleteButton" href="javascript:void(0);" style="text-decoration: none; color: grey;"
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                        onclick="openDeleteModal(@category.Categoryid)">
+                                        <i class="bi bi-trash float-end"></i>
+                                    </a>
+                                
+
                             </div>
                         </a>
                     }
