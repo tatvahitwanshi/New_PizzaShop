@@ -63,12 +63,7 @@
     color: #0066A7;
     font-weight: 600;
 }
-.main-block{
-    overflow-y: auto;
-    flex-grow: 1;
-    height: 100vh;
-    background-color: #6c757d23;
-}
+
 .nav-link{
     color:  black var(--bs-nav-link-color) !important;   
     

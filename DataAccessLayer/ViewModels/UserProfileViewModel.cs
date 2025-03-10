@@ -15,6 +15,7 @@ public class UserProfileViewModel
     public string? Lastname { get; set; }
 
     public string? Profilepic { get; set; }
+    public IFormFile? ImageUrl { get; set; }
 
     public int? Zipcode { get; set; }
 

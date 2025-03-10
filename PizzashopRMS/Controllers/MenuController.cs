@@ -2,9 +2,11 @@ using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using PizzashopRMS.Helpers;
 
 namespace PizzashopRMS.Controllers;
 
+[CustomAuthorise(new string[] { "admin" })]
 public class MenuController : Controller
 {
     private readonly IMenu _menu;
@@ -15,7 +17,8 @@ public class MenuController : Controller
         _menu = menu;
     }
 
-     // Displays the menu view with categories, items, and units
+    // Displays the menu view with categories, items, and units
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult MenuView()
     {
         var model = new MenuViewModel();
@@ -26,8 +29,9 @@ public class MenuController : Controller
 
         return View(model);
     }
-    
+
     // Adds a new category
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     [HttpPost]
     public IActionResult AddCategory(Category category)
     {
@@ -44,8 +48,9 @@ public class MenuController : Controller
         }
         return View("MenuView");
     }
-    
+
     // Fetches category details for editing
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult EditCategory(int id)
     {
         var category = _menu.GetCategoryById(id);
@@ -63,6 +68,7 @@ public class MenuController : Controller
 
     // Updates an existing category
     [HttpPost]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult UpdateCategory(Categories category)
     {
         if (ModelState.IsValid)
@@ -94,6 +100,7 @@ public class MenuController : Controller
 
     // Soft deletes a category
     [HttpPost]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult DeleteCategory(int categoryId)
     {
         bool isDeleted = _menu.SoftDeleteCategory(categoryId);
@@ -108,8 +115,9 @@ public class MenuController : Controller
             return Json(new { success = false });
         }
     }
-    
-     // Retrieves items based on selected category
+
+    // Retrieves items based on selected category
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult GetItemsByCategory(int categoryId)
     {
         var model = new MenuViewModel
@@ -121,8 +129,9 @@ public class MenuController : Controller
         return PartialView("~/Views/Menu/_PartialItems.cshtml", model);
     }
 
-     // Displays the view for adding new items
+    // Displays the view for adding new items
     [HttpGet]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult AddItemsView()
     {
         return PartialView("~/Views/Menu/_PartialItems.cshtml");
@@ -130,6 +139,7 @@ public class MenuController : Controller
 
     // Adds a new item 
     [HttpPost]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<JsonResult> AddItemsPost(AddItemsViewModel model)
     {
         try
@@ -149,5 +159,37 @@ public class MenuController : Controller
         }
     }
 
+    // Fetches item details for editing
+    [HttpGet]
+    public IActionResult GetItemById(int id)
+    {
+        var item = _menu.GetItemById(id);
+        if (item == null)
+        {
+            return NotFound();
+        }
+        return Json(item);
+    }
+
+    // Updates an existing item
+    [HttpPost]
+    public async Task<IActionResult> EditItems(AddItemsViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Json(new { success = false, message = "Invalid input data" });
+        }
+
+        bool isUpdated = await _menu.UpdateItem(model);
+
+        if (isUpdated)
+        {
+            return Json(new { success = true });
+        }
+        else
+        {
+            return Json(new { success = false, message = "Item not found or could not be updated." });
+        }
+    }
 
 }

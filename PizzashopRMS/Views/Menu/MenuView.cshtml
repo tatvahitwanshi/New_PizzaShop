@@ -24,6 +24,14 @@
             opacity: 0.65;
         }
 
+        #edititemModal .form-floating>label {
+            position: absolute;
+            top: 0;
+            left: 10px !important;
+            opacity: 0.65;
+        }
+
+
         #category-container .editButtom,
         #category-container .deleteButton {
             display: none;
@@ -31,7 +39,7 @@
 
         #category-container:hover .editButtom,
         #category-container:hover .deleteButton {
-            display: inline-block;/ or block depending on your layout /
+            display: inline-block;
         }
     </style>
 </head>
@@ -85,11 +93,9 @@
             success: function (data) {
                 if (data) {
                     console.log("Fetched Data:", data);
-
                     $('#editCategoryId').val(data.categoryid);
                     $('#editCategoryName').val(data.categoryname);
                     $('#editCategoryDescription').val(data.categorydescription);
-
                     $('#staticBackdrop2').modal('show');
                 } else {
                     alert("No category data found.");
@@ -128,6 +134,7 @@
     $(document).ready(function () {
         $('button[data-bs-toggle="tab"]').on('click', function (e) {
             var target = $(e.target).attr("data-bs-target");
+           
             if (target === '#nav-home') {
                 $('#items-content').load('~/Views/Menu/_PartialViewTab.cshtml');
             } else if (target === '#nav-profile') {

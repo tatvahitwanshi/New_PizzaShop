@@ -148,62 +148,22 @@
     $(document).ready(function () {
         // Listen for 'input' event on search input
         $('#searchInput').on('input', function () {
-            var searchKey = $('#searchInput').val().toLowerCase();
+            searchKey = $('#searchInput').val().toLowerCase();
             console.log("Search Key:", searchKey);
-
             // Get the current page size, sort column, and sort direction from ViewData
-            var pageSize = $("#itemsPerPage").val(); // Get selected page size
-            var pageNumber = 1; // Reset to page 1 for new search
-            var sortBy = '@ViewData["SortBy"]'; // Get current sort column
-            var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
-
-            // Perform AJAX request to fetch filtered user list
-            $.ajax({
-                url: "/UserList/UserListView",
-                type: "GET",
-                data: {
-                    PageSize: pageSize,
-                    PageNumber: pageNumber,
-                    SortColumn: sortBy,
-                    SortDirection: sortOrder,
-                    SearchKey: searchKey
-                },
-                success: function (data) {
-                    $("#userListContainer").html(data); 
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching data:", error);
-                }
-            });
+            pageSize = $("#itemsPerPage").val(); 
+            pageNumber = 1;
+            getdata();
+            
         });
     });
 
-
     $(document).on("click", ".pagination-button", function (event) {
         event.preventDefault(); // Prevent full page reload
-
-        var pageNumber = $(this).data("page"); // Get the new page number
-        var pageSize = $("#itemsPerPage").val(); // Get current page size
-        var sortBy = '@ViewData["SortBy"]'; // Get current sort column
-        var sortOrder = '@ViewData["SortOrder"]'; // Get current sort order
-        var searchKey = $("#searchInput").val(); // Get the search key
-
-        $.ajax({
-            url: "/UserList/UserListView",
-            type: "GET",
-            data: {
-                PageSize: pageSize,
-                PageNumber: pageNumber,
-                SortColumn: sortBy,
-                SortDirection: sortOrder,
-                SearchKey: searchKey
-            },
-            success: function (data) {
-                $("#userListContainer").html(data); // Update only the partial view
-            },
-            error: function (xhr, status, error) {
-                console.error("Error fetching data:", error);
-            }
-        });
+        pageNumber = $(this).data("page"); 
+        pageSize = $("#itemsPerPage").val(); 
+        searchKey = $("#searchInput").val();
+        getdata();
+       
     });
 </script>

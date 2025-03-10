@@ -37,6 +37,13 @@ public class LoginRepository : ILogin
         return user.Password == hashedPassword ? (user, "Login Successfull") : (null, "Wrong password");
     }
 
+    //Get Rolename from RoleId
+    public async Task<string> GetRoleName(int roleId)
+    {
+        var role = await _db.Roles.FirstOrDefaultAsync(r => r.Roleid == roleId);
+        return role.Rolename;
+    }
+
     // Generates a JWT token and sets it in HTTP cookies
     public async Task<string> GenerateJwtTokenAsync(string email, int roleId, HttpResponse response, bool rememberMe)
     {

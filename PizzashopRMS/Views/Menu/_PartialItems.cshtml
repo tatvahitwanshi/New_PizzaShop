@@ -50,16 +50,16 @@
                                 <input class="form-check-input inner-check" type="checkbox" value="" id="flexCheckDefault">
                             </td>
                             <td>
-                            @if (item.Itemimage != null)
-                            {
-                                <img src="@Url.Content(item.Itemimage)" alt=""  width="30px">
+                                @if (item.Itemimage != null)
+                                {
+                                    <img src="@Url.Content(item.Itemimage)" alt="" width="30px">
 
-                            }
-                             else
-                            {
-                                <img src="~/images/dining-menu.png" alt="" width="30px">
+                                }
+                                else
+                                {
+                                    <img src="~/images/dining-menu.png" alt="" width="30px">
 
-                            }
+                                }
                                 @* src="@item.Itemimage" *@
                                 @item.Itemname
                             </td>
@@ -77,7 +77,10 @@
                             </td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" style="text-decoration: none; color: grey;"><i class="bi bi-pen"></i></a>
+                                    <a href="#" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
+                                        data-bs-target="#edititemModal" onclick="GetItemDetails(@item.ItemId)">
+                                        <i class="bi bi-pen"></i>
+                                    </a>
                                     <a href="#" class="ms-4" style="text-decoration: none; color: grey;"
                                         data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i
                                             class="bi bi-trash"></i></a>
@@ -122,6 +125,7 @@
     </div>
 </div>
 
+@* Add Item Modal *@
 <div class="modal fade" id="additemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="staticBackdropLabel aria-hidden=" true">
     <div class="modal-dialog modal-dialog-centered w-75" style="max-width: 100% !important">
@@ -136,11 +140,11 @@
                     <div class="col-md-8 col-12">
                         <div class="row">
                             <div class="col-md-6 col-12 form-floating mt-3">
-                                <select class="form-select" id="categoryDropdown" name="CategoryId" required >
+                                <select class="form-select" id="categoryDropdown" name="CategoryId" required>
                                     @foreach (var category in Model.Categories)
-                                        {
-                                            <option value="@category.CategoryId">@category.Categoryname</option>
-                                        }
+                                    {
+                                        <option value="@category.CategoryId">@category.Categoryname</option>
+                                    }
                                 </select>
                                 <label for="categoryDropdown">Food Category</label>
                             </div>
@@ -157,8 +161,8 @@
                                 <div class="row">
                                     <div class="col-md-6 col-12 form-floating mt-3">
                                         <select class="form-select" id="itemTypeDropdown" name="Itemtype" required>
-                                            <option value="veg" selected >Veg</option>
-                                            <option value="non-veg"  >Non-veg</option>
+                                            <option value="veg" selected>Veg</option>
+                                            <option value="non-veg">Non-veg</option>
 
                                         </select>
                                         <label for="itemTypeDropdown">Item Type</label>
@@ -179,10 +183,10 @@
                                     </div>
                                     <div class="col-md-6 col-12 form-floating mt-3">
                                         <select class="form-select" id="unitDropdown" name="UnitId" required>
-                                             @foreach (var itemsUnit in Model.ItemsUnit)
-                                        {
-                                            <option value="@itemsUnit.Unitid">@itemsUnit.Unitname</option>
-                                        }
+                                            @foreach (var itemsUnit in Model.ItemsUnit)
+                                            {
+                                                <option value="@itemsUnit.Unitid">@itemsUnit.Unitname</option>
+                                            }
                                         </select>
                                         <label for="unitDropdown">Unit</label>
                                     </div>
@@ -205,6 +209,7 @@
                                         <input class="form-check-input" type="checkbox" id="defaultTaxToggle"
                                             style="height: 30px; width: 3.5rem;" name="Defaulttax">
                                         <label class="form-check-label ms-2" for="defaultTaxToggle">Default Tax</label>
+                                        <input type="hidden" name="Defaulttax" value="false">
                                     </div>
                                 </div>
                             </div>
@@ -235,7 +240,7 @@
 
                         <div class="mt-3 fs-6" style="opacity: 0.75;">Upload Image</div>
                         <div class="row mt-0">
-                            <div style="position: relative;" id="fileLabel" >
+                            <div style="position: relative;" id="fileLabel">
                                 <input type="file" class="form-control" id="itemImage" placeholder=""
                                     style="height: 90px; position: absolute; opacity: 0;" name="Itemimage">
                                 <div id="file-box"
@@ -270,9 +275,178 @@
         </div>
     </div>
 </div>
+
+@* Edit Item Model *@
+<div class="modal fade" id="edititemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel aria-hidden=" true">
+    <div class="modal-dialog modal-dialog-centered w-75" style="max-width: 100% !important">
+        <div class="modal-content">
+            <form class="modal-body edititemform" id="edititemform" enctype="multipart/form-data">
+                <input type="hidden" id="editItemId" name="ItemId">
+                <div class="d-flex justify-content-between">
+                    <div class="special-color fw-bold fs-4">Edit Item</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="row pe-2 mt-2">
+                    <div class="col-md-8 col-12">
+                        <div class="row">
+                            <div class="col-md-6 col-12 form-floating mt-3">
+                                <select class="form-select" id="editcategoryDropdown" name="CategoryId" required>
+                                    @foreach (var category in Model.Categories)
+                                    {
+                                        <option value="@category.CategoryId">@category.Categoryname</option>
+                                    }
+                                </select>
+                                <label for="editcategoryDropdown">Food Category</label>
+                            </div>
+
+                            <div class="col-md-6 col-12 form-floating mt-3">
+                                <input type="text" class="form-control" id="editname" placeholder="Name" name="Itemname"
+                                    required>
+                                <label for="editname">Name*</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6 col-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <select class="form-select" id="edititemTypeDropdown" name="Itemtype" required>
+                                            <option value="veg" selected>Veg</option>
+                                            <option value="non-veg">Non-veg</option>
+
+                                        </select>
+                                        <label for="edititemTypeDropdown">Item Type</label>
+                                    </div>
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <input type="number" class="form-control" id="editrate" placeholder="Name"
+                                            min="0" step="1" name="Rate" required>
+                                        <label for="editrate">Rate*</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <input type="number" class="form-control" id="editquantity" placeholder="Name"
+                                            min="0" step="1" name="Quantity" required>
+                                        <label for="editquantity">Quantity*</label>
+                                    </div>
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <select class="form-select" id="editunitDropdown" name="UnitId" required>
+                                            @foreach (var itemsUnit in Model.ItemsUnit)
+                                            {
+                                                <option value="@itemsUnit.Unitid">@itemsUnit.Unitname</option>
+                                            }
+                                        </select>
+                                        <label for="editunitDropdown">Unit</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6 col-12 mt-3">
+                                <div class="row">
+                                    <div
+                                        class="col-6 form-check form-switch d-flex justify-content-center align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="editavailableToggle"
+                                            style="height: 30px; width: 3.5rem;" name="ItemAvailable">
+                                        <label class="form-check-label ms-2" for="editavailableToggle">Available</label>
+                                        <input type="hidden" name="Isavailable" value="false">
+                                    </div>
+                                    <div
+                                        class="col-6 form-check form-switch d-flex justify-content-center align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="editdefaultTaxToggle"
+                                            style="height: 30px; width: 3.5rem;" name="Defaulttax">
+                                        <label class="form-check-label ms-2" for="editdefaultTaxToggle">Default
+                                            Tax</label>
+                                        <input type="hidden" name="Defaulttax" value="false">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <input type="number" class="form-control" id="edittaxpercentage"
+                                            placeholder="Name" min="0" step="0.01" name="Taxpercentage">
+                                        <label for="edittaxpercentage">Tax Percentage</label>
+                                    </div>
+                                    <div class="col-md-6 col-12 form-floating mt-3">
+                                        <input type="text" class="form-control" id="editshortcode" placeholder="Name"
+                                            name="Shortcode">
+                                        <label for="editshortcode">Short Code</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="form-floating">
+                                <textarea class="form-control" id="editdescription" placeholder="Enter description"
+                                    rows="5" style="height: 100px;" name="Itemdescription" required></textarea>
+                                <label for="editdescription">Description</label>
+                            </div>
+                        </div>
+
+
+                        <div class="mt-3 fs-6" style="opacity: 0.75;">Upload Image</div>
+                        <div class="row mt-0">
+                            <div style="position: relative;" id="fileLabel">
+                                <input type="file" class="form-control" id="edititemImage" placeholder=""
+                                    style="height: 90px; position: absolute; opacity: 0;" name="Itemimage">
+                                <div id="file-box"
+                                    style="height: 90px; border: 1px dashed rgb(173, 170, 170); border-radius: 5px;"
+                                    class="d-flex justify-content-center align-items-center">
+                                    <i class="bi bi-cloud-arrow-up h4 mt-3 me-2"></i>Drag and Drop or Browse files
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
+                        <div class="mod-group-select mt-2">
+                            <select class="form-select" id="ModifierGroupDropdown" aria-label="Select Food Category">
+                                <option value="" selected disabled>Select Modifier Group</option>
+                                <option value="mod1">Modifier 1</option>
+                                <option value="mod2">Modifier 2</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="submit" id="editsavebtn" class="btn text-white" style="background-color: #0066A7;"
+                        type="submit">Save</button>
+                    <button type="button" class="btn ms-2"
+                        style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
+                        data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+
+    document.getElementById("defaultTaxToggle").addEventListener("change", function () {
+        if (this.checked) {
+            this.value = "true";
+        } else {
+            this.value = "false";
+        }
+    });
+    document.getElementById("availableToggle").addEventListener("change", function () {
+        if (this.checked) {
+            this.value = "true";
+        } else {
+            this.value = "false";
+        }
+    });
     $(document).ready(function () {
         $(document).on('click', '#savebtn', function (e) {
             e.preventDefault();
@@ -301,8 +475,7 @@
             });
         });
     });
-</script>
-<script>
+
     document.getElementById("itemImage").addEventListener("change", function () {
         let fileLabel = document.getElementById("fileLabel");
         if (this.files.length > 0) {
@@ -311,4 +484,71 @@
             fileLabel.style.border = "2px solid rgba(112, 128, 144, 0.123)"; // Reset border color
         }
     });
+
+    function GetItemDetails(itemId) {
+        $.ajax({
+
+            url: '/Menu/GetItemById',  // Controller action to get item details
+            type: 'GET',
+            data: { id: itemId },
+            success: function (data) {
+                if (data) {
+                    console.log("Fetched Item Data:", data);
+                    $('#editItemId').val(data.itemId);
+                    $('#editcategoryDropdown').val(data.categoryId);
+                    $('#editname').val(data.itemname);
+                    $('#edititemTypeDropdown').val(data.itemtype);
+                    $('#editrate').val(data.rate);
+                    $('#editquantity').val(data.quantity);
+                    $('#editunitDropdown').val(data.unitId);
+                    $('#editavailableToggle').prop('checked', data.isavailable);
+                    $('#editdefaultTaxToggle').prop('checked', data.defaulttax);
+                    $('#edittaxpercentage').val(data.taxpercentage);
+                    $('#editshortcode').val(data.shortcode);
+                    $('#editdescription').val(data.itemdescription);
+                    $('#edititemImage').val(data.itemimage);
+                }
+            },
+            error: function () {
+                alert("Error fetching item details.");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#edititemform").submit(function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this); // Create FormData object for handling file uploads
+
+            $.ajax({
+                url: '/Menu/EditItems', // Controller Action
+                type: 'POST',
+                data: formData,
+                processData: false, // Prevent jQuery from processing data
+                contentType: false, // Prevent jQuery from setting content type
+                success: function (response) {
+                    if (response.success) {
+                        alert("Item updated successfully!");
+                        $('#edititemModal').modal('hide'); // Close modal
+                        location.reload(); // Refresh the page to show updated data
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                    alert("An error occurred while saving the item.");
+                }
+            });
+        });
+    });
+    document.getElementById("editdefaultTaxToggle").addEventListener("change", function () {
+        if (this.checked) {
+            this.value = "true";
+        } else {
+            this.value = "false";
+        }
+    });
+
 </script>

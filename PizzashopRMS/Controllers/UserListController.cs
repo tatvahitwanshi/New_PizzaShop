@@ -5,9 +5,11 @@ using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using PizzashopRMS.Helpers;
 
 namespace PizzashopRMS.Controllers;
 
+[CustomAuthorise(new string[] { "admin" })]
 public class UserListController : Controller
 {
     private readonly IUserList _userListRepository;
@@ -22,6 +24,7 @@ public class UserListController : Controller
 
     // Retrieves user list with pagination, sorting, and search functionality
     [HttpGet]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> UserListView(int PageSize = 5, int PageNumber = 1, string sortBy = "name", string sortOrder = "asc", string SearchKey = "")
     {
         try
@@ -59,6 +62,7 @@ public class UserListController : Controller
 
     // Returns the view for adding a new user
     [HttpGet]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult AddUserView()
     {
         var model = new AddUserViewModel
@@ -74,6 +78,7 @@ public class UserListController : Controller
 
     // Fetch states based on selected country
     [HttpGet]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public JsonResult GetStates(int countryId)
     {
         var states = _userListRepository.GetStatesByCountry(countryId);
@@ -82,6 +87,7 @@ public class UserListController : Controller
 
     // Fetch cities based on selected state
     [HttpGet]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public JsonResult GetCities(int stateId)
     {
         var cities = _userListRepository.GetCitiesByState(stateId);
@@ -109,6 +115,7 @@ public class UserListController : Controller
 
     // Adds a new user to the system and sends an email notification
     [HttpPost]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> AddUserViewAsync(AddUserViewModel model)
     {
         if (!ModelState.IsValid)
@@ -155,6 +162,7 @@ public class UserListController : Controller
 
     // Retrieves the details of a user for editing
     [HttpGet]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> EditUserView(int userId)
     {
         try
@@ -179,6 +187,7 @@ public class UserListController : Controller
     // Updates user profile details
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> EditUserProfileView(EditUserViewModel model)
     {
         // Thread.Sleep(1000);
@@ -214,6 +223,7 @@ public class UserListController : Controller
 
     // Deletes a user 
     [HttpPost]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> DeleteUser(int userId)
     {
         try

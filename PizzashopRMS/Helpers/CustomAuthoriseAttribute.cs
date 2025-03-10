@@ -46,10 +46,13 @@ public class CustomAuthoriseAttribute : Attribute, IAuthorizationFilter
                 context.Result = new RedirectToRouteResult(new { controller = "Login", action = "LoginView" });
                 return;
             }
+
+
             if (!_roles.Contains(roleClaim))
-            {
+            { 
                 context.Result = new RedirectToRouteResult(new { Controller = "Login", action = "AccessDenied" });
             }
+
         }
         catch (Exception ex)
         {

@@ -29,6 +29,9 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSet
 
 // Register JWT Token Helper as a service
 builder.Services.AddSingleton<GenerateJwtTokenHelper>();
+builder.Services.AddSession();
+builder.Services.AddDistributedMemoryCache(); // Required for session state
+
 
 var app = builder.Build();
 
@@ -39,7 +42,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

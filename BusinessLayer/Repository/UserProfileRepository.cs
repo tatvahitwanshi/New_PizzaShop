@@ -21,6 +21,8 @@ public class UserProfileRepository : IUserProfile
 
 
 
+
+
     public UserProfileRepository(PizzaShopContext db, IWebHostEnvironment webHostEnvironment,IUserList userListRepository)
     {
         _db = db;
@@ -77,7 +79,7 @@ public class UserProfileRepository : IUserProfile
         user.Countryid = model.Countryid;
         user.Stateid = model.Stateid;
         user.Cityid = model.Cityid;
-        // user.Profilepic = await UploadPhotoAsync(model.Profilepic);
+        user.Profilepic = await _userListRepository.UploadPhotoAsync(model.ImageUrl);
 
         await _db.SaveChangesAsync();
         return true;

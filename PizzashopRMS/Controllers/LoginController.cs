@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using System;
 using System.Threading.Tasks;
+using DataAccessLayer.Models;
 
 
 namespace PizzaShopApp.Controllers
@@ -15,25 +16,27 @@ namespace PizzaShopApp.Controllers
         private readonly ILogin _loginRepository;
         private readonly ILogger<LoginController> _logger;
 
-         // Constructor to initialize login repository and logger
+        // Constructor to initialize login repository and logger
         public LoginController(ILogin loginRepository, ILogger<LoginController> logger)
         {
             _loginRepository = loginRepository;
             _logger = logger;
         }
 
-         // Displays the login page, redirects if user email cookie exists
+        // Displays the login page, redirects if user email cookie exists
         public IActionResult LoginView()
         {
+
             String req_cookie = Request.Cookies["UserEmail"];
             if (!String.IsNullOrEmpty(req_cookie))
             {
                 return RedirectToAction("DashboardView", "Dashboard");
             }
+
             return View();
         }
 
-         // Handles user login authentication
+        // Handles user login authentication
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel user)
@@ -52,18 +55,38 @@ namespace PizzaShopApp.Controllers
                     TempData["error"] = message;
                     return RedirectToAction("LoginView", "Login");
                 }
-
+                var role = await _loginRepository.GetRoleName(dbUser.Roleid);
                 var token = await _loginRepository.GenerateJwtTokenAsync(dbUser.Email, dbUser.Roleid, Response, user.RememberMe);
+                HttpContext.Session.SetString("Email", dbUser.Email);
+                HttpContext.Session.SetString("ProfilePic", dbUser.Profilepic ?? "~/images/Default_pfp.svg.png"); // Default if null
+                await HttpContext.Session.CommitAsync();
 
-                TempData["success"] = message;
-                ViewData["Email"]=user.Email;
-                
-                return RedirectToAction("DashboardView", "Dashboard");
+                if (role == "admin")
+                {
+                    TempData["success"] = message;
+                    return RedirectToAction("DashboardView", "Dashboard");
+                }
+                else if (role == "chef")
+                {
+                    TempData["success"] = message;
+                    return RedirectToAction("DashboardChefView", "DashboardChef");
+                }
+                else if (role == "account manager")
+                {
+                    TempData["success"] = message;
+                    return RedirectToAction("DashboardAccountManagerView", "DashboardAccountManager");
+                }
+                else
+                {
+                    TempData["error"] = "Invalid role.";
+                    return RedirectToAction("LoginView", "Login");
+                }
+
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during login.");
-                throw; // Rethrow exception to be handled globally
+                throw;
             }
         }
 
@@ -85,7 +108,7 @@ namespace PizzaShopApp.Controllers
                     return View("ForgotPasswordView", model);
                 }
                 var token1 = await _loginRepository.ResetEmailToken(model.Email, 0, Response, false);
-                TempData["Email"]=model.Email;
+                TempData["Email"] = model.Email;
 
                 var callbackUrl = Url.ActionLink("ResetPasswordView", "Login", new { token1 = token1 });
                 bool isEmailSent = await _loginRepository.ForgotPasswordAsync(model, callbackUrl);
@@ -108,10 +131,10 @@ namespace PizzaShopApp.Controllers
             }
         }
 
-         // Displays the reset password page
+        // Displays the reset password page
         public IActionResult ResetPasswordView(string token1)
         {
-            ViewData["ResetPasswordEmail"]=token1;
+            ViewData["ResetPasswordEmail"] = token1;
             return View();
         }
 
@@ -121,7 +144,7 @@ namespace PizzaShopApp.Controllers
         {
             try
             {
-                var token1=model.token1;
+                var token1 = model.token1;
                 var validate = await _loginRepository.ValidateToken(token1);
                 if (!validate.valid)
                 {
@@ -132,7 +155,7 @@ namespace PizzaShopApp.Controllers
                 {
                     return View("ResetPasswordView", model);
                 }
-                
+
                 var email = TempData["email"] as string;
                 if (string.IsNullOrEmpty(email))
                 {
@@ -169,7 +192,7 @@ namespace PizzaShopApp.Controllers
             Response.Cookies.Delete("UserName");
             return View("LoginView");
         }
-        
+
         // Displays access denied page
         public IActionResult AccessDenied()
         {

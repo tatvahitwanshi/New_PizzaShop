@@ -12,7 +12,6 @@ public class DashboardController : Controller
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult DashboardView()
     {
-
         return View();
     }
 }

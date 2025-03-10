@@ -6,9 +6,11 @@ using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using PizzashopRMS.Helpers;
 
 namespace PizzaShopApp.Controllers
 {
+    [CustomAuthorise(new string[] { "admin" })]
     public class UserProfileController : Controller
     {
         private readonly IUserProfile _userProfile;
@@ -43,6 +45,7 @@ namespace PizzaShopApp.Controllers
 
         // User Profile view get method
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> UserProfileView()
         {
             try
@@ -73,6 +76,7 @@ namespace PizzaShopApp.Controllers
         //User profile post method to save the updated profile
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> UserProfileView(UserProfileViewModel model)
         {
             try
@@ -121,6 +125,7 @@ namespace PizzaShopApp.Controllers
 
         // Fetch states based on selected country
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> GetStates(int countryId)
         {
             try
@@ -137,6 +142,7 @@ namespace PizzaShopApp.Controllers
 
         // Fetch city based on selected state
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> GetCities(int stateId)
         {
             try
@@ -153,6 +159,7 @@ namespace PizzaShopApp.Controllers
 
         // Change password view
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult ChangePasswordView()
         {
             return View();
@@ -160,6 +167,7 @@ namespace PizzaShopApp.Controllers
 
         //Change password post method 
         [HttpPost]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             try

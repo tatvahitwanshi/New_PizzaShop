@@ -147,5 +147,51 @@ public class MenuRepository : IMenu
         return "Item added successfully!";
     }
 
+    public AddItemsViewModel GetItemById(int id)
+    {
+        var item = _db.Items
+            .Where(i => i.Itemid == id)
+            .Select(i => new AddItemsViewModel
+            {
+                ItemId = i.Itemid,
+                CategoryId = i.Categoryid,
+                Itemname = i.Itemname,
+                Itemtype = i.Itemtype,
+                Rate = (int)i.Rate,
+                Quantity = (int)i.Quantity,
+                UnitId = i.Unitid,
+                Isavailable = (bool)i.Isavailable,
+                Defaulttax = i.Defaulttax,
+                Taxpercentage = i.Taxpercentage,
+                Shortcode = i.Shortcode,
+                Itemdescription = i.Itemdescription
+            })
+            .FirstOrDefault();
+
+        return item;
+    }
+    public async Task<bool> UpdateItem(AddItemsViewModel item)
+    {
+        var existingItem = await _db.Items.FindAsync(item.ItemId);
+        if (existingItem == null)
+            return false;
+
+        // Update item properties
+        existingItem.Categoryid = item.CategoryId;
+        existingItem.Itemname = item.Itemname;
+        existingItem.Itemtype = item.Itemtype;
+        existingItem.Rate = item.Rate;
+        existingItem.Quantity = item.Quantity;
+        existingItem.Unitid = item.UnitId;
+        existingItem.Isavailable = item.Isavailable;
+        existingItem.Defaulttax = item.Defaulttax;
+        existingItem.Taxpercentage = item.Taxpercentage;
+        existingItem.Shortcode = item.Shortcode;
+        existingItem.Itemdescription = item.Itemdescription;
+        existingItem.Itemimage = await _userListRepository.UploadPhotoAsync(item.Itemimage);
+        _db.Items.Update(existingItem);
+        await _db.SaveChangesAsync();
+        return true;
+    }
 
 }

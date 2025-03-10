@@ -17,7 +17,7 @@ public partial class Item
 
     public bool? Isavailable { get; set; }
 
-    public bool? Isdeleted { get; set; }
+     public bool? Isdeleted { get; set; }
 
     public string? Itemdescription { get; set; }
 

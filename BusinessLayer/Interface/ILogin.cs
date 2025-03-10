@@ -13,7 +13,7 @@ public interface ILogin
     Task<string> ResetEmailToken(string email,int roleId=0, HttpResponse response=null, bool rememberMe=false);
      Task<bool> ForgotPasswordAsync(ForgetPasswordViewModel model , string callbackUrl);
     Task<bool> ResetPasswordAsync(string email, string newPassword);
-    
     Task<TokenViewModel> ValidateToken(string token1);
+    Task<string> GetRoleName(int roleId);
 
 }

@@ -18,15 +18,13 @@
 </head>
 
 <body>
-
-
     <div class="container-fluid p-4">
         <div class="row">
             <div class="col-lg-4 col-sm-12 h2 fw-bold" style="color: #0066A7;">
                 My Profile
             </div>
         </div>
-        <form method="post" asp-controller="UserProfile" asp-action="UserProfileView">
+        <form method="post" asp-controller="UserProfile" asp-action="UserProfileView" enctype="multipart/form-data">
             <div class="row mt-3 bg-white"
                 style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="col p-0">
@@ -47,8 +45,8 @@
                                     style="height: 8%; width: 6%;">
 
                             }
-                            <i class="bi bi-camera rounded-5 position-absolute h5 mt-4 ms-5 camera d-xs-none d-sm-none d-lg-block " ></i>
-                            <input type="file" asp-for="Profilepic" class=" opacity-0 cameraimg position-absolute">
+                            <i class="bi bi-camera rounded-5 position-absolute h5 camera d-xs-none d-sm-none d-lg-block " ></i>
+                            <input type="file" asp-for="ImageUrl" class=" opacity-0 cameraimg position-absolute">
                             <div class="col " style="display: grid;">
                                 <span class="h2">@Model.Username</span>
                                 <span>@ViewData["Role"]</span>
@@ -56,7 +54,6 @@
                             </div>
                             <div class="col d-flex justify-content-end">
                                 <input type="email" asp-for="Email" hidden />
-                                @* <input type="email" asp-for="Username" hidden /> *@
                                 <span>@Model.Email</span>
                             </div>
                         </div>

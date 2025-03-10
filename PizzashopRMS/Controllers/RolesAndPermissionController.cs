@@ -1,9 +1,11 @@
 using BusinessLayer.Interface;
 using DataAccessLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using PizzashopRMS.Helpers;
 
 namespace PizzashopRMS.Controllers;
 
+[CustomAuthorise(new string[] { "admin" })]
 public class RolesAndPermissionController : Controller
 {
     private readonly IRolesAndPermission _roleAndPermission;
@@ -17,6 +19,7 @@ public class RolesAndPermissionController : Controller
 
     // Fetch and display all roles
     [HttpGet]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> RoleView()
     {
         var roles = await _roleAndPermission.GetRolesAsync();
@@ -25,6 +28,7 @@ public class RolesAndPermissionController : Controller
 
     // Fetch and display permissions for a given role
     [HttpGet]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> PermissionView(int roleid)
     {
         try
@@ -57,6 +61,7 @@ public class RolesAndPermissionController : Controller
 
     // Update permissions for a role
     [HttpPost]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> UpdatePermissionView(PermissionUpdateRequest model)
     {
         try

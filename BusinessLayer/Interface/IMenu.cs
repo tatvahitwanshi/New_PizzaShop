@@ -13,5 +13,8 @@ public interface IMenu
     List<ItemsView> GetItemsByCategory(int categoryId);
     List<ItemsUnit> GetUnits();
     Task<string> AddItems(AddItemsViewModel model);
+    AddItemsViewModel GetItemById(int id);
+    Task<bool> UpdateItem(AddItemsViewModel item);
+
 
 }

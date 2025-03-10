@@ -20,15 +20,19 @@
             <img src="~/images/logos/pizzashop_logo.png" alt="company-logo" id="company-logo-img"
                 class="d-none d-lg-flex">
             <div class="h3 ps-3" id="company-name">PIZZASHOP</div>
-            
+
         </div>
         <div class="btn-group dropstart">
-            <a class=" dropdown-toggle  dropdown-toggle-split" href="#" role="button" id="dropdownMenuLink"
-                data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-                <img src="~/images/Default_pfp.svg.png" alt="" id="profile-pic">
+            <a class="   dropdown-toggle-split" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                aria-expanded="false" style="text-decoration: none;">
+                <img src="@Url.Content(@Context.Session.GetString("ProfilePic"))" alt="" id="profile-pic">
             </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" >
-                <li><a class="dropdown-item" ></i>@ViewData["Email"]</a></li>
+           
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item h6">@Context.Session.GetString("Email")
+                        <img src="@Url.Content(@Context.Session.GetString("ProfilePic"))" alt="" id="profile-pic">
+                    </a>
+                </li>
                 <li><a class="dropdown-item" asp-action="UserProfileView" asp-controller="UserProfile"><i
                             class="bi bi-person-circle p-2"></i>My Profile</a></li>
                 <li><a class="dropdown-item" asp-action="ChangePasswordView" asp-controller="UserProfile"><i
@@ -38,8 +42,5 @@
             </ul>
         </div>
     </nav>
-
 </body>
-
 </html>
-   
