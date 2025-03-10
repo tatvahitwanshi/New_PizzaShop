@@ -8,13 +8,15 @@ public class MenuRepository : IMenu
 {
     private readonly PizzaShopContext _db;
     private readonly IUserList _userListRepository;
-    public MenuRepository(PizzaShopContext db , IUserList userListRepository)
+
+    // Constructor to initialize database context and user repository
+    public MenuRepository(PizzaShopContext db, IUserList userListRepository)
     {
         _db = db;
         _userListRepository = userListRepository;
     }
-    
 
+    // Retrieves a list of active categories sorted by name
     public List<Categories> GetCategories()
     {
         return _db.Categories
@@ -22,27 +24,29 @@ public class MenuRepository : IMenu
             .OrderBy(c => c.Categoryname)
             .Select(c => new Categories
             {
-                Categoryid = c.Categoryid,
+                CategoryId = c.Categoryid,
                 Categoryname = c.Categoryname,
                 Categorydescription = c.Categorydescription
             })
             .ToList();
     }
 
+    // Retrieves all available item units sorted by name
     public List<ItemsUnit> GetUnits()
     {
-      return _db.ItemsUnits
-          .OrderBy(i => i.Unitname)
-          .Select(i => new ItemsUnit
-          {
-              Unitid = i.Unitid,
-              Unitname = i.Unitname,
-             
-          })
-        .ToList(); 
-           
+        return _db.ItemsUnits
+            .OrderBy(i => i.Unitname)
+            .Select(i => new ItemsUnit
+            {
+                Unitid = i.Unitid,
+                Unitname = i.Unitname,
+
+            })
+          .ToList();
+
     }
-    
+
+    // Adds a new category to the database
     public void AddCategory(Category category)
     {
         var newCategory = new Category
@@ -54,6 +58,8 @@ public class MenuRepository : IMenu
         _db.Categories.Add(newCategory);
         _db.SaveChanges();
     }
+
+    // Retrieves a specific category by its ID
     public Categories GetCategoryById(int id)
     {
         var category = _db.Categories.FirstOrDefault(c => c.Categoryid == id);
@@ -61,12 +67,13 @@ public class MenuRepository : IMenu
 
         return new Categories
         {
-            Categoryid = category.Categoryid,
+            CategoryId = category.Categoryid,
             Categoryname = category.Categoryname,
             Categorydescription = category.Categorydescription
         };
     }
 
+    // Updates an existing category in the database
     public void UpdateCategory(Category category)
     {
         var existingCategory = _db.Categories.FirstOrDefault(c => c.Categoryid == category.Categoryid);
@@ -77,6 +84,8 @@ public class MenuRepository : IMenu
             _db.SaveChanges();
         }
     }
+
+    // Performs a soft delete on a category by marking it as deleted
     public bool SoftDeleteCategory(int categoryId)
     {
         var category = _db.Categories.FirstOrDefault(c => c.Categoryid == categoryId);
@@ -89,13 +98,14 @@ public class MenuRepository : IMenu
         return false;
     }
 
+    // Retrieves all items in a specific category
     public List<ItemsView> GetItemsByCategory(int categoryId)
     {
         return _db.Items
             .Where(i => i.Categoryid == categoryId && i.Isdeleted != true)
             .Select(i => new ItemsView
             {
-                Itemid = i.Itemid,
+                ItemId = i.Itemid,
                 Itemname = i.Itemname,
                 Rate = i.Rate,
                 Itemtype = i.Itemtype,
@@ -106,9 +116,13 @@ public class MenuRepository : IMenu
                 Categoryid = i.Categoryid
             }).ToList();
     }
-    public async Task<string> AddItems(AddItemsViewModel model){
-        Item Uniqueitem= _db.Items.FirstOrDefault(i=>i.Itemname==model.Itemname);
-        if(Uniqueitem!=null){
+
+    // Adds a new item to the menu if it does not already exist
+    public async Task<string> AddItems(AddItemsViewModel model)
+    {
+        Item Uniqueitem = _db.Items.FirstOrDefault(i => i.Itemname == model.Itemname);
+        if (Uniqueitem != null)
+        {
             return "Item already exists!";
         }
         var item = new Item
@@ -123,10 +137,10 @@ public class MenuRepository : IMenu
             Categoryid = model.CategoryId,
             Itemid = model.ItemId,
             Unitid = model.UnitId,
-            Defaulttax=model.Defaulttax,
-            Taxpercentage=model.Taxpercentage,
-            Shortcode=model.Shortcode
-            
+            Defaulttax = model.Defaulttax,
+            Taxpercentage = model.Taxpercentage,
+            Shortcode = model.Shortcode
+
         };
         _db.Add(item);
         await _db.SaveChangesAsync();

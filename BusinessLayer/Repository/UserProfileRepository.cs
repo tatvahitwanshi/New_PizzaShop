@@ -17,15 +17,19 @@ public class UserProfileRepository : IUserProfile
 {
     private readonly PizzaShopContext _db;
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IUserList _userListRepository;
 
 
-    public UserProfileRepository(PizzaShopContext db, IWebHostEnvironment webHostEnvironment)
+
+    public UserProfileRepository(PizzaShopContext db, IWebHostEnvironment webHostEnvironment,IUserList userListRepository)
     {
         _db = db;
         _webHostEnvironment = webHostEnvironment;
+        _userListRepository=userListRepository;
 
     }
 
+    // Retrieves user profile details
     public async Task<UserProfileViewModel> GetUserProfileAsync(string email)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -43,22 +47,22 @@ public class UserProfileRepository : IUserProfile
             Countryid = user.Countryid,
             Stateid = user.Stateid,
             Cityid = user.Cityid,
-            Profilepic =user.Profilepic,
+            Profilepic = user.Profilepic,
             CountryList = await _db.Countries.ToListAsync(),
             StateList = await _db.States.Where(country => country.Countryid == user.Countryid).ToListAsync(),
             CityList = await _db.Cities.Where(state => state.Stateid == user.Stateid).ToListAsync()
         };
     }
-    public IFormFile ConvertToIFormFile(string filePath)
-    {
-        if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-            return null;
+    // public IFormFile ConvertToIFormFile(string filePath)
+    // {
+    //     if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+    //         return null;
 
-        var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-        return new FormFile(stream, 0, stream.Length, "Profilepic", Path.GetFileName(filePath));
-    }
+    //     var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+    //     return new FormFile(stream, 0, stream.Length, "Profilepic", Path.GetFileName(filePath));
+    // }
 
-
+    // Updates user profile details
     public async Task<bool> UpdateUserProfileAsync(UserProfileViewModel model)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
@@ -79,16 +83,19 @@ public class UserProfileRepository : IUserProfile
         return true;
     }
 
+    // Retrieves states based on country ID
     public async Task<List<State>> GetStatesAsync(int countryId)
     {
         return await _db.States.Where(s => s.Countryid == countryId).ToListAsync();
     }
 
+    // Retrieves cities based on state ID
     public async Task<List<City>> GetCitiesAsync(int stateId)
     {
         return await _db.Cities.Where(c => c.Stateid == stateId).ToListAsync();
     }
 
+    // Changes the user's password after validation
     public async Task<bool> ChangePasswordAsync(string email, string oldPassword, string newPassword)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -101,20 +108,6 @@ public class UserProfileRepository : IUserProfile
         await _db.SaveChangesAsync();
         return true;
     }
-    public async Task<string?> UploadPhotoAsync(IFormFile photo)
-    {
-        if (photo == null || photo.Length == 0)
-            return null;
 
-        string folder = "userphoto/";
-        string uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
-        string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder, uniqueFileName);
-
-        using (var fileStream = new FileStream(serverFolder, FileMode.Create))
-        {
-            await photo.CopyToAsync(fileStream);
-        }
-
-        return "/" + folder + uniqueFileName;
-    }
+    
 }

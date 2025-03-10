@@ -34,11 +34,11 @@
                         <img src="~/images/profile_div_bg.jpg" alt="" style="height:100%; width:100%;">
                     </div>
                     <div class="container-fluid">
-                        <div class="row mt-3 ">
+                        <div class="row mt-3 position-relative">
                             @if (Model.Profilepic != null)
                             {
                                 <img src="@Url.Content(Model.Profilepic)" id="profile-pic1" alt=""
-                                    style="height: 8%; width: 6%;">
+                                    style="height: 9%; width: 7%;" class="d-xs-none d-sm-none d-lg-block ">
 
                             }
                             else
@@ -47,7 +47,8 @@
                                     style="height: 8%; width: 6%;">
 
                             }
-
+                            <i class="bi bi-camera rounded-5 position-absolute h5 mt-4 ms-5 camera d-xs-none d-sm-none d-lg-block " ></i>
+                            <input type="file" asp-for="Profilepic" class=" opacity-0 cameraimg position-absolute">
                             <div class="col " style="display: grid;">
                                 <span class="h2">@Model.Username</span>
                                 <span>@ViewData["Role"]</span>

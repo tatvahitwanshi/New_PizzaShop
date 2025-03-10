@@ -12,9 +12,10 @@ namespace BusinessLayer.Repository;
 public class UserListRepository : IUserList
 {
     private readonly PizzaShopContext _db;
-    private readonly IEmailService _emailService; // Assuming you have an EmailService
-
+    private readonly IEmailService _emailService;
     private readonly IWebHostEnvironment _webHostEnvironment;
+
+    // Constructor to initialize dependencies
     public UserListRepository(PizzaShopContext db, IEmailService emailService, IWebHostEnvironment webHostEnvironment)
     {
         _db = db;
@@ -23,14 +24,14 @@ public class UserListRepository : IUserList
 
     }
 
-
-    public async Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)> GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey,string email)
+    // Retrieves a paginated, sorted, and filtered list of users
+    public async Task<(List<UserListViewModel> UserList, int Count, int PageSize, int PageNumber, string SortBy, string SortOrder, string SearchKey)> GetUsers(int PageSize, int PageNumber, string sortBy, string sortOrder, string SearchKey, string email)
     {
-        var  userslist = (from user in _db.Users
+        var userslist = (from user in _db.Users
                          join role in _db.Roles on user.Roleid equals role.Roleid
-                         where user.Isdeleted == false&& user.Email!=email && (
-                         user.Firstname.ToLower().Contains(SearchKey) 
-                         
+                         where user.Isdeleted == false && user.Email != email && (
+                         user.Firstname.ToLower().Contains(SearchKey)
+
                          )
                          select new UserListViewModel
                          {
@@ -80,27 +81,32 @@ public class UserListRepository : IUserList
         return (userList, count, PageSize, PageNumber, sortBy, sortOrder, SearchKey);
     }
 
+    // Retrieves list of roles
     public List<Role> GetRoles()
     {
         return _db.Roles.ToList();
     }
 
+    // Retrieves list of countries
     public List<Country> GetCountries()
     {
         return _db.Countries.ToList();
     }
 
+    // Retrieves states based on country ID
     public List<State> GetStatesByCountry(int countryId)
     {
         return _db.States.Where(s => s.Countryid == countryId).ToList();
     }
 
+    // Retrieves cities based on state ID
     public List<City> GetCitiesByState(int stateId)
     {
         return _db.Cities.Where(c => c.Stateid == stateId).ToList();
     }
 
-     public async Task<string> AddUser(AddUserViewModel model, string email)
+    // Adds a new user
+    public async Task<string> AddUser(AddUserViewModel model, string email)
     {
         // Check if email already exists
         bool emailExists = await _db.Users.AnyAsync(u => u.Email == model.Email.ToLower());
@@ -145,10 +151,11 @@ public class UserListRepository : IUserList
 
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
-        
+
         return "User added successfully";
     }
 
+    // Sends an email for user registration
     public async Task<bool> AddUserEmail(string newEmail, string callbackUrl)
     {
         if (newEmail == null)
@@ -181,6 +188,7 @@ public class UserListRepository : IUserList
         return await _emailService.SendEmailAsync(user.Email, subject, message);
     }
 
+    // Retrieves user profile details
     public async Task<EditUserViewModel> GetUserProfileDetailsAsync(int userId)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Userid == userId);
@@ -205,6 +213,8 @@ public class UserListRepository : IUserList
 
         };
     }
+
+    // Updates user profile details
     public async Task<bool> EditUserProfileDetailsAsync(EditUserViewModel model)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
@@ -229,6 +239,8 @@ public class UserListRepository : IUserList
         await _db.SaveChangesAsync();
         return true;
     }
+
+    // Soft deletes a user
     public async Task DeleteUser(int userId)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Userid == userId);
@@ -240,6 +252,7 @@ public class UserListRepository : IUserList
         }
     }
 
+     // Uploads profile picture to the server
     public async Task<string?> UploadPhotoAsync(IFormFile photo)
     {
         if (photo == null || photo.Length == 0)

@@ -18,6 +18,7 @@ public class LoginRepository : ILogin
     private readonly GenerateJwtTokenHelper _jwtTokenHelper;
     private readonly IEmailService _emailService; // Assuming you have an EmailService
 
+    // Constructor to initialize dependencies
     public LoginRepository(PizzaShopContext db, GenerateJwtTokenHelper jwtTokenHelper, IEmailService emailService)
     {
         _db = db;
@@ -26,7 +27,7 @@ public class LoginRepository : ILogin
 
     }
 
-
+    // Authenticates user by verifying email and password
     public async Task<(User, string)> AuthenticateUserAsync(string email, string password)
     {
         var user = await Task.Run(() => _db.Users.FirstOrDefault(u => u.Email == email.ToLower()));
@@ -36,35 +37,24 @@ public class LoginRepository : ILogin
         return user.Password == hashedPassword ? (user, "Login Successfull") : (null, "Wrong password");
     }
 
+    // Generates a JWT token and sets it in HTTP cookies
     public async Task<string> GenerateJwtTokenAsync(string email, int roleId, HttpResponse response, bool rememberMe)
     {
-        
+
         var userRole = _db.Roles.FirstOrDefault(r => r.Roleid == roleId);
         if (userRole == null) return null;
-        
+
 
         var token = _jwtTokenHelper.GenerateJwtToken(email, userRole.Rolename);
-        if (rememberMe == true)
-        {
-            response.Cookies.Append("JWTLogin", token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(30)
-            });
-        }
-        else
-        {
-            response.Cookies.Append("JWTLogin", token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(1)
-            });
-        }
 
+        // Sets JWT token in cookies based on 'remember me' preference
+        response.Cookies.Append("JWTLogin", token, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = rememberMe ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(1)
+        });
         if (rememberMe)
         {
             response.Cookies.Append("UserEmail", email, new CookieOptions
@@ -77,9 +67,10 @@ public class LoginRepository : ILogin
         }
         return token;
 
-    
+
     }
 
+    // Generates a reset email token and stores it in HTTP cookies
     public async Task<string> ResetEmailToken(string email, int roleId, HttpResponse response, bool rememberMe)
     {
         var token1 = _jwtTokenHelper.GenerateJwtToken(email, "");
@@ -88,12 +79,14 @@ public class LoginRepository : ILogin
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddMinutes(1)
+            Expires = DateTime.UtcNow.AddMinutes(60)
         });
         return token1;
 
-    
+
     }
+
+    // Sends a password reset email with a reset link
     public async Task<bool> ForgotPasswordAsync(ForgetPasswordViewModel model, string callbackUrl)
     {
         if (model == null)
@@ -120,6 +113,8 @@ public class LoginRepository : ILogin
 
         return await _emailService.SendEmailAsync(user.Email, subject, message);
     }
+
+    // Resets user password after verification
     public async Task<bool> ResetPasswordAsync(string email, string newPassword)
     {
         try
@@ -141,25 +136,27 @@ public class LoginRepository : ILogin
             return false;
         }
     }
-     public async Task<TokenViewModel> ValidateToken(string ResetToken)
+
+    // Validates a reset token and checks its expiration
+    public async Task<TokenViewModel> ValidateToken(string ResetToken)
     {
         TokenViewModel token = new TokenViewModel();
         try
         {
-            
+
             var handler = new JwtSecurityTokenHandler();
             var JwtToken = handler.ReadJwtToken(ResetToken);
 
             Console.WriteLine(JwtToken.ValidTo);
             Console.WriteLine(DateTime.UtcNow);
-            if (JwtToken.ValidTo <DateTime.UtcNow)
+            if (JwtToken.ValidTo < DateTime.UtcNow)
             {
                 token.valid = false;
                 return token;
             }
 
             // token.Email = JwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "unknown";
-            token.valid=true;
+            token.valid = true;
             return token;
         }
         catch (Exception ex)

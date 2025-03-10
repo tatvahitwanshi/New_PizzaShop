@@ -15,12 +15,14 @@ namespace PizzaShopApp.Controllers
         private readonly ILogin _loginRepository;
         private readonly ILogger<LoginController> _logger;
 
+         // Constructor to initialize login repository and logger
         public LoginController(ILogin loginRepository, ILogger<LoginController> logger)
         {
             _loginRepository = loginRepository;
             _logger = logger;
         }
 
+         // Displays the login page, redirects if user email cookie exists
         public IActionResult LoginView()
         {
             String req_cookie = Request.Cookies["UserEmail"];
@@ -31,6 +33,7 @@ namespace PizzaShopApp.Controllers
             return View();
         }
 
+         // Handles user login authentication
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel user)
@@ -64,12 +67,14 @@ namespace PizzaShopApp.Controllers
             }
         }
 
+        // Displays the forgot password page
         public IActionResult ForgotPasswordView(string email)
         {
             ViewData["email"] = string.IsNullOrEmpty(email) ? "" : email;
             return View();
         }
 
+        // Forgot password post method
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgetPasswordViewModel model)
         {
@@ -103,12 +108,14 @@ namespace PizzaShopApp.Controllers
             }
         }
 
+         // Displays the reset password page
         public IActionResult ResetPasswordView(string token1)
         {
             ViewData["ResetPasswordEmail"]=token1;
             return View();
         }
 
+        //Reset password post method
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
@@ -153,6 +160,7 @@ namespace PizzaShopApp.Controllers
             return View("ResetPasswordView", model);
         }
 
+        // Logs out the user by clearing authentication cookies
         public IActionResult Logout()
         {
             Response.Cookies.Delete("JWTLogin");
@@ -161,6 +169,8 @@ namespace PizzaShopApp.Controllers
             Response.Cookies.Delete("UserName");
             return View("LoginView");
         }
+        
+        // Displays access denied page
         public IActionResult AccessDenied()
         {
             return View();

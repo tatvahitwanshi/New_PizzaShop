@@ -8,20 +8,26 @@ namespace PizzashopRMS.Controllers;
 public class MenuController : Controller
 {
     private readonly IMenu _menu;
+
+    // Constructor to initialize menu service
     public MenuController(IMenu menu)
     {
         _menu = menu;
     }
+
+     // Displays the menu view with categories, items, and units
     public IActionResult MenuView()
     {
         var model = new MenuViewModel();
 
         model.Categories = _menu.GetCategories();
-        model.Items = _menu.GetItemsByCategory(model.Categories[0].Categoryid); // Pass items for a default category or all items
+        model.Items = _menu.GetItemsByCategory(model.Categories[0].CategoryId); // Pass items for a default category or all items
         model.ItemsUnit = _menu.GetUnits();
 
         return View(model);
     }
+    
+    // Adds a new category
     [HttpPost]
     public IActionResult AddCategory(Category category)
     {
@@ -38,6 +44,8 @@ public class MenuController : Controller
         }
         return View("MenuView");
     }
+    
+    // Fetches category details for editing
     public IActionResult EditCategory(int id)
     {
         var category = _menu.GetCategoryById(id);
@@ -47,12 +55,13 @@ public class MenuController : Controller
         }
         return Json(new
         {
-            categoryid = category.Categoryid,
+            categoryid = category.CategoryId,
             categoryname = category.Categoryname,
             categorydescription = category.Categorydescription
         });
     }
 
+    // Updates an existing category
     [HttpPost]
     public IActionResult UpdateCategory(Categories category)
     {
@@ -62,7 +71,7 @@ public class MenuController : Controller
             {
                 var updatedCategory = new Category
                 {
-                    Categoryid = category.Categoryid,
+                    Categoryid = category.CategoryId,
                     Categoryname = category.Categoryname,
                     Categorydescription = category.Categorydescription
                 };
@@ -83,6 +92,7 @@ public class MenuController : Controller
         return RedirectToAction("MenuView");
     }
 
+    // Soft deletes a category
     [HttpPost]
     public IActionResult DeleteCategory(int categoryId)
     {
@@ -98,6 +108,8 @@ public class MenuController : Controller
             return Json(new { success = false });
         }
     }
+    
+     // Retrieves items based on selected category
     public IActionResult GetItemsByCategory(int categoryId)
     {
         var model = new MenuViewModel
@@ -109,15 +121,14 @@ public class MenuController : Controller
         return PartialView("~/Views/Menu/_PartialItems.cshtml", model);
     }
 
+     // Displays the view for adding new items
     [HttpGet]
     public IActionResult AddItemsView()
     {
-        // var model = new MenuViewModel();
-        // model.Categories = _menu.GetCategories();
-        // model.ItemsUnit = _menu.GetUnits();
         return PartialView("~/Views/Menu/_PartialItems.cshtml");
     }
 
+    // Adds a new item 
     [HttpPost]
     public async Task<JsonResult> AddItemsPost(AddItemsViewModel model)
     {

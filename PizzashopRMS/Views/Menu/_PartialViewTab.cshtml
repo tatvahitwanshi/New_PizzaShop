@@ -17,7 +17,7 @@
                     {
                         <a class="justify-content-start align-items-center category-inner-box mt-2 text-reset"
                             style="text-decoration: none;" href="javascript:void(0);"
-                            onclick="LoadPartialView(@category.Categoryid)">
+                            onclick="LoadPartialView(@category.CategoryId)">
 
                             <div class="mb-3 name-sidebar ms-1 active-name" id="category-container">
                                 <img src="~/images/logos/sixdot.png" alt="" style="width:20px; height: 15px;"
@@ -26,13 +26,13 @@
 
                                 
                                     <a class="editButtom" href="javascript:void(0);" style="text-decoration: none; color: grey;"
-                                        id="editCategory" onclick="openEditModal(@category.Categoryid)"
+                                        id="editCategory" onclick="openEditModal(@category.CategoryId)"
                                         data-bs-target="#staticBackdrop2" data-bs-toggle="modal">
                                         <i class="bi bi-pen float-end"></i>
                                     </a>
                                     <a class="deleteButton" href="javascript:void(0);" style="text-decoration: none; color: grey;"
                                         data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                        onclick="openDeleteModal(@category.Categoryid)">
+                                        onclick="openDeleteModal(@category.CategoryId)">
                                         <i class="bi bi-trash float-end"></i>
                                     </a>
                                 

@@ -17,26 +17,9 @@
 </head>
 
 <body>
-    @* <partial name="_Navbar.cshtml" style="position:sticky ;top:0 ; left: 0;"/>  *@
-    <div class="" style="position: sticky; top: 0; left: 0;  ">
-        @Html.Partial("_Navbar.cshtml")
-    </div>
-    @* @Html.Partial("_Navbar.cshtml")  *@
-    <div class="d-flex ">
-        <!-- sidebar -->
-        <div class="" style="position: fixed; top:70px; ">
-            @* overflow-y: auto; *@
-            @Html.Partial("_Sidebar.cshtml")
-        </div>
-        @* @Html.Partial("_Sidebar.cshtml")  *@
-        <!-- Main block  -->
-        <div class="border  main-block" style="">
-
-            <partial name="_Notification.cshtml" />
-            @RenderBody()
-        </div>
-    </div>
-    @* @Html.Partial("_Navbar.cshtml")
+   
+    
+    @Html.Partial("_Navbar.cshtml")
     <div class="d-flex ">
         <!-- sidebar -->
         @Html.Partial("_Sidebar.cshtml")
@@ -45,7 +28,7 @@
             <partial name="_Notification.cshtml" />
             @RenderBody()
         </div>
-    </div> *@
+    </div>
 
 
 

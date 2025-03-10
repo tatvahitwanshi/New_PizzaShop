@@ -14,7 +14,7 @@ public class MenuViewModel
 }
 public class Categories
 {
-    public int Categoryid { get; set; }
+    public int CategoryId { get; set; }
     public string Categoryname { get; set; } = null!;
     public string? Categorydescription { get; set; }
     public bool? Isdeleted { get; set; }
@@ -23,7 +23,7 @@ public class Categories
 
 public class ItemsView
 {
-    public int Itemid { get; set; }
+    public int ItemId { get; set; }
 
     public string Itemname { get; set; } = null!;
 

@@ -7,11 +7,15 @@ namespace PizzashopRMS.Controllers;
 public class RolesAndPermissionController : Controller
 {
     private readonly IRolesAndPermission _roleAndPermission;
-    public RolesAndPermissionController(IRolesAndPermission rolesAndPermission)
+    private readonly ILogger<RolesAndPermissionController> _logger;
+
+    public RolesAndPermissionController(IRolesAndPermission rolesAndPermission, ILogger<RolesAndPermissionController> logger)
     {
         _roleAndPermission = rolesAndPermission;
+        _logger = logger;
     }
 
+    // Fetch and display all roles
     [HttpGet]
     public async Task<IActionResult> RoleView()
     {
@@ -19,26 +23,39 @@ public class RolesAndPermissionController : Controller
         return View(roles);
     }
 
-
+    // Fetch and display permissions for a given role
     [HttpGet]
     public async Task<IActionResult> PermissionView(int roleid)
     {
-        var role = await _roleAndPermission.GetRoleByIdAsync(roleid);
-        var permissions = await _roleAndPermission.GetPermissionsByRoleIdAsync(roleid);
-
-        var viewModel = new PermissionViewModel
+        try
         {
-            Roleid = roleid,
-            CreatedBy = "Admin",
-            CreatedDate = DateTime.Now,
-            IsEnable = true
-        };
+            var role = await _roleAndPermission.GetRoleByIdAsync(roleid);
+            var permissions = await _roleAndPermission.GetPermissionsByRoleIdAsync(roleid);
 
-        ViewBag.RoleName = role?.Rolename;
-        ViewBag.Permissions = permissions; // Pass permissions to the view
+            var viewModel = new PermissionViewModel
+            {
+                Roleid = roleid,
+                CreatedBy = "Admin",
+                CreatedDate = DateTime.Now,
+                IsEnable = true
+            };
 
-        return View(viewModel);
+            ViewBag.RoleName = role?.Rolename;
+            ViewBag.Permissions = permissions; // Pass permissions to the view
+
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error fetching permissions for RoleId {roleid}");
+            TempData["error"] = "An error occurred while fetching permissions.";
+            return RedirectToAction("RoleView");
+        }
+
+
     }
+
+    // Update permissions for a role
     [HttpPost]
     public async Task<IActionResult> UpdatePermissionView(PermissionUpdateRequest model)
     {
@@ -57,6 +74,7 @@ public class RolesAndPermissionController : Controller
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error while updating permissions.");
             TempData["error"] = "An error occurred while updating permissions: " + ex.Message;
         }
 

@@ -11,38 +11,53 @@ namespace PizzashopRMS.Controllers;
 public class UserListController : Controller
 {
     private readonly IUserList _userListRepository;
+    private readonly ILogger<UserListController> _logger;
 
-    public UserListController(IUserList userListRepository)
+
+    public UserListController(IUserList userListRepository, ILogger<UserListController> logger)
     {
         _userListRepository = userListRepository;
+        _logger = logger;
     }
 
+    // Retrieves user list with pagination, sorting, and search functionality
     [HttpGet]
     public async Task<IActionResult> UserListView(int PageSize = 5, int PageNumber = 1, string sortBy = "name", string sortOrder = "asc", string SearchKey = "")
     {
-        var token = Request.Cookies["JWTLogin"];
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-        var email = jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
-
-        // Get data from repository (returns a tuple)
-        var (users, count, pageSize, pageNumber, sortColumn, sortDirection, searchKey) = await _userListRepository.GetUsers(PageSize, PageNumber, sortBy, sortOrder, SearchKey, email);
-
-        // Store metadata in ViewData (converted to correct types)
-        ViewData["sortBy"] = sortColumn;
-        ViewData["sortOrder"] = sortDirection;
-        ViewData["PageSize"] = pageSize;
-        ViewData["PageNumber"] = pageNumber;
-        ViewData["SearchKey"] = searchKey;
-        ViewData["Count"] = count;  // Total user count for pagination
-        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        try
         {
-            return PartialView("_PartialUserList", users); // Return partial view for AJAX
+            var token = Request.Cookies["JWTLogin"];
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var email = jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
+
+            // Get data from repository (returns a tuple)
+            var (users, count, pageSize, pageNumber, sortColumn, sortDirection, searchKey) = await _userListRepository.GetUsers(PageSize, PageNumber, sortBy, sortOrder, SearchKey, email);
+
+            // Store metadata in ViewData (converted to correct types)
+            ViewData["sortBy"] = sortColumn;
+            ViewData["sortOrder"] = sortDirection;
+            ViewData["PageSize"] = pageSize;
+            ViewData["PageNumber"] = pageNumber;
+            ViewData["SearchKey"] = searchKey;
+            ViewData["Count"] = count;  // Total user count for pagination
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_PartialUserList", users); // Return partial view for AJAX
+            }
+            // Pass only the user list (List<UserListViewModel>) to the View
+            return View(users);
         }
-        // Pass only the user list (List<UserListViewModel>) to the View
-        return View(users);
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching user list.");
+            TempData["error"] = "An error occurred while retrieving the user list.";
+            return RedirectToAction("UserListView");
+        }
+
     }
 
+    // Returns the view for adding a new user
     [HttpGet]
     public IActionResult AddUserView()
     {
@@ -56,6 +71,7 @@ public class UserListController : Controller
 
         return View(model);
     }
+
     // Fetch states based on selected country
     [HttpGet]
     public JsonResult GetStates(int countryId)
@@ -72,15 +88,26 @@ public class UserListController : Controller
         return Json(cities);
     }
 
+    // Retrieves user email from JWT token stored in cookies
     private string GetUserEmailFromToken()
     {
-        var token = Request.Cookies["JWTLogin"];
-        if (string.IsNullOrEmpty(token)) return "";
+        try
+        {
+            var token = Request.Cookies["JWTLogin"];
+            if (string.IsNullOrEmpty(token)) return "";
 
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-        return jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            return jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value ?? "";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error reading JWT token.");
+            return "";
+        }
     }
+
+    // Adds a new user to the system and sends an email notification
     [HttpPost]
     public async Task<IActionResult> AddUserViewAsync(AddUserViewModel model)
     {
@@ -88,47 +115,68 @@ public class UserListController : Controller
         {
             return View(model);
         }
-
-        string email = GetUserEmailFromToken();
-        string resultMessage = await _userListRepository.AddUser(model, email);
-
-        TempData["message"] = resultMessage; // Store the message for toast notification
-
-        if (resultMessage != "User added successfully")
+        try
         {
-            TempData["error"] = resultMessage;
+            string email = GetUserEmailFromToken();
+            string resultMessage = await _userListRepository.AddUser(model, email);
+
+            TempData["message"] = resultMessage; // Store the message for toast notification
+
+            if (resultMessage != "User added successfully")
+            {
+                TempData["error"] = resultMessage;
+                return RedirectToAction("UserListView");
+            }
+
+            string callbackUrl = Url.ActionLink("UserListView", "UserList");
+            string newEmail = model.Email;
+            bool isEmailSent = await _userListRepository.AddUserEmail(newEmail, callbackUrl);
+
+            if (isEmailSent)
+            {
+                TempData["success"] = "New user is added successfully, and an email has been sent!";
+            }
+            else
+            {
+                TempData["error"] = "Email could not be sent!";
+            }
+
+            return RedirectToAction("UserListView");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while adding user.");
+            TempData["error"] = "An error occurred while adding the user.";
             return RedirectToAction("UserListView");
         }
 
-        string callbackUrl = Url.ActionLink("UserListView", "UserList");
-        string newEmail = model.Email;
-        bool isEmailSent = await _userListRepository.AddUserEmail(newEmail, callbackUrl);
 
-        if (isEmailSent)
-        {
-            TempData["success"] = "New user is added successfully, and an email has been sent!";
-        }
-        else
-        {
-            TempData["error"] = "Email could not be sent!";
-        }
-
-        return RedirectToAction("UserListView");
     }
 
+    // Retrieves the details of a user for editing
     [HttpGet]
     public async Task<IActionResult> EditUserView(int userId)
     {
+        try
+        {
+            var model = await _userListRepository.GetUserProfileDetailsAsync(userId);
+            if (model == null) return NotFound("User Not Found");
+            model.Roles = _userListRepository.GetRoles();
+            model.Countries = _userListRepository.GetCountries();
+            model.States = _userListRepository.GetStatesByCountry(model.Countryid);
+            model.Cities = _userListRepository.GetCitiesByState(model.Stateid);
+            return View(model);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching user details.");
+            TempData["error"] = "An error occurred while retrieving user details.";
+            return RedirectToAction("UserListView");
+        }
 
-        var model = await _userListRepository.GetUserProfileDetailsAsync(userId);
-        if (model == null) return NotFound("User Not Found");
-        model.Roles = _userListRepository.GetRoles();
-        model.Countries = _userListRepository.GetCountries();
-        model.States = _userListRepository.GetStatesByCountry(model.Countryid);
-        model.Cities = _userListRepository.GetCitiesByState(model.Stateid);
-        return View(model);
     }
 
+    // Updates user profile details
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditUserProfileView(EditUserViewModel model)
@@ -140,29 +188,48 @@ public class UserListController : Controller
             TempData["error"] = "Enter data was not proper";
             return RedirectToAction("EditUserView");
         }
-
-
-        var success = await _userListRepository.EditUserProfileDetailsAsync(model);
-        if (success)
+        try
         {
-            TempData["success"] = "User Updated Successfully";
-            return RedirectToAction("UserListView");
+            var success = await _userListRepository.EditUserProfileDetailsAsync(model);
+            if (success)
+            {
+                TempData["success"] = "User Updated Successfully";
+                return RedirectToAction("UserListView");
+            }
+            else
+            {
+                TempData["Error"] = "Failed to update user.";
+                ModelState.AddModelError("", "Failed to update user.");
+                return View("UserListView", model);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            TempData["Error"] = "Failed to update user.";
-            ModelState.AddModelError("", "Failed to update user.");
-            return View("UserListView", model);
+            _logger.LogError(ex, "Error updating user profile.");
+            TempData["error"] = "An error occurred while updating the user profile.";
+            return RedirectToAction("UserListView", model);
         }
-
 
     }
 
+    // Deletes a user 
     [HttpPost]
     public async Task<IActionResult> DeleteUser(int userId)
     {
-        await _userListRepository.DeleteUser(userId);
+        try
+        {
+            await _userListRepository.DeleteUser(userId);
+            TempData["success"] = "User deleted successfully.";
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting user.");
+            TempData["error"] = "An error occurred while deleting the user.";
+        }
+
         return RedirectToAction("UserListView");
+
     }
 
 }

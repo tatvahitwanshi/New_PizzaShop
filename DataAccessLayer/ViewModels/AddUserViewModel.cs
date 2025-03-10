@@ -20,6 +20,7 @@ public class AddUserViewModel
 
     public IFormFile? Profilepic { get; set; }
 
+    [Required]
     public int? Zipcode { get; set; }
     [Required]
     public string? Address { get; set; }

@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using PizzashopRMS.Helpers;
 
 namespace PizzashopRMS.Controllers;
-[CustomAuthorise(new string[] { "admin" })]
 
+// dashboard view and applies authorization for admin users.
+[CustomAuthorise(new string[] { "admin" })]
 public class DashboardController : Controller
 {
-    // [CustomAuthorise(new string[] { "admin" })]
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult DashboardView()
     {

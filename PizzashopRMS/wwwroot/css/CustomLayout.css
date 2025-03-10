@@ -1,9 +1,51 @@
-.main-block{
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Make the Navbar Sticky */
+.navbar {
+    height: 70px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: #0066A7;
+    left: 0;
+     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Make the Sidebar Fixed */
+.sidebar {
+    font-weight: 500;
+    letter-spacing: 1.10px;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    height: 100vh;
+    width: 250px; /* Adjust width as needed */
+    /* z-index: 1000; */
+    overflow-y: auto; /* Allows scrolling if sidebar content exceeds screen height */
+}
+
+
+/* Push main content to the right of the fixed sidebar */
+.main-block {
+    margin-left: 250px; /* Should match sidebar width */
     flex-grow: 1;
     height: 100vh;
-    background-color: #6c757d23; 
-    margin-left: 250px;
+    background-color: #6c757d23;
+    overflow-y: auto; /* Enables scrolling for the main content */
     @media screen and (max-width:991px) {
         margin-left: 0;
     }
 }
+
+
+/* .sidebar.offcanvas-backdrop{
+    opacity: 0 !important;
+}
+.modal-backdrop.show {
+    opacity: 0 !important;
+} */
