@@ -9,11 +9,11 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PizzashopRMS
 build_property.RootNamespace = PizzashopRMS
-build_property.ProjectDir = d:\New_PizzaShop\PizzashopRMS\
+build_property.ProjectDir = D:\New_PizzaShop\PizzashopRMS\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = d:\New_PizzaShop\PizzashopRMS
+build_property.MSBuildProjectDirectory = D:\New_PizzaShop\PizzashopRMS
 build_property._RazorSourceGeneratorDebug = 
 
 [D:/New_PizzaShop/PizzashopRMS/Views/DashboardChef/DashboardChefView.cshtml]
@@ -54,6 +54,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/New_PizzaShop/PizzashopRMS/Views/Menu/_PartialItems.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxfUGFydGlhbEl0ZW1zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New_PizzaShop/PizzashopRMS/Views/Menu/_PartialModifier.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxfUGFydGlhbE1vZGlmaWVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New_PizzaShop/PizzashopRMS/Views/Menu/_PartialViewModifier.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVudVxfUGFydGlhbFZpZXdNb2RpZmllci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/New_PizzaShop/PizzashopRMS/Views/Menu/_PartialViewTab.cshtml]

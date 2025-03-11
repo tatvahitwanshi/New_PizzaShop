@@ -117,3 +117,27 @@
     }
 }
 
+#additemModal .form-floating>label {
+    position: absolute;
+    top: 0;
+    left: 10px !important;
+    opacity: 0.65;
+}
+
+#edititemModal .form-floating>label {
+    position: absolute;
+    top: 0;
+    left: 10px !important;
+    opacity: 0.65;
+}
+
+
+#category-container .editButtom,
+#category-container .deleteButton {
+    display: none;
+}
+
+#category-container:hover .editButtom,
+#category-container:hover .deleteButton {
+    display: inline-block;
+}

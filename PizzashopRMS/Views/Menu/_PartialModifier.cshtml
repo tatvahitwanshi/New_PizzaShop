@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col">
         <span class="h4 fw-bold " style="color: #0066A7;" data-bs-toggle="offcanvas" href="#offcanvasExample1"
-            role="button1" aria-controls="offcanvasExample1">Items</span>
+            role="button1" aria-controls="offcanvasExample1">Modifiers</span>
     </div>
 </div>
 <div class="row">
@@ -12,18 +12,16 @@
         <form class="d-flex " role="search">
             <div class="d-flex  me-2 p-1 position-relative">
                 <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
-                    aria-label="Search" id="searchInputItem" value="@Model.Items.SearchKey"
-                    onkeydown="searchItemsEnter(event)">
-
+                    aria-label="Search">
                 <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
-                    class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16" onclick="searchItems()">
+                    class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16">
                     <path
                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                 </svg>
             </div>
             <div class="  btn border " id="massDeleteBtn"><i class="bi bi-trash h4 text-muted"></i></div>
             <button class="btn text-white d-none d-md-block ms-2" style=" background-color: #0066A7;" type="button"
-                data-bs-toggle="modal" data-bs-target="#additemModal">
+                data-bs-toggle="modal" data-bs-target="#addModifieritemModal">
                 +New Item</button>
             <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;">+</button>
         </form>
@@ -38,55 +36,34 @@
                         <th scope="col"><input class="form-check-input main-check" type="checkbox" value=""
                                 id="selectAllCheckbox"></th>
                         <th scope="col">Name</th>
-                        <th scope="col">Item Type</th>
+                        <th scope="col">Unit</th>
                         <th scope="col">Rate </th>
                         <th scope="col">Quantity</th>
-                        <th scope="col">Available</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody id="itemsTableBody">
-                    @foreach (var item in Model.Items.List)
+                    @foreach (var item in Model.ModifierItemViewModel)
                     {
                         <tr>
                             <td>
-                                <input class="form-check-input inner-check" type="checkbox" data-id="@item.ItemId">
+                                <input class="form-check-input inner-check" type="checkbox" data-id="@item.ModifierItemId">
                             </td>
                             <td>
-                                @if (item.Itemimage != null)
-                                {
-                                    <img src="@Url.Content(item.Itemimage)" alt="" width="30px">
-
-                                }
-                                else
-                                {
-                                    <img src="~/images/dining-menu.png" alt="" width="30px">
-
-                                }
-                                @* src="@item.Itemimage" *@
-                                @item.Itemname
+                                @item.ModifierItemName
                             </td>
-                            <td>
-                                <img src="~/images/icons/@(item.Itemtype == "veg" ? "veg-icon.svg" : "non-veg-icon.svg")"
-                                    width="20px" alt="">
-                            </td>
+                            <td>@item.ModifierUnitname</td>
                             <td>@item.Rate</td>
                             <td>@item.Quantity</td>
                             <td>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" style="width: 2.5rem; height: 25px;" type="checkbox"
-                                        role="switch" @(item.Isavailable ?? false ? "checked" : "")>
-                                </div>
-                            </td>
-                            <td>
                                 <div class="d-flex">
                                     <a href="#" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                        data-bs-target="#edititemModal" onclick="GetItemDetails(@item.ItemId)">
+                                        data-bs-target="#edititemModal" onclick="GetItemDetails(@item.ModifierItemId)">
                                         <i class="bi bi-pen"></i>
                                     </a>
                                     <a href="#" class="ms-4" style="text-decoration: none; color: grey;"
                                         data-bs-toggle="modal" data-bs-target="#itemdeleteModal"
-                                        onclick="openItemDeleteModal(@item.ItemId)"><i class="bi bi-trash"></i></a>
+                                        onclick="openItemDeleteModal(@item.ModifierItemId)"><i class="bi bi-trash"></i></a>
                                 </div>
                             </td>
                         </tr>
@@ -95,62 +72,38 @@
 
             </table>
         </div>
-        <div class="main-pagination ">
+        <div class="main-pagination  ">
             <div class="item-show ">
                 <nav aria-label="Page navigation example">
                     <div class="pagination ">
                         <span class="align-self-center">Items Per Page
                             :</span>
                         <select class="form-select form-select-sm ms-2 align-self-center"
-                            aria-label="Small select example" style=" width: unset; " id="pageSizeDropdownItem"
-                            onchange="updatePageSize()">
-                            @if (Model.Items.PageSize != null)
-                            {
-                                <option value="1" selected="@(Model.Items.PageSize == 1 ? true : false)">1</option>
-                                <option value="3" selected="@(Model.Items.PageSize == 3 ? true : false)">3</option>
-                                <option value="5" selected="@(Model.Items.PageSize == 5 ? true : false)">5</option>
-                                <option value="10" selected="@(Model.Items.PageSize == 10 ? true : false)">10</option>
-                                <option value="25" selected="@(Model.Items.PageSize == 25 ? true : false)">25</option>
-                            }
+                            aria-label="Small select example" style=" width: unset; ">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
                         </select>
-
                     </div>
                 </nav>
             </div>
             <div class="showing-page">
                 <nav aria-label="Page navigation example">
                     <div class="pagination ">
-                        <span class=" ms-2  align-self-center">Showing
-                            @{
-                                var startRecord = (Model.Items.PageNumber - 1) * Model.Items.PageSize + 1;
-                                var endRecord = Model.Items.PageNumber * Model.Items.PageSize;
-                                if (endRecord > Model.Items.Count)
-                                    endRecord = Model.Items.Count;
-
-                                if (Model.Items.Count == 0)
-                                {
-                                    startRecord = 0;
-                                    endRecord = 0;
-                                }
-                            }
-                            <span style="color: green;" class="me-1">@startRecord - @endRecord</span> of <span
-                                style="color: red;" class="ms-1">@Model.Items.Count</span>
-                        </span>
-                        <button class="btn border ms-2  align-self-center" type="submit"><i class="bi bi-chevron-left "
-                                onclick="PanginationBtn('back')"></i>
+                        <span class=" ms-2  align-self-center">Showing 1-5
+                            of 13</span>
+                        <button class="btn border ms-2  align-self-center" type="submit"><i
+                                class="bi bi-chevron-left "></i>
                         </button>
-                        <button class="btn border ms-2  align-self-center" type="submit"><i class="bi bi-chevron-right"
-                                onclick="PanginationBtn('next')"></i>
+                        <button class="btn border ms-2  align-self-center" type="submit"><i
+                                class="bi bi-chevron-right"></i>
                         </button>
                     </div>
                 </nav>
             </div>
-
         </div>
     </div>
 </div>
-
-
 
 @* Add Item Modal *@
 <div class="modal fade" id="additemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -479,247 +432,77 @@
 </div>
 
 
+<div class="modal fade" id="addModifieritemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel aria-hidden=" true">
+    <div class="modal-dialog modal-dialog-centered w-75" style="max-width: 100% !important">
+        <div class="modal-content p-4">
+            <h5 class="modal-title">Update Modifier</h5>
+            <form>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select" id="modifierGroup">
+                                <option selected>Select Modifier Group(s)</option>
+                                <option value="1">Group 1</option>
+                                <option value="2">Group 2</option>
+                            </select>
+                            <label for="modifierGroup">Select Modifier Group(s)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="name" placeholder="Name" value="Large">
+                            <label for="name">Name*</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="rate" placeholder="Rate" value="300">
+                            <label for="rate">Rate*</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="quantity" placeholder="Quantity" value="1">
+                            <label for="quantity">Quantity*</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select" id="unit">
+                                <option selected>Pieces</option>
+                                <option value="kg">Kilograms</option>
+                                <option value="ltr">Liters</option>
+                            </select>
+                            <label for="unit">Unit*</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            <textarea class="form-control" id="description" placeholder="Description"
+                                style="height: 80px;">large</textarea>
+                            <label for="description">Description</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                   <button type="submit" id="savebtn" class="btn text-white" style="background-color: #0066A7;"
+                        type="submit">Save</button>
+                    <button type="button" class="btn ms-2"
+                        style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
+                        data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap Bundle (includes Popper.js) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-
-    function updatePageSize() {
-        var pageSize = $("#pageSizeDropdownItem").val();
-        var SearchKey = $("#searchInputItem").val();
-        console.log("Page Size:", pageSize);
-        $.ajax({
-            url: '@Url.Action("GetItemsByCategory", "Menu")',
-            type: 'GET',
-            data: { categoryId: @Model.Items.ParentId , PageSize: pageSize, SearchKey: SearchKey },
-            success: function (data) {
-
-                $("#itemsContainer").html(data);
-            },
-            error: function (error) {
-                console.error('Error loading partial view:', error);
-                $("#itemsContainer").html("<p>Error loading items.</p>");
-            }
-        });
-    }
-
-    function PanginationBtn(direction, element) {
-        var pageSize = $("#pageSizeDropdownItem").val();
-        var SearchKey = $("#searchInputItem").val();
-        var pageNumber = @Model.Items.PageNumber;
-        if (direction == "back") {
-
-            pageNumber = pageNumber - 1;
-        } else {
-
-            pageNumber = pageNumber + 1;
-
-        }
-        console.log("Page Number:", pageNumber);
-        $.ajax({
-            url: '@Url.Action("GetItemsByCategory", "Menu")',
-            type: 'GET',
-            data: { categoryId: @Model.Items.ParentId, PageSize: pageSize, SearchKey: SearchKey, PageNumber: pageNumber },
-            success: function (data) {
-                $("#itemsContainer").html(data);
-            },
-            error: function (error) {
-                console.error('Error loading partial view:', error);
-                $("#itemsContainer").html("<p>Error loading items.</p>");
-            }
-        });
-
-    }
-    function searchItemsEnter(event) {
-        if (event.key === "Enter") {  // Correct way to check Enter key
-            searchItems();
-        }
-    }
-    function searchItems() {
-        var pageSize = $("#pageSizeDropdownItem").val();
-        var SearchKey = $("#searchInputItem").val();
-        console.log("Search Key:", SearchKey);
-        $.ajax({
-            url: '@Url.Action("GetItemsByCategory", "Menu")',
-            type: 'GET',
-            data: { categoryId: @Model.Items.ParentId, PageSize: pageSize, SearchKey: SearchKey },
-            success: function (data) {
-                $("#itemsContainer").html(data);
-            },
-            error: function (error) {
-                console.error('Error loading partial view:', error);
-                $("#itemsContainer").html("<p>Error loading items.</p>");
-            }
-        });
-    }
-
-
-    document.getElementById("defaultTaxToggle").addEventListener("change", function () {
-        if (this.checked) {
-            this.value = "true";
-        } else {
-            this.value = "false";
-        }
-    });
-    document.getElementById("availableToggle").addEventListener("change", function () {
-        if (this.checked) {
-            this.value = "true";
-        } else {
-            this.value = "false";
-        }
-    });
-    $(document).ready(function () {
-        $(document).on('click', '#savebtn', function (e) {
-            e.preventDefault();
-
-            var formElement = document.querySelector(".additemform"); // Correct the form selector
-            var formData = new FormData(formElement);
-
-            $.ajax({
-                url: '@Url.Action("AddItemsPost", "Menu")',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    if (data.success) {
-                        console.log('Item added successfully:', data);
-                        window.location.href = data.redirectUrl;
-                    } else {
-                        alert("Failed to add item. Please check the inputs.");
-                    }
-                },
-                error: function (error) {
-                    console.error('Error adding item:', error);
-                    alert("An error occurred while adding the item.");
-                }
-            });
-        });
-    });
-
-    document.getElementById("itemImage").addEventListener("change", function () {
-        let fileLabel = document.getElementById("fileLabel");
-        if (this.files.length > 0) {
-            fileLabel.style.border = "2px solid green"; // Change border color when a file is selected
-        } else {
-            fileLabel.style.border = "2px solid rgba(112, 128, 144, 0.123)"; // Reset border color
-        }
-    });
-
-    function GetItemDetails(itemId) {
-        $.ajax({
-
-            url: '/Menu/GetItemById',  // Controller action to get item details
-            type: 'GET',
-            data: { id: itemId },
-            success: function (data) {
-                if (data) {
-                    console.log("Fetched Item Data:", data);
-                    $('#editItemId').val(data.itemId);
-                    $('#editcategoryDropdown').val(data.categoryId);
-                    $('#editname').val(data.itemname);
-                    $('#edititemTypeDropdown').val(data.itemtype);
-                    $('#editrate').val(data.rate);
-                    $('#editquantity').val(data.quantity);
-                    $('#editunitDropdown').val(data.unitId);
-                    $('#editavailableToggle').prop('checked', data.isavailable);
-                    $('#editdefaultTaxToggle').prop('checked', data.defaulttax);
-                    $('#edittaxpercentage').val(data.taxpercentage);
-                    $('#editshortcode').val(data.shortcode);
-                    $('#editdescription').val(data.itemdescription);
-                    $('#edititemImage').val(data.itemimage);
-                }
-            },
-            error: function () {
-                alert("Error fetching item details.");
-            }
-        });
-    }
-
-    $(document).ready(function () {
-        $("#edititemform").submit(function (e) {
-            e.preventDefault();
-
-            var formData = new FormData(this); // Create FormData object for handling file uploads
-
-            $.ajax({
-                url: '/Menu/EditItems',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.success) {
-                        alert("Item updated successfully!");
-                        $('#edititemModal').modal('hide');
-                        location.reload();
-                    } else {
-                        alert("Error: " + response.message);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr.responseText);
-                    alert("An error occurred while saving the item.");
-                }
-            });
-        });
-    });
-    document.getElementById("editdefaultTaxToggle").addEventListener("change", function () {
-        if (this.checked) {
-            this.value = "true";
-        } else {
-            this.value = "false";
-        }
-    });
-
-    deleteItemIds = []; // Store selected item IDs
-    function openItemDeleteModal(itemId = null) {
-        deleteItemIds = []; // Reset array
-
-        if (itemId) {
-            console.log("Single delete");
-            deleteItemIds.push(itemId); // Single delete
-        } else {
-            console.log("Multiple delete");
-            $(".inner-check:checked").each(function () {
-                deleteItemIds.push($(this).data("id")); // Fix selector
-            });
-        }
-        if (deleteItemIds.length > 0) {
-            console.log("Items to delete:", deleteItemIds);
-            $('#itemdeleteModal').modal('show'); // Show modal
-
-        } else {
-            alert("Please select at least one item to delete.");
-        }
-    }
-    // Fix mass delete button click event
-    $("#massDeleteBtn").on("click", function () {
-        openItemDeleteModal();
-        @* $('#itemdeleteModal').modal('show'); // Show modal *@
-
-    });
-    // Handle delete confirmation
-    $(document).on("click", "#itemconfirmDeleteBtn", function () {
-        console.log("Deleting Items:", deleteItemIds);
-        $.ajax({
-            url: '@Url.Action("DeleteItem", "Menu")',
-            type: 'POST',
-            data: { itemIds: deleteItemIds },
-            success: function (response) {
-                deleteItemIds = []; // Reset array
-                if (response.success) {
-                    @* alert('Items deleted successfully!'); *@
-                        location.reload();
-                } else { }
-            },
-            error: function (xhr, status, error) {
-                deleteItemIds = []; // Reset array
-                console.log('Error:', error);
-            }
-        });
-    });
 
 
 

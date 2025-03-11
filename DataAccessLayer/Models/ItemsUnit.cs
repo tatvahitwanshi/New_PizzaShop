@@ -10,4 +10,6 @@ public partial class ItemsUnit
     public string Unitname { get; set; } = null!;
 
     public virtual ICollection<Item> Items { get; } = new List<Item>();
+
+    public virtual ICollection<Modifier> Modifiers { get; } = new List<Modifier>();
 }

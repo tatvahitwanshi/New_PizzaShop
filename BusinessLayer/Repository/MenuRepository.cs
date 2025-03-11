@@ -99,22 +99,45 @@ public class MenuRepository : IMenu
     }
 
     // Retrieves all items in a specific category
-    public List<ItemsView> GetItemsByCategory(int categoryId)
+    public Pagination<ItemsView> GetItemsByCategory(int categoryId, int PageNumber = 1, int PageSize = 3, string SearchKey = "")
     {
-        return _db.Items
-            .Where(i => i.Categoryid == categoryId && i.Isdeleted != true)
-            .Select(i => new ItemsView
-            {
-                ItemId = i.Itemid,
-                Itemname = i.Itemname,
-                Rate = i.Rate,
-                Itemtype = i.Itemtype,
-                Quantity = i.Quantity,
-                Isavailable = i.Isavailable,
-                Itemdescription = i.Itemdescription,
-                Itemimage = i.Itemimage,
-                Categoryid = i.Categoryid
-            }).ToList();
+        Pagination<ItemsView> newmodel = new Pagination<ItemsView>();
+        var query = _db.Items
+             .Where(i => i.Categoryid == categoryId && i.Isdeleted != true && (i.Itemname.ToLower().Contains(SearchKey.ToLower()) || i.Itemdescription.ToLower().Contains(SearchKey.ToLower())))
+             .Select(i => new ItemsView
+             {
+                 ItemId = i.Itemid,
+                 Itemname = i.Itemname,
+                 Rate = i.Rate,
+                 Itemtype = i.Itemtype,
+                 Quantity = i.Quantity,
+                 Isavailable = i.Isavailable,
+                 Itemdescription = i.Itemdescription,
+                 Itemimage = i.Itemimage,
+                 Categoryid = i.Categoryid
+             }).ToList();
+        if (PageNumber < 1)
+        {
+            PageNumber = 1;
+        }
+        newmodel.Count = query.Count();
+        newmodel.MaxPage = (int)Math.Ceiling(newmodel.Count / (double)PageSize);
+      
+        newmodel.PageSize = PageSize;
+
+        if (PageNumber > newmodel.MaxPage)
+        {
+            PageNumber = newmodel.MaxPage;
+        }
+        if (PageNumber < 1)
+        {
+            PageNumber = 1;
+        }
+        newmodel.PageNumber = PageNumber;
+        newmodel.ParentId = categoryId;
+        newmodel.SearchKey = SearchKey;
+        newmodel.List = query.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
+        return newmodel;
     }
 
     // Adds a new item to the menu if it does not already exist
@@ -193,5 +216,107 @@ public class MenuRepository : IMenu
         await _db.SaveChangesAsync();
         return true;
     }
+
+    public bool SoftDeleteItems(List<int> itemIds)
+    {
+        var items = _db.Items.Where(i => itemIds.Contains(i.Itemid)).ToList();
+        if (items.Any())
+        {
+            foreach (var item in items)
+            {
+                item.Isdeleted = true;
+            }
+            _db.SaveChanges();
+            return true;
+        }
+        return false;
+    }
+
+    public List<ModifierGroupModel> GetModifierGroups()
+    {
+        return _db.Modifiersgroups
+             .Where(c => c.Isdeleted != true)
+             .OrderBy(c => c.Modifiersgroupid)
+             .Select(c => new ModifierGroupModel
+             {
+                 ModifierGroupId = c.Modifiersgroupid,
+                 ModifierGroupName = c.Modifiersgroupname,
+                 ModifierGroupDescription = c.Modifiersgroupdescription
+             })
+             .ToList();
+    }
+    // Adds a new modifier to the database
+    public void AddModifier(Modifiersgroup modifiersgroup)
+    {
+        var newModifier = new Modifiersgroup
+        {
+            Modifiersgroupname = modifiersgroup.Modifiersgroupname,
+            Modifiersgroupdescription = modifiersgroup.Modifiersgroupdescription
+        };
+
+        _db.Modifiersgroups.Add(newModifier);
+        _db.SaveChanges();
+    }
+
+    //Get Modifier by ID
+    public ModifierGroupModel GetModifierById(int id)
+    {
+        var modifier = _db.Modifiersgroups.FirstOrDefault(c => c.Modifiersgroupid == id);
+        if (modifier == null) throw new KeyNotFoundException($"Modifier with ID {id} not found.");
+
+        return new ModifierGroupModel
+        {
+            ModifierGroupId = modifier.Modifiersgroupid,
+            ModifierGroupName = modifier.Modifiersgroupname,
+            ModifierGroupDescription = modifier.Modifiersgroupdescription
+        };
+    }
+    public void UpdateModifier(Modifiersgroup modifiersgroup)
+    {
+        var existingCategory = _db.Modifiersgroups.FirstOrDefault(c => c.Modifiersgroupid == modifiersgroup.Modifiersgroupid);
+        if (existingCategory != null)
+        {
+            existingCategory.Modifiersgroupname = modifiersgroup.Modifiersgroupname;
+            existingCategory.Modifiersgroupdescription = modifiersgroup.Modifiersgroupdescription;
+            _db.SaveChanges();
+        }
+    }
+
+    // Performs a soft delete on a category by marking it as deleted
+    public bool SoftDeleteModfierGroup(int modifiergroupid)
+    {
+        var modifiersgroup = _db.Modifiersgroups.FirstOrDefault(c => c.Modifiersgroupid == modifiergroupid);
+        if (modifiersgroup != null)
+        {
+            modifiersgroup.Isdeleted = true;
+            _db.SaveChanges();
+            return true;
+        }
+        return false;
+    }
+    // Retrieves all items in a specific category
+    public List<ModifierItemViewModel> GetModifierItemsByModifierGroup(int modifiergroupid)
+    {
+        return (from map in _db.MapModifiersgroupModifiers
+                join modifier in _db.Modifiers on map.Modifiersid equals modifier.Modifiersid
+                join groupm in _db.Modifiersgroups on map.Modifiersgroupid equals groupm.Modifiersgroupid
+                join unit in _db.ItemsUnits on modifier.Modifiersunit equals unit.Unitid
+                where map.Modifiersgroupid == modifiergroupid
+                select new ModifierItemViewModel
+                {
+                    ModifierItemId = modifier.Modifiersid,
+                    ModifierGroupId = groupm.Modifiersgroupid,
+                    ModifierItemName = modifier.Modifiersname,
+                    Rate = (int)modifier.Modifiersrate,
+                    ModifierItemDescription = modifier.Modifiersdescription,
+                    EditedBy = modifier.EditedBy,
+                    CreatedBy = modifier.CreatedBy,
+                    EditDate = modifier.EditDate,
+                    CreatedDate = modifier.CreatedDate,
+                    ModifierUnitname = unit.Unitname,
+                }).ToList();
+    }
+
+
 
 }

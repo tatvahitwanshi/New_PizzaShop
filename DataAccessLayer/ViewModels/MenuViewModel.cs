@@ -7,10 +7,11 @@ namespace DataAccessLayer.ViewModels;
 public class MenuViewModel
 {
     public List<Categories> Categories { get; set; } = new List<Categories>();
-    public List<ItemsView> Items { get; set; } = new List<ItemsView>();
+    public  Pagination<ItemsView> Items { get; set; } = new  Pagination<ItemsView>();
     public List<ItemsUnit> ItemsUnit { get; set; } = new List<ItemsUnit>();
-
     public List<AddItemsViewModel> AddItemsList { get; set; } = new List<AddItemsViewModel>();
+    public List<ModifierGroupModel> ModifierGroupModel { get; set; } = new List<ModifierGroupModel>();
+    public List<ModifierItemViewModel> ModifierItemViewModel { get; set; } = new List<ModifierItemViewModel>();
 }
 public class Categories
 {
@@ -67,7 +68,7 @@ public class AddItemsViewModel
     public string? Itemdescription { get; set; }
 
     public IFormFile? Itemimage { get; set; }
-    
+
 
     public int UnitId { get; set; }
 
@@ -81,5 +82,32 @@ public class AddItemsViewModel
     public string? Shortcode { get; set; }
     public List<Categories> Categories { get; set; } = new List<Categories>();
     public List<ItemsView> Items { get; set; } = new List<ItemsView>();
+
+}
+
+public class ModifierGroupModel
+{
+    public int ModifierGroupId { get; set; }
+    public string ModifierGroupName { get; set; } = null!;
+    public string? ModifierGroupDescription { get; set; }
+    public bool? Isdeleted { get; set; }
+}
+
+public class ModifierItemViewModel
+{
+    public int ModifierItemId { get; set; }
+    public int ModifierGroupId { get; set; }
+    public string ModifierItemName { get; set; } = null!;
+    public int Rate { get; set; }
+
+    public int Quantity { get; set; }
+    public string? ModifierItemDescription { get; set; }
+    public string? EditedBy { get; set; }
+    public string? CreatedBy { get; set; }
+    public DateTime? EditDate { get; set; }
+    public DateTime? CreatedDate { get; set; }
+    public int? Modifiersunit { get; set; }
+    public string? ModifierUnitname { get; set; }
+
 
 }

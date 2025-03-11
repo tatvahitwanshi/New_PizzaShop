@@ -25,7 +25,8 @@
         <div class="btn-group dropstart">
             <a class="   dropdown-toggle-split" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                 aria-expanded="false" style="text-decoration: none;">
-                <img src="@Url.Content(@Context.Session.GetString("ProfilePic"))" alt="" id="profile-pic">
+                @* <img src="@Url.Content(@Context.Session.GetString("ProfilePic"))" alt="" id="profile-pic"> *@
+                <img src="~/images/Default_pfp.svg.png" id="profile-pic" alt="">
             </a>
            
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">

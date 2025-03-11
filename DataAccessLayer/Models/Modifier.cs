@@ -28,4 +28,6 @@ public partial class Modifier
     public DateTime? EditDate { get; set; }
 
     public virtual ICollection<MapModifiersgroupModifier> MapModifiersgroupModifiers { get; } = new List<MapModifiersgroupModifier>();
+
+    public virtual ItemsUnit? ModifiersunitNavigation { get; set; }
 }

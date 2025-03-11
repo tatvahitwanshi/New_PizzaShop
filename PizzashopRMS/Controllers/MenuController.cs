@@ -26,6 +26,8 @@ public class MenuController : Controller
         model.Categories = _menu.GetCategories();
         model.Items = _menu.GetItemsByCategory(model.Categories[0].CategoryId); // Pass items for a default category or all items
         model.ItemsUnit = _menu.GetUnits();
+        model.ModifierGroupModel = _menu.GetModifierGroups();
+        model.ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(model.ModifierGroupModel[0].ModifierGroupId); // Pass items for a default category or all items
 
         return View(model);
     }
@@ -50,7 +52,6 @@ public class MenuController : Controller
     }
 
     // Fetches category details for editing
-    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult EditCategory(int id)
     {
         var category = _menu.GetCategoryById(id);
@@ -100,7 +101,6 @@ public class MenuController : Controller
 
     // Soft deletes a category
     [HttpPost]
-    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult DeleteCategory(int categoryId)
     {
         bool isDeleted = _menu.SoftDeleteCategory(categoryId);
@@ -117,17 +117,17 @@ public class MenuController : Controller
     }
 
     // Retrieves items based on selected category
-    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult GetItemsByCategory(int categoryId)
+    public IActionResult GetItemsByCategory(int categoryId ,int PageNumber=1, int PageSize=5, string SearchKey="")
     {
         var model = new MenuViewModel
         {
             Categories = _menu.GetCategories(),
-            Items = _menu.GetItemsByCategory(categoryId),
+            Items = _menu.GetItemsByCategory(categoryId, PageNumber, PageSize, SearchKey),
             ItemsUnit = _menu.GetUnits()
         };
         return PartialView("~/Views/Menu/_PartialItems.cshtml", model);
     }
+   
 
     // Displays the view for adding new items
     [HttpGet]
@@ -190,6 +190,121 @@ public class MenuController : Controller
         {
             return Json(new { success = false, message = "Item not found or could not be updated." });
         }
+    }
+
+    // Soft deletes a category
+    [HttpPost]
+    public IActionResult DeleteItem(List<int> itemIds)
+    {
+        bool isDeleted = _menu.SoftDeleteItems(itemIds);
+        if (isDeleted)
+        {
+            TempData["success"] = "Items deleted successfully!";
+            return Json(new { success = true });
+        }
+        else
+        {
+            TempData["error"] = "Failed to delete items!";
+            return Json(new { success = false });
+        }
+    }
+
+    // Adds a new modifier group
+    [HttpPost]
+    public IActionResult AddModifierGroup(Modifiersgroup modifier)
+    {
+        if (modifier.Modifiersgroupdescription != null && modifier.Modifiersgroupname != null)
+        {
+            var newModifier = new Modifiersgroup
+            {
+
+                Modifiersgroupname = modifier.Modifiersgroupname,
+                Modifiersgroupdescription = modifier.Modifiersgroupdescription
+            };
+
+            TempData["success"] = "Modifier added successfully!";
+            _menu.AddModifier(newModifier);
+            return RedirectToAction("MenuView");
+        }
+        return View("MenuView");
+    }
+
+    // Edit modifier group
+    [HttpGet]
+    public IActionResult EditModifierGroup(int id)
+    {
+        var modifier = _menu.GetModifierById(id);
+        if (modifier == null)
+        {
+            return Json(null);
+        }
+        return Json(new
+        {
+            modifiergroupid = modifier.ModifierGroupId,
+            modifiergroupname = modifier.ModifierGroupName,
+            modifiergroupdescription = modifier.ModifierGroupDescription
+        });
+    }
+
+    // Updates an existing category
+    [HttpPost]
+    public IActionResult UpdateModififerGroup(ModifierGroupModel modifier)
+    {
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                var updatedModifier = new Modifiersgroup
+                {
+                    Modifiersgroupid = modifier.ModifierGroupId,
+                    Modifiersgroupname = modifier.ModifierGroupName,
+                    Modifiersgroupdescription = modifier.ModifierGroupDescription
+                };
+
+
+                _menu.UpdateModifier(updatedModifier);
+                TempData["success"] = "Modifier Group updated successfully!";
+            }
+            catch (Exception)
+            {
+                TempData["error"] = "An error occurred while updating the Modifier Group.";
+            }
+        }
+        else
+        {
+            TempData["error"] = "Invalid data. Please check the inputs.";
+        }
+
+        return RedirectToAction("MenuView");
+    }
+
+    // Soft deletes a category
+    [HttpPost]
+    public IActionResult DeleteModfierGroup(int modifiergroupid)
+    {
+        bool isDeleted = _menu.SoftDeleteModfierGroup(modifiergroupid);
+        if (isDeleted)
+        {
+            TempData["success"] = "Category deleted successfully!";
+            return Json(new { success = true });
+        }
+        else
+        {
+            TempData["error"] = "Failed to delete category!";
+            return Json(new { success = false });
+        }
+    }
+
+    // Retrieves items based on selected category
+    public IActionResult GetModifierItemsByModifierGroup(int modifiergroupid)
+    {
+        var model = new MenuViewModel
+        {
+            ModifierGroupModel =_menu.GetModifierGroups(),
+            ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(modifiergroupid),
+            ItemsUnit = _menu.GetUnits()
+        };
+        return PartialView("~/Views/Menu/_PartialModifier.cshtml", model);
     }
 
 }
