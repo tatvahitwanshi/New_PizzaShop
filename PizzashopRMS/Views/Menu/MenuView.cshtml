@@ -97,6 +97,8 @@
 </body>
 
 </html>
+
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
@@ -110,7 +112,6 @@
                     $('#editCategoryId').val(data.categoryid);
                     $('#editCategoryName').val(data.categoryname);
                     $('#editCategoryDescription').val(data.categorydescription);
-                    $('#staticBackdrop2').modal('show');
                 } else {
                     alert("No category data found.");
                 }

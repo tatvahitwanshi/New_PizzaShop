@@ -453,6 +453,10 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\01992e04-6bd8-4e7f-a82d-cbfd59a667ed_dominos_background.jpg",
+      "PackagePath": "staticwebassets\\userphoto\\01992e04-6bd8-4e7f-a82d-cbfd59a667ed_dominos_background.jpg"
+    },
+    {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\1ed78a42-044f-446f-94e0-94ce2be797a0_QR.png",
       "PackagePath": "staticwebassets\\userphoto\\1ed78a42-044f-446f-94e0-94ce2be797a0_QR.png"
     },

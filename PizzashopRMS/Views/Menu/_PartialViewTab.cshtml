@@ -45,8 +45,10 @@
 
             </div>
 
+            @* offcanvas for the category *@
             <div class="offcanvas offcanvas-start d-xl-none" tabindex="-1" id="offcanvasExample1"
-                aria-labelledby="offcanvasExampleLabel" style="width: auto;">
+                aria-labelledby="offcanvasExampleLabel" style="width: auto;" data-bs-scroll="true"
+                data-bs-backdrop="false">
                 <div class="offcanvas-header mt-2">
                     <span class="h3 fw-bold align-self-center" style="color: #0066A7;">Category</span>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
@@ -75,12 +77,10 @@
                                     <i class="bi bi-pen float-end"></i>
                                 </a>
                                 <a class="deleteButton" href="javascript:void(0);"
-                                    style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" onclick="openDeleteModal(@category.CategoryId)">
+                                    style="text-decoration: none; color: grey;"
+                                    onclick="openDeleteModal(@category.CategoryId)">
                                     <i class="bi bi-trash float-end"></i>
                                 </a>
-
-
                             </div>
                         </a>
                     }
@@ -88,10 +88,9 @@
             </div>
 
             <!-- Model Add Category -->
-
             <form method="post" asp-action="AddCategory" asp-controller="Menu">
-                <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal " id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdrop1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -110,7 +109,7 @@
                                 </div>
                                 <div class="form-floating">
                                     <textarea class="form-control" name="Categorydescription" id="Categorydescription"
-                                        placeholder="Enter Description"></textarea>
+                                        placeholder="Enter Description" required></textarea>
                                     <label for="Categorydescription">Description</label>
                                 </div>
                                 <div class="col mt-3 mb-3 d-flex justify-content-end">
@@ -124,7 +123,7 @@
                     </div>
                 </div>
             </form>
-
+            
             <!-- Model Edit Category -->
             <form method="post" asp-action="UpdateCategory" asp-controller="Menu">
 
@@ -204,9 +203,9 @@
         $.ajax({
             url: '@Url.Action("GetItemsByCategory", "Menu")',
             type: 'GET',
-            data: { categoryId: categoryId ,PageSize:pageSize},
+            data: { categoryId: categoryId, PageSize: pageSize },
             success: function (data) {
-                
+
                 $("#itemsContainer").html(data);
             },
             error: function (error) {

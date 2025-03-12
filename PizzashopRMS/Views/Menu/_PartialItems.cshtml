@@ -12,8 +12,7 @@
         <form class="d-flex " role="search">
             <div class="d-flex  me-2 p-1 position-relative">
                 <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
-                    aria-label="Search" id="searchInputItem" value="@Model.Items.SearchKey"
-                    onkeydown="searchItemsEnter(event)">
+                    aria-label="Search" id="searchInputItem" value="@Model.Items.SearchKey">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
                     class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16" onclick="searchItems()">
@@ -136,11 +135,11 @@
                             <span style="color: green;" class="me-1">@startRecord - @endRecord</span> of <span
                                 style="color: red;" class="ms-1">@Model.Items.Count</span>
                         </span>
-                        <button class="btn border ms-2  align-self-center" type="submit"><i class="bi bi-chevron-left "
-                                onclick="PanginationBtn('back')"></i>
+                        <button class="btn border ms-2  align-self-center" type="submit" onclick="PanginationBtn('back')"><i class="bi bi-chevron-left "
+                                ></i>
                         </button>
-                        <button class="btn border ms-2  align-self-center" type="submit"><i class="bi bi-chevron-right"
-                                onclick="PanginationBtn('next')"></i>
+                        <button class="btn border ms-2  align-self-center" type="submit" onclick="PanginationBtn('next')"><i class="bi bi-chevron-right"
+                                ></i>
                         </button>
                     </div>
                 </nav>
@@ -154,7 +153,7 @@
 
 @* Add Item Modal *@
 <div class="modal fade" id="additemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-    aria-labelledby="staticBackdropLabel aria-hidden=" true">
+    aria-labelledby="staticBackdropLabel" aria-hidden=" true">
     <div class="modal-dialog modal-dialog-centered w-75" style="max-width: 100% !important">
         <div class="modal-content">
             <form class="modal-body additemform" id="additemform" enctype="multipart/form-data">
@@ -485,73 +484,70 @@
 
 <script>
 
+    function loadItems(pageSize, searchKey, pageNumber) {
+        console.log("Page Size:", pageSize, "Search Key:", searchKey, "Page Number:", pageNumber);
+
+        $.ajax({
+            url: '@Url.Action("GetItemsByCategory", "Menu")',
+            type: 'GET',
+            data: {
+                categoryId: @Model.Items.ParentId,
+                PageSize: pageSize,
+                SearchKey: searchKey,
+                PageNumber: pageNumber
+            },
+            success: function (data) {
+                $("#itemsContainer").html(data);
+            },
+            error: function (error) {
+                console.error('Error loading partial view:', error);
+                $("#itemsContainer").html("<p>Error loading items.</p>");
+            }
+        });
+    }
+
     function updatePageSize() {
         var pageSize = $("#pageSizeDropdownItem").val();
-        var SearchKey = $("#searchInputItem").val();
-        console.log("Page Size:", pageSize);
-        $.ajax({
-            url: '@Url.Action("GetItemsByCategory", "Menu")',
-            type: 'GET',
-            data: { categoryId: @Model.Items.ParentId , PageSize: pageSize, SearchKey: SearchKey },
-            success: function (data) {
-
-                $("#itemsContainer").html(data);
-            },
-            error: function (error) {
-                console.error('Error loading partial view:', error);
-                $("#itemsContainer").html("<p>Error loading items.</p>");
-            }
-        });
-    }
-
-    function PanginationBtn(direction, element) {
-        var pageSize = $("#pageSizeDropdownItem").val();
-        var SearchKey = $("#searchInputItem").val();
+        var searchKey = $("#searchInputItem").val();
         var pageNumber = @Model.Items.PageNumber;
-        if (direction == "back") {
 
-            pageNumber = pageNumber - 1;
-        } else {
-
-            pageNumber = pageNumber + 1;
-
-        }
-        console.log("Page Number:", pageNumber);
-        $.ajax({
-            url: '@Url.Action("GetItemsByCategory", "Menu")',
-            type: 'GET',
-            data: { categoryId: @Model.Items.ParentId, PageSize: pageSize, SearchKey: SearchKey, PageNumber: pageNumber },
-            success: function (data) {
-                $("#itemsContainer").html(data);
-            },
-            error: function (error) {
-                console.error('Error loading partial view:', error);
-                $("#itemsContainer").html("<p>Error loading items.</p>");
-            }
-        });
-
+        loadItems(pageSize, searchKey, pageNumber);
     }
+
+    function PanginationBtn(direction) {
+        var pageSize = $("#pageSizeDropdownItem").val();
+        var searchKey = $("#searchInputItem").val();
+        var pageNumber = @Model.Items.PageNumber;
+
+        if (direction === "back") {
+            pageNumber -= 1;
+        } else {
+            pageNumber += 1;
+        }
+
+        loadItems(pageSize, searchKey, pageNumber);
+    }
+
     function searchItemsEnter(event) {
-        if (event.key === "Enter") {  // Correct way to check Enter key
+        if (event.key === "Enter") {
             searchItems();
         }
     }
+    document.addEventListener('keydown', function (event) {
+        // Check if the pressed key is the Enter key
+        if (event.key === 'Enter') {
+            // Do something when Enter is pressed
+            console.log('Enter key was pressed!');
+            searchItems();
+        }
+    });
+
     function searchItems() {
         var pageSize = $("#pageSizeDropdownItem").val();
-        var SearchKey = $("#searchInputItem").val();
-        console.log("Search Key:", SearchKey);
-        $.ajax({
-            url: '@Url.Action("GetItemsByCategory", "Menu")',
-            type: 'GET',
-            data: { categoryId: @Model.Items.ParentId, PageSize: pageSize, SearchKey: SearchKey },
-            success: function (data) {
-                $("#itemsContainer").html(data);
-            },
-            error: function (error) {
-                console.error('Error loading partial view:', error);
-                $("#itemsContainer").html("<p>Error loading items.</p>");
-            }
-        });
+        var searchKey = $("#searchInputItem").val();
+        var pageNumber = @Model.Items.PageNumber;
+
+        loadItems(pageSize, searchKey, pageNumber);
     }
 
 

@@ -7,11 +7,13 @@ namespace DataAccessLayer.ViewModels;
 public class MenuViewModel
 {
     public List<Categories> Categories { get; set; } = new List<Categories>();
-    public  Pagination<ItemsView> Items { get; set; } = new  Pagination<ItemsView>();
+    public Pagination<ItemsView> Items { get; set; } = new Pagination<ItemsView>();
     public List<ItemsUnit> ItemsUnit { get; set; } = new List<ItemsUnit>();
     public List<AddItemsViewModel> AddItemsList { get; set; } = new List<AddItemsViewModel>();
     public List<ModifierGroupModel> ModifierGroupModel { get; set; } = new List<ModifierGroupModel>();
-    public List<ModifierItemViewModel> ModifierItemViewModel { get; set; } = new List<ModifierItemViewModel>();
+    public Pagination<ModifierItemViewModel> ModifierItemViewModel { get; set; } = new Pagination<ModifierItemViewModel>();
+    public List<ModifierItemViewModel> ModifierItemAll { get; set; } = new List<ModifierItemViewModel>();
+
 }
 public class Categories
 {

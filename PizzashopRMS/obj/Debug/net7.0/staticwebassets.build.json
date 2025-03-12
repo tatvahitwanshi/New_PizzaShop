@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vvtKRG/I4k8E3bz0+qq63+It66UpUKxq1DDIWk5/Qwo=",
+  "Hash": "mTWlU+oKngNr/YDXChfqEwDsnS+MNbADX0iUMrTaBfo=",
   "Source": "PizzashopRMS",
   "BasePath": "_content/PizzashopRMS",
   "Mode": "Default",
@@ -1953,6 +1953,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\01992e04-6bd8-4e7f-a82d-cbfd59a667ed_dominos_background.jpg",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/01992e04-6bd8-4e7f-a82d-cbfd59a667ed_dominos_background.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\01992e04-6bd8-4e7f-a82d-cbfd59a667ed_dominos_background.jpg"
     },
     {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\1ed78a42-044f-446f-94e0-94ce2be797a0_QR.png",

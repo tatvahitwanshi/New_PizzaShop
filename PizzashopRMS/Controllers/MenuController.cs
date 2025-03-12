@@ -28,7 +28,7 @@ public class MenuController : Controller
         model.ItemsUnit = _menu.GetUnits();
         model.ModifierGroupModel = _menu.GetModifierGroups();
         model.ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(model.ModifierGroupModel[0].ModifierGroupId); // Pass items for a default category or all items
-
+        model.ModifierItemAll=_menu.GetAllModifierItems();
         return View(model);
     }
 
@@ -296,12 +296,12 @@ public class MenuController : Controller
     }
 
     // Retrieves items based on selected category
-    public IActionResult GetModifierItemsByModifierGroup(int modifiergroupid)
+    public IActionResult GetModifierItemsByModifierGroup(int modifiergroupid , int PageNumber=1, int PageSize=5, string SearchKey="")
     {
         var model = new MenuViewModel
         {
             ModifierGroupModel =_menu.GetModifierGroups(),
-            ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(modifiergroupid),
+            ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(modifiergroupid , PageNumber, PageSize, SearchKey),
             ItemsUnit = _menu.GetUnits()
         };
         return PartialView("~/Views/Menu/_PartialModifier.cshtml", model);

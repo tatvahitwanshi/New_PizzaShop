@@ -31,6 +31,8 @@ public class MenuRepository : IMenu
             .ToList();
     }
 
+
+
     // Retrieves all available item units sorted by name
     public List<ItemsUnit> GetUnits()
     {
@@ -115,14 +117,14 @@ public class MenuRepository : IMenu
                  Itemdescription = i.Itemdescription,
                  Itemimage = i.Itemimage,
                  Categoryid = i.Categoryid
-             }).ToList();
+             });
         if (PageNumber < 1)
         {
             PageNumber = 1;
         }
         newmodel.Count = query.Count();
         newmodel.MaxPage = (int)Math.Ceiling(newmodel.Count / (double)PageSize);
-      
+
         newmodel.PageSize = PageSize;
 
         if (PageNumber > newmodel.MaxPage)
@@ -295,17 +297,58 @@ public class MenuRepository : IMenu
         return false;
     }
     // Retrieves all items in a specific category
-    public List<ModifierItemViewModel> GetModifierItemsByModifierGroup(int modifiergroupid)
+    public Pagination<ModifierItemViewModel> GetModifierItemsByModifierGroup(int modifiergroupid, int PageNumber = 1, int PageSize = 3, string SearchKey = "")
     {
-        return (from map in _db.MapModifiersgroupModifiers
-                join modifier in _db.Modifiers on map.Modifiersid equals modifier.Modifiersid
-                join groupm in _db.Modifiersgroups on map.Modifiersgroupid equals groupm.Modifiersgroupid
+        Pagination<ModifierItemViewModel> newmodel = new Pagination<ModifierItemViewModel>();
+        var query = from map in _db.MapModifiersgroupModifiers
+                    join modifier in _db.Modifiers on map.Modifiersid equals modifier.Modifiersid
+                    join groupm in _db.Modifiersgroups on map.Modifiersgroupid equals groupm.Modifiersgroupid
+                    join unit in _db.ItemsUnits on modifier.Modifiersunit equals unit.Unitid
+                    where map.Modifiersgroupid == modifiergroupid && modifier.Isdeleted !=true && groupm.Isdeleted != true && modifier.Modifiersname.ToLower().Contains(SearchKey.ToLower())
+                    select new ModifierItemViewModel 
+                    {
+                        ModifierItemId = modifier.Modifiersid,
+                        ModifierGroupId = groupm.Modifiersgroupid,
+                        ModifierItemName = modifier.Modifiersname,
+                        Rate = (int)modifier.Modifiersrate,
+                        ModifierItemDescription = modifier.Modifiersdescription,
+                        EditedBy = modifier.EditedBy,
+                        CreatedBy = modifier.CreatedBy,
+                        EditDate = modifier.EditDate,
+                        CreatedDate = modifier.CreatedDate,
+                        ModifierUnitname = unit.Unitname,
+                    };
+        if (PageNumber < 1)
+        {
+            PageNumber = 1;
+        }
+        newmodel.Count = query.Count();
+        newmodel.MaxPage = (int)Math.Ceiling(newmodel.Count / (double)PageSize);
+
+        newmodel.PageSize = PageSize;
+
+        if (PageNumber > newmodel.MaxPage)
+        {
+            PageNumber = newmodel.MaxPage;
+        }
+        if (PageNumber < 1)
+        {
+            PageNumber = 1;
+        }
+        newmodel.PageNumber = PageNumber;
+        newmodel.ParentId = modifiergroupid;
+        newmodel.SearchKey = SearchKey;
+        newmodel.List = query.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
+        return newmodel;
+    }
+    public List<ModifierItemViewModel> GetAllModifierItems()
+    {
+        return (from
+         modifier in _db.Modifiers
                 join unit in _db.ItemsUnits on modifier.Modifiersunit equals unit.Unitid
-                where map.Modifiersgroupid == modifiergroupid
                 select new ModifierItemViewModel
                 {
                     ModifierItemId = modifier.Modifiersid,
-                    ModifierGroupId = groupm.Modifiersgroupid,
                     ModifierItemName = modifier.Modifiersname,
                     Rate = (int)modifier.Modifiersrate,
                     ModifierItemDescription = modifier.Modifiersdescription,
@@ -316,7 +359,6 @@ public class MenuRepository : IMenu
                     ModifierUnitname = unit.Unitname,
                 }).ToList();
     }
-
 
 
 }

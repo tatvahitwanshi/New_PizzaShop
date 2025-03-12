@@ -24,7 +24,7 @@ public interface IMenu
     ModifierGroupModel GetModifierById(int id); 
     void UpdateModifier(Modifiersgroup modifiersgroup); 
     bool SoftDeleteModfierGroup (int modifiergroupid);
-    List<ModifierItemViewModel> GetModifierItemsByModifierGroup(int modifiergroupid);
+    Pagination<ModifierItemViewModel> GetModifierItemsByModifierGroup(int modifiergroupid, int PageNumber=1, int PageSize=3, string SearchKey="");
 
-
+    List<ModifierItemViewModel>GetAllModifierItems();
 }
