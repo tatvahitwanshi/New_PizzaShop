@@ -260,6 +260,26 @@ public class MenuRepository : IMenu
         _db.SaveChanges();
     }
 
+    public int GetModifierGroupIdByName(string name)
+    {
+        return _db.Modifiersgroups.Where(m => m.Modifiersgroupname == name)
+                              .Select(m => m.Modifiersgroupid)
+                              .FirstOrDefault();            
+    }
+    public void AddModifierGroupItemMapping(int modifierGroupId, int modifierItemId)
+    {
+        var mapping = new MapModifiersgroupModifier
+        {
+            Modifiersgroupid = modifierGroupId,
+            Modifiersid = modifierItemId
+        };
+
+        _db.MapModifiersgroupModifiers.Add(mapping);
+        _db.SaveChanges();
+    }
+
+
+
     //Get Modifier by ID
     public ModifierGroupModel GetModifierById(int id)
     {
@@ -300,12 +320,14 @@ public class MenuRepository : IMenu
     public Pagination<ModifierItemViewModel> GetModifierItemsByModifierGroup(int modifiergroupid, int PageNumber = 1, int PageSize = 3, string SearchKey = "")
     {
         Pagination<ModifierItemViewModel> newmodel = new Pagination<ModifierItemViewModel>();
+
+
         var query = from map in _db.MapModifiersgroupModifiers
                     join modifier in _db.Modifiers on map.Modifiersid equals modifier.Modifiersid
                     join groupm in _db.Modifiersgroups on map.Modifiersgroupid equals groupm.Modifiersgroupid
                     join unit in _db.ItemsUnits on modifier.Modifiersunit equals unit.Unitid
-                    where map.Modifiersgroupid == modifiergroupid && modifier.Isdeleted !=true && groupm.Isdeleted != true && modifier.Modifiersname.ToLower().Contains(SearchKey.ToLower())
-                    select new ModifierItemViewModel 
+                    where map.Modifiersgroupid == modifiergroupid && modifier.Isdeleted != true && groupm.Isdeleted != true && modifier.Modifiersname.ToLower().Contains(SearchKey.ToLower())
+                    select new ModifierItemViewModel
                     {
                         ModifierItemId = modifier.Modifiersid,
                         ModifierGroupId = groupm.Modifiersgroupid,
@@ -318,6 +340,11 @@ public class MenuRepository : IMenu
                         CreatedDate = modifier.CreatedDate,
                         ModifierUnitname = unit.Unitname,
                     };
+
+
+
+
+
         if (PageNumber < 1)
         {
             PageNumber = 1;
@@ -341,23 +368,46 @@ public class MenuRepository : IMenu
         newmodel.List = query.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
         return newmodel;
     }
-    public List<ModifierItemViewModel> GetAllModifierItems()
+    public Pagination<ModifierItemViewModel> GetAllModifierItems(int PageNumber = 1, int PageSize = 5, string SearchKey = "")
     {
-        return (from
-         modifier in _db.Modifiers
-                join unit in _db.ItemsUnits on modifier.Modifiersunit equals unit.Unitid
-                select new ModifierItemViewModel
-                {
-                    ModifierItemId = modifier.Modifiersid,
-                    ModifierItemName = modifier.Modifiersname,
-                    Rate = (int)modifier.Modifiersrate,
-                    ModifierItemDescription = modifier.Modifiersdescription,
-                    EditedBy = modifier.EditedBy,
-                    CreatedBy = modifier.CreatedBy,
-                    EditDate = modifier.EditDate,
-                    CreatedDate = modifier.CreatedDate,
-                    ModifierUnitname = unit.Unitname,
-                }).ToList();
+        Pagination<ModifierItemViewModel> newmodel = new Pagination<ModifierItemViewModel>();
+        var query = from
+            modifier in _db.Modifiers
+                    join unit in _db.ItemsUnits on modifier.Modifiersunit equals unit.Unitid
+                    select new ModifierItemViewModel
+                    {
+                        ModifierItemId = modifier.Modifiersid,
+                        ModifierItemName = modifier.Modifiersname,
+                        Rate = (int)modifier.Modifiersrate,
+                        ModifierItemDescription = modifier.Modifiersdescription,
+                        EditedBy = modifier.EditedBy,
+                        CreatedBy = modifier.CreatedBy,
+                        EditDate = modifier.EditDate,
+                        CreatedDate = modifier.CreatedDate,
+                        ModifierUnitname = unit.Unitname,
+                    };
+                      if (PageNumber < 1)
+        {
+            PageNumber = 1;
+        }
+        newmodel.Count = query.Count();
+        newmodel.MaxPage = (int)Math.Ceiling(newmodel.Count / (double)PageSize);
+
+        newmodel.PageSize = PageSize;
+
+        if (PageNumber > newmodel.MaxPage)
+        {
+            PageNumber = newmodel.MaxPage;
+        }
+        if (PageNumber < 1)
+        {
+            PageNumber = 1;
+        }
+        newmodel.PageNumber = PageNumber;
+        newmodel.SearchKey = SearchKey;
+        newmodel.List = query.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
+        return newmodel;
+
     }
 
 

@@ -7,19 +7,28 @@ namespace DataAccessLayer.ViewModels;
 public class MenuViewModel
 {
     public List<Categories> Categories { get; set; } = new List<Categories>();
+
     public Pagination<ItemsView> Items { get; set; } = new Pagination<ItemsView>();
+
     public List<ItemsUnit> ItemsUnit { get; set; } = new List<ItemsUnit>();
+
     public List<AddItemsViewModel> AddItemsList { get; set; } = new List<AddItemsViewModel>();
+
     public List<ModifierGroupModel> ModifierGroupModel { get; set; } = new List<ModifierGroupModel>();
+
     public Pagination<ModifierItemViewModel> ModifierItemViewModel { get; set; } = new Pagination<ModifierItemViewModel>();
-    public List<ModifierItemViewModel> ModifierItemAll { get; set; } = new List<ModifierItemViewModel>();
+
+    public Pagination<ModifierItemViewModel> ModifierItemAll { get; set; } = new Pagination<ModifierItemViewModel>();
 
 }
 public class Categories
 {
     public int CategoryId { get; set; }
+
     public string Categoryname { get; set; } = null!;
+
     public string? Categorydescription { get; set; }
+
     public bool? Isdeleted { get; set; }
 
 }
@@ -58,7 +67,7 @@ public class AddItemsViewModel
     public string Itemname { get; set; } = null!;
 
     public int Rate { get; set; }
-
+    
     public string Itemtype { get; set; } = null!;
 
     public int Quantity { get; set; }
@@ -71,18 +80,24 @@ public class AddItemsViewModel
 
     public IFormFile? Itemimage { get; set; }
 
-
     public int UnitId { get; set; }
 
     public string? EditedBy { get; set; }
 
     public string? CreatedBy { get; set; }
+
     public DateTime? EditDate { get; set; }
+
     public DateTime? CreatedDate { get; set; }
+
     public bool? Defaulttax { get; set; }
+
     public decimal? Taxpercentage { get; set; }
+
     public string? Shortcode { get; set; }
+
     public List<Categories> Categories { get; set; } = new List<Categories>();
+
     public List<ItemsView> Items { get; set; } = new List<ItemsView>();
 
 }
@@ -90,25 +105,38 @@ public class AddItemsViewModel
 public class ModifierGroupModel
 {
     public int ModifierGroupId { get; set; }
+
     public string ModifierGroupName { get; set; } = null!;
+
     public string? ModifierGroupDescription { get; set; }
+
     public bool? Isdeleted { get; set; }
 }
 
 public class ModifierItemViewModel
 {
     public int ModifierItemId { get; set; }
+
     public int ModifierGroupId { get; set; }
+
     public string ModifierItemName { get; set; } = null!;
+
     public int Rate { get; set; }
 
     public int Quantity { get; set; }
+
     public string? ModifierItemDescription { get; set; }
+
     public string? EditedBy { get; set; }
+
     public string? CreatedBy { get; set; }
+
     public DateTime? EditDate { get; set; }
+
     public DateTime? CreatedDate { get; set; }
+
     public int? Modifiersunit { get; set; }
+
     public string? ModifierUnitname { get; set; }
 
 
