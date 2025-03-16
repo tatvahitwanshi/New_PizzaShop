@@ -195,7 +195,7 @@ public class UserListController : Controller
         if (!ModelState.IsValid)
         {
             TempData["error"] = "Enter data was not proper";
-            return RedirectToAction("EditUserView");
+            return RedirectToAction("UserListView");
         }
         try
         {

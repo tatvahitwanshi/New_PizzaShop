@@ -40,6 +40,7 @@ public class CustomAuthoriseAttribute : Attribute, IAuthorizationFilter
                 ValidateLifetime = true
             };
             var ClaimsPrincipal = handler.ValidateToken(token, ValidationParameters, out SecurityToken validatedToken);
+            
             var roleClaim = ClaimsPrincipal.Claims.FirstOrDefault(Claim => Claim.Type == ClaimTypes.Role)?.Value;
             if (roleClaim == null)
             {
