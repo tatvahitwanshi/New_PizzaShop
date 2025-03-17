@@ -2,6 +2,7 @@ using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PizzashopRMS.Helpers;
 
 namespace PizzashopRMS.Controllers;
@@ -28,7 +29,7 @@ public class MenuController : Controller
         model.ItemsUnit = _menu.GetUnits();
         model.ModifierGroupModel = _menu.GetModifierGroups();
         model.ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(model.ModifierGroupModel[0].ModifierGroupId); // Pass items for a default category or all items
-        model.ModifierItemAll=_menu.GetAllModifierItems();
+        model.ModifierItemAll = _menu.GetAllModifierItems();
         return View(model);
     }
 
@@ -117,17 +118,18 @@ public class MenuController : Controller
     }
 
     // Retrieves items based on selected category
-    public IActionResult GetItemsByCategory(int categoryId ,int PageNumber=1, int PageSize=5, string SearchKey="")
+    public IActionResult GetItemsByCategory(int categoryId, int PageNumber = 1, int PageSize = 5, string SearchKey = "")
     {
         var model = new MenuViewModel
         {
             Categories = _menu.GetCategories(),
             Items = _menu.GetItemsByCategory(categoryId, PageNumber, PageSize, SearchKey),
-            ItemsUnit = _menu.GetUnits()
+            ItemsUnit = _menu.GetUnits(),
+            ModifierGroupModel = _menu.GetModifierGroups(),
         };
         return PartialView("~/Views/Menu/_PartialItems.cshtml", model);
     }
-   
+
 
     // Displays the view for adding new items
     [HttpGet]
@@ -135,6 +137,19 @@ public class MenuController : Controller
     public IActionResult AddItemsView()
     {
         return PartialView("~/Views/Menu/_PartialItems.cshtml");
+    }
+
+    [HttpGet]
+    public IActionResult GetModifierGroupDetails(int modifierGroupId, int itemId = -1)
+    {
+        var modifierGroupDetails = _menu.GetModifierGroupDetails(modifierGroupId, itemId);
+
+        if (modifierGroupDetails == null)
+        {
+            return NotFound();
+        }
+
+        return PartialView("_ModGroupDetail", modifierGroupDetails);
     }
 
     // Adds a new item 
@@ -149,7 +164,13 @@ public class MenuController : Controller
                 return Json(new { success = false, message = "Invalid data. Please check the inputs." });
             }
 
-            var success = await _menu.AddItems(model);
+            // Process Modifier Group Data from JSON
+            if (!string.IsNullOrEmpty(Request.Form["AddModGroupWithItems"]))
+            {
+                model.AddModGroupWithItems = JsonConvert.DeserializeObject<List<AddModGroupWithItem>>(Request.Form["AddModGroupWithItems"]);
+            }
+
+            var successMessage = await _menu.AddItems(model);
             TempData["success"] = "Item added successfully!";
             return Json(new { success = true, redirectUrl = "/Menu/MenuView" });
         }
@@ -158,6 +179,7 @@ public class MenuController : Controller
             return Json(new { success = false, message = "An error occurred while adding the item." });
         }
     }
+
 
     // Fetches item details for editing
     [HttpGet]
@@ -229,37 +251,37 @@ public class MenuController : Controller
     //     return View("MenuView");
     // }
     [HttpPost]
-public IActionResult AddModifierGroup(Modifiersgroup modifier, string SelectedModifierIds)
-{
-    if (!string.IsNullOrEmpty(modifier.Modifiersgroupname) && !string.IsNullOrEmpty(modifier.Modifiersgroupdescription))
+    public IActionResult AddModifierGroup(Modifiersgroup modifier, string SelectedModifierIds)
     {
-        var newModifier = new Modifiersgroup
+        if (!string.IsNullOrEmpty(modifier.Modifiersgroupname) && !string.IsNullOrEmpty(modifier.Modifiersgroupdescription))
         {
-            Modifiersgroupname = modifier.Modifiersgroupname,
-            Modifiersgroupdescription = modifier.Modifiersgroupdescription
-        };
-
-        _menu.AddModifier(newModifier);
-
-        // Fetch the newly created ModifierGroupId
-        var modifierGroupId = _menu.GetModifierGroupIdByName(modifier.Modifiersgroupname);
-
-        // If selected modifier items exist, save them in the mapping table
-        if (!string.IsNullOrEmpty(SelectedModifierIds))
-        {
-            var modifierIds = SelectedModifierIds.Split(',').Select(int.Parse).ToList();
-            foreach (var modId in modifierIds)
+            var newModifier = new Modifiersgroup
             {
-                _menu.AddModifierGroupItemMapping(modifierGroupId, modId);
+                Modifiersgroupname = modifier.Modifiersgroupname,
+                Modifiersgroupdescription = modifier.Modifiersgroupdescription
+            };
+
+            _menu.AddModifier(newModifier);
+
+            // Fetch the newly created ModifierGroupId
+            var modifierGroupId = _menu.GetModifierGroupIdByName(modifier.Modifiersgroupname);
+
+            // If selected modifier items exist, save them in the mapping table
+            if (!string.IsNullOrEmpty(SelectedModifierIds))
+            {
+                var modifierIds = SelectedModifierIds.Split(',').Select(int.Parse).ToList();
+                foreach (var modId in modifierIds)
+                {
+                    _menu.AddModifierGroupItemMapping(modifierGroupId, modId);
+                }
             }
+
+            TempData["success"] = "Modifier Group and items added successfully!";
+            return RedirectToAction("MenuView");
         }
 
-        TempData["success"] = "Modifier Group and items added successfully!";
-        return RedirectToAction("MenuView");
+        return View("MenuView");
     }
-
-    return View("MenuView");
-}
 
 
     // Edit modifier group
@@ -329,24 +351,24 @@ public IActionResult AddModifierGroup(Modifiersgroup modifier, string SelectedMo
     }
 
     // Retrieves items based on selected category
-    public IActionResult GetModifierItemsByModifierGroup(int modifiergroupid, int PageNumber=1, int PageSize=5, string SearchKey="")
+    public IActionResult GetModifierItemsByModifierGroup(int modifiergroupid, int PageNumber = 1, int PageSize = 5, string SearchKey = "")
     {
         var model = new MenuViewModel
         {
-            ModifierGroupModel =_menu.GetModifierGroups(),
-            ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(modifiergroupid , PageNumber, PageSize, SearchKey),
+            ModifierGroupModel = _menu.GetModifierGroups(),
+            ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(modifiergroupid, PageNumber, PageSize, SearchKey),
             ItemsUnit = _menu.GetUnits()
         };
         return PartialView("~/Views/Menu/_PartialModifier.cshtml", model);
     }
-    
-    public IActionResult GetModifierItemsAllByModifierGroup( int PageNumber=1, int PageSize=5, string SearchKey="")
+
+    public IActionResult GetModifierItemsAllByModifierGroup(int PageNumber = 1, int PageSize = 5, string SearchKey = "")
     {
         var model = new MenuViewModel
         {
-            
-            ModifierItemAll = _menu.GetAllModifierItems( PageNumber, PageSize, SearchKey),
-           
+
+            ModifierItemAll = _menu.GetAllModifierItems(PageNumber, PageSize, SearchKey),
+
         };
         return PartialView("~/Views/Menu/_ExistingModifierItemModal.cshtml", model);
     }

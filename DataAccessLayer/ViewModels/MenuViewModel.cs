@@ -100,6 +100,28 @@ public class AddItemsViewModel
 
     public List<ItemsView> Items { get; set; } = new List<ItemsView>();
 
+    public  List<AddModGroupWithItem> AddModGroupWithItems {get; set;}
+
+}
+
+public class AddModGroupWithItem{
+    public int ModifierGroupId{get; set;}
+    public int min{get; set;}
+    public int max{get; set;}
+ 
+}
+
+public class ModifierGroupDetails{
+    public int ModifierGroupId{get; set;}
+    public string ModifierGroupName{get; set;}
+    public int max {get; set;}
+    public int min {get; set;}
+    public  List<ItemShow> ItemShows {get; set;}
+    
+}
+public class ItemShow{
+    public required string ModifierItemName{get; set;}
+    public int Rate {get; set;}
 }
 
 public class ModifierGroupModel

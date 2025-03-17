@@ -1,3 +1,4 @@
+@model DataAccessLayer.ViewModels.MenuViewModel
 <div class="table-responsive">
     <table class="table">
         <thead>
@@ -96,45 +97,57 @@
             url: '@Url.Action("GetModifierItemsAllByModifierGroup", "Menu")',
             type: 'GET',
             data: {
-
                 PageSize: pageSize,
                 SearchKey: searchKey,
                 PageNumber: pageNumber
             },
             success: function (data) {
-                $("#GetAllModifierItems").html(data);
+                if ($('#addmodifer').hasClass('show')) {
+                    $("#GetAllModifierItems").html(data);
+                } else if ($('#editmodifiermodel').hasClass('show')) {
+                    $("#GetAllModifierItemsEdit").html(data);
+                }
             },
             error: function (error) {
                 console.error('Error loading partial view:', error);
-                $("#GetAllModifierItems").html("<p>Error loading items.</p>");
             }
         });
     }
 
-    function updatePagePerSizeAll() {
-        console.log("jgsdfuysf");
-        var pageSize = $("#pageSizeDropdownModifierAll").val();
-        var searchKey = $("#searchInputModifierAll").val();
-        var pageNumber = @Model.ModifierItemAll.PageNumber;
 
-        loadModifierAll(pageSize, searchKey, pageNumber);
 
+function updatePagePerSizeAll() {
+    var pageSize = $("#pageSizeDropdownModifierAll").val();
+    var searchKey = $("#searchInputModifierAll").val();
+    var pageNumber = @Model.ModifierItemAll.PageNumber;
+
+    if ($('#editmodifiermodel').hasClass('show')) {
+        searchKey = $("#searchInputModifierEdit").val();  // Use correct search input
     }
 
+    loadModifierAll(pageSize, searchKey, pageNumber);
+}
 
-    function PanginationBtnModifierAll(direction) {
-        var pageSize = $("#pageSizeDropdownModifierAll").val();
-        var searchKey = $("#searchInputModifierAll").val();
-        var pageNumber = @Model.ModifierItemAll.PageNumber;
 
-        if (direction === "back") {
-            pageNumber -= 1;
-        } else {
-            pageNumber += 1;
-        }
 
-        loadModifierAll(pageSize, searchKey, pageNumber);
+function PanginationBtnModifierAll(direction) {
+    var pageSize = $("#pageSizeDropdownModifierAll").val();
+    var searchKey = $("#searchInputModifierAll").val();
+    var pageNumber = @Model.ModifierItemAll.PageNumber;
+
+    if ($('#editmodifiermodel').hasClass('show')) {
+        searchKey = $("#searchInputModifierEdit").val();
     }
+
+    if (direction === "back") {
+        pageNumber -= 1;
+    } else {
+        pageNumber += 1;
+    }
+
+    loadModifierAll(pageSize, searchKey, pageNumber);
+}
+
 
     function searchModifierEnter(event) {
         if (event.key === "Enter") {

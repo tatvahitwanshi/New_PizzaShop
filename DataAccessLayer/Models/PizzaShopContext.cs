@@ -320,6 +320,8 @@ public partial class PizzaShopContext : DbContext
 
             entity.Property(e => e.Mergrid).HasColumnName("mergrid");
             entity.Property(e => e.Itemid).HasColumnName("itemid");
+            entity.Property(e => e.Maximum).HasColumnName("maximum");
+            entity.Property(e => e.Minimum).HasColumnName("minimum");
             entity.Property(e => e.Modifiersgroupid).HasColumnName("modifiersgroupid");
 
             entity.HasOne(d => d.Item).WithMany(p => p.MapItemsModifiersgroups)

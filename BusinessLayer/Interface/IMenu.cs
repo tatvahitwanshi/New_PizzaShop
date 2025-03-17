@@ -15,10 +15,10 @@ public interface IMenu
 
     bool SoftDeleteCategory(int categoryId);
 
-    Pagination<ItemsView> GetItemsByCategory(int categoryId , int PageNumber=1, int PageSize=3, string SearchKey="");
+    Pagination<ItemsView> GetItemsByCategory(int categoryId, int PageNumber = 1, int PageSize = 3, string SearchKey = "");
 
     List<ItemsUnit> GetUnits();
-
+    public ModifierGroupDetails GetModifierGroupDetails(int modifierGroupId, int itemId=-1);
     Task<string> AddItems(AddItemsViewModel model);
 
     AddItemsViewModel GetItemById(int id);
@@ -32,18 +32,18 @@ public interface IMenu
 
     void AddModifier(Modifiersgroup modifiersgroup);
 
-    ModifierGroupModel GetModifierById(int id); 
-    
-    void UpdateModifier(Modifiersgroup modifiersgroup); 
+    ModifierGroupModel GetModifierById(int id);
 
-    bool SoftDeleteModfierGroup (int modifiergroupid);
+    void UpdateModifier(Modifiersgroup modifiersgroup);
 
-    Pagination<ModifierItemViewModel> GetModifierItemsByModifierGroup(int modifiergroupid=-1, int PageNumber=1, int PageSize=3, string SearchKey="");
+    bool SoftDeleteModfierGroup(int modifiergroupid);
 
-    Pagination<ModifierItemViewModel>GetAllModifierItems(int PageNumber=1, int PageSize=5, string SearchKey="");
+    Pagination<ModifierItemViewModel> GetModifierItemsByModifierGroup(int modifiergroupid = -1, int PageNumber = 1, int PageSize = 3, string SearchKey = "");
+
+    Pagination<ModifierItemViewModel> GetAllModifierItems(int PageNumber = 1, int PageSize = 5, string SearchKey = "");
 
     int GetModifierGroupIdByName(string name);
-    
+
     void AddModifierGroupItemMapping(int modifierGroupId, int modifierItemId);
 
 }

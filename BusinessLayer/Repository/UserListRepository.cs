@@ -196,6 +196,7 @@ public class UserListRepository : IUserList
 
         return new EditUserViewModel
         {
+            UserId=userId,
             Email = user.Email,
             Username = user.Username,
             Phone = user.Phone,

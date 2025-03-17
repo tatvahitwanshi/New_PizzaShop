@@ -169,8 +169,51 @@ public class MenuRepository : IMenu
         };
         _db.Add(item);
         await _db.SaveChangesAsync();
+
+        if (model.AddModGroupWithItems != null && model.AddModGroupWithItems.Any())
+        {
+            var modGroupMappings = model.AddModGroupWithItems.Select(mg => new MapItemsModifiersgroup
+            {
+                Itemid = item.Itemid, // Use the newly inserted ItemId
+                Modifiersgroupid = mg.ModifierGroupId,
+                Minimum = mg.min,
+                Maximum = mg.max
+            }).ToList();
+
+            _db.MapItemsModifiersgroups.AddRange(modGroupMappings);
+            await _db.SaveChangesAsync();
+        }
         return "Item added successfully!";
     }
+    public ModifierGroupDetails GetModifierGroupDetails(int modifierGroupId, int itemId=-1)
+    {
+
+        Modifiersgroup? groupModel = _db.Modifiersgroups.Where(e => e.Modifiersgroupid == modifierGroupId).FirstOrDefault();
+        ModifierGroupDetails model = new ModifierGroupDetails();
+        if (groupModel != null)
+        {
+            model.ModifierGroupId = groupModel.Modifiersgroupid;
+            model.ModifierGroupName = groupModel.Modifiersgroupname;
+            model.ItemShows = (from mi in _db.Modifiers
+                               join map in _db.MapModifiersgroupModifiers on mi.Modifiersid equals map.Modifiersid
+                               where map.Modifiersgroupid == modifierGroupId
+                               select new ItemShow
+                               {
+                                   ModifierItemName = mi.Modifiersname,
+                                   Rate = (int)mi.Modifiersrate
+                               }).ToList();
+
+            if(itemId != -1){
+                MapItemsModifiersgroup item=_db.MapItemsModifiersgroups.Where(e=>e.Modifiersgroupid== modifierGroupId && e.Itemid== itemId).FirstOrDefault();
+                model.min= item.Minimum ?? 0;
+                model.max=item.Maximum ?? 0;
+            }
+        }
+
+        return model;
+    }
+
+    
 
     public AddItemsViewModel GetItemById(int id)
     {
@@ -189,7 +232,15 @@ public class MenuRepository : IMenu
                 Defaulttax = i.Defaulttax,
                 Taxpercentage = i.Taxpercentage,
                 Shortcode = i.Shortcode,
-                Itemdescription = i.Itemdescription
+                Itemdescription = i.Itemdescription,
+                AddModGroupWithItems = _db.MapItemsModifiersgroups
+                                     .Where(im => im.Itemid == id)
+                                     .Select(im => new AddModGroupWithItem
+                                     {
+                                         ModifierGroupId = im.Modifiersgroupid,
+                                         max = im.Maximum ?? 0, 
+                                         min = im.Minimum ?? 0 
+                                     }).ToList()
             })
             .FirstOrDefault();
 
@@ -264,7 +315,7 @@ public class MenuRepository : IMenu
     {
         return _db.Modifiersgroups.Where(m => m.Modifiersgroupname == name)
                               .Select(m => m.Modifiersgroupid)
-                              .FirstOrDefault();            
+                              .FirstOrDefault();
     }
     public void AddModifierGroupItemMapping(int modifierGroupId, int modifierItemId)
     {
@@ -386,7 +437,7 @@ public class MenuRepository : IMenu
                         CreatedDate = modifier.CreatedDate,
                         ModifierUnitname = unit.Unitname,
                     };
-                      if (PageNumber < 1)
+        if (PageNumber < 1)
         {
             PageNumber = 1;
         }

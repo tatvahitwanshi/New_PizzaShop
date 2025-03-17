@@ -6,20 +6,25 @@ namespace DataAccessLayer.ViewModels;
 
 public class EditUserViewModel
 {
+    public int? UserId {get; set;}
     [Required]
     public string? Email { get; set; }
     [Required]
     public string? Username { get; set; }
 
+    [Required]
     public string? Firstname { get; set; }
 
+    [Required]
     public string? Lastname { get; set; }
     public bool? Isactive { get; set; }
     public IFormFile? Profilepic { get; set; }
     public int? Zipcode { get; set; }
 
+
     public string? Address { get; set; }
 
+    [Required]
     [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
                        ErrorMessage = "Entered phone format is not valid.")]
     public string? Phone { get; set; }

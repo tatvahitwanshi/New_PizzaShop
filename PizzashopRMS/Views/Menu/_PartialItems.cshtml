@@ -135,11 +135,11 @@
                             <span style="color: green;" class="me-1">@startRecord - @endRecord</span> of <span
                                 style="color: red;" class="ms-1">@Model.Items.Count</span>
                         </span>
-                        <button class="btn border ms-2  align-self-center" type="submit" onclick="PanginationBtn('back')"><i class="bi bi-chevron-left "
-                                ></i>
+                        <button class="btn border ms-2  align-self-center" type="submit"
+                            onclick="PanginationBtn('back')"><i class="bi bi-chevron-left "></i>
                         </button>
-                        <button class="btn border ms-2  align-self-center" type="submit" onclick="PanginationBtn('next')"><i class="bi bi-chevron-right"
-                                ></i>
+                        <button class="btn border ms-2  align-self-center" type="submit"
+                            onclick="PanginationBtn('next')"><i class="bi bi-chevron-right"></i>
                         </button>
                     </div>
                 </nav>
@@ -278,16 +278,33 @@
                         </div>
 
                     </div>
+                    <input type="hidden" id="modGroupDataInput" name="AddModGroupWithItems" />
+                    <div class="col-md-4 mt-3 col-12 px-2  overflow-auto"
+                        style="background-color: #fff5d7; border-radius: 5px; height: 500px;">
+                        <div class="dropdown mt-2">
+                            <button class="btn btn-light dropdown-toggle w-100" type="button" id="modifierGroupDropdown"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Modifier Group
+                            </button>
+                            <ul class="dropdown-menu w-100" aria-labelledby="modifierGroupDropdown" id="modgroupAll">
+                                @foreach (var modgroup in Model.ModifierGroupModel)
+                                {
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" value="@modgroup.ModifierGroupId" class="me-2"
+                                                name="modgroupCheckbox"> @modgroup.ModifierGroupName
+                                        </label>
+                                    </li>
+                                }
 
-                    <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
-                        <div class="mod-group-select mt-2">
-                            <select class="form-select" id="ModifierGroupDropdown" aria-label="Select Food Category">
-                                <option value="" selected disabled>Select Modifier Group</option>
-                                <option value="mod1">Modifier 1</option>
-                                <option value="mod2">Modifier 2</option>
-                            </select>
+                            </ul>
+                        </div>
+                        <div class="" id="modifierGroupDetail">
 
                         </div>
+                    </div>
+                    <div class="" onclick="GetModGroupData()">
+                        click here
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mt-3">
@@ -432,13 +449,26 @@
 
                     </div>
 
-                    <div class="col-md-4 mt-3 col-12 px-2 " style="background-color: #fff5d7; border-radius: 5px;">
-                        <div class="mod-group-select mt-2">
-                            <select class="form-select" id="ModifierGroupDropdown" aria-label="Select Food Category">
-                                <option value="" selected disabled>Select Modifier Group</option>
-                                <option value="mod1">Modifier 1</option>
-                                <option value="mod2">Modifier 2</option>
-                            </select>
+                    <div class="col-md-4 mt-3 col-12 px-2  overflow-auto"
+                        style="background-color: #fff5d7; border-radius: 5px; height: 500px;">
+                        <div class="dropdown mt-2">
+                            <button class="btn btn-light dropdown-toggle w-100" type="button" id="modifierGroupDropdown"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Modifier Group
+                            </button>
+                            <ul class="dropdown-menu w-100" aria-labelledby="modifierGroupDropdown" id="modgroupAll">
+                                @foreach (var modgroup in Model.ModifierGroupModel)
+                                {
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" value="@modgroup.ModifierGroupId" class="me-2"
+                                                name="modgroupCheckbox"> @modgroup.ModifierGroupName
+                                        </label>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="" id="editmodifierGroupDetail">
 
                         </div>
                     </div>
@@ -565,12 +595,32 @@
             this.value = "false";
         }
     });
+    @* -------------------------------------------------------------- Add Item--------------------------------------------------------------------- *@
+        function GetModGroupData() {
+            var modgroupAll = [];
+            $('.mod-group-detail').each(function () {
+                var modifierGroupId = $(this).find('.deleteOneGroup').data('modgroupid');
+                var minValue = $(this).find('.min-Select').val();
+                var maxValue = $(this).find('.max-Select').val();
+                modgroupAll.push({
+                    ModifierGroupId: modifierGroupId,
+                    min: minValue,
+                    max: maxValue
+                });
+            });
+            return modgroupAll; // Return the collected data
+        }
+
     $(document).ready(function () {
         $(document).on('click', '#savebtn', function (e) {
             e.preventDefault();
 
-            var formElement = document.querySelector(".additemform"); // Correct the form selector
+            var formElement = document.querySelector(".additemform");
             var formData = new FormData(formElement);
+
+            // Get Modifier Group Data and append it
+            var modGroupData = GetModGroupData();
+            formData.append("AddModGroupWithItems", JSON.stringify(modGroupData));
 
             $.ajax({
                 url: '@Url.Action("AddItemsPost", "Menu")',
@@ -597,38 +647,69 @@
     document.getElementById("itemImage").addEventListener("change", function () {
         let fileLabel = document.getElementById("fileLabel");
         if (this.files.length > 0) {
-            fileLabel.style.border = "2px solid green"; // Change border color when a file is selected
+            fileLabel.style.border = "2px solid green";
         } else {
-            fileLabel.style.border = "2px solid rgba(112, 128, 144, 0.123)"; // Reset border color
+            fileLabel.style.border = "2px solid rgba(112, 128, 144, 0.123)";
         }
     });
 
-    function GetItemDetails(itemId) {
-        $.ajax({
+    @* -------------------------------------------------------------- Edit Item--------------------------------------------------------------------- *@
 
-            url: '/Menu/GetItemById',  // Controller action to get item details
+        function GetItemDetails(itemId) {
+            $.ajax({
+
+                url: '/Menu/GetItemById',  // Controller action to get item details
+                type: 'GET',
+                data: { id: itemId },
+                success: function (data) {
+                    if (data) {
+                        console.log("Fetched Item Data:", data);
+                        $('#editItemId').val(data.itemId);
+                        $('#editcategoryDropdown').val(data.categoryId);
+                        $('#editname').val(data.itemname);
+                        $('#edititemTypeDropdown').val(data.itemtype);
+                        $('#editrate').val(data.rate);
+                        $('#editquantity').val(data.quantity);
+                        $('#editunitDropdown').val(data.unitId);
+                        $('#editavailableToggle').prop('checked', data.isavailable);
+                        $('#editdefaultTaxToggle').prop('checked', data.defaulttax);
+                        $('#edittaxpercentage').val(data.taxpercentage);
+                        $('#editshortcode').val(data.shortcode);
+                        $('#editdescription').val(data.itemdescription);
+                        $('#edititemImage').val(data.itemimage);
+                        $('#editmodifierGroupDetail').empty();
+                        console.log(data.addModGroupWithItems)
+                        $('#editmodifierGroupDetail').empty();
+
+                        // Load modifier group details
+                        @* if (data.addModGroupWithItems && data.addModGroupWithItems.length > 0) {
+                            data.addModGroupWithItems.forEach(function (group) {
+                                @* GetModifierGroupDetailsForEdit(group.modifierGroupId,itemId); 
+                            });
+                        } *@
+                    }
+                },
+                error: function () {
+                    alert("Error fetching item details.");
+                }
+            });
+        }
+    function GetModifierGroupDetailsForEdit(modifierGroupId,itemId) {
+        $.ajax({
+            url: '/Menu/GetModifierGroupDetails',
             type: 'GET',
-            data: { id: itemId },
-            success: function (data) {
-                if (data) {
-                    console.log("Fetched Item Data:", data);
-                    $('#editItemId').val(data.itemId);
-                    $('#editcategoryDropdown').val(data.categoryId);
-                    $('#editname').val(data.itemname);
-                    $('#edititemTypeDropdown').val(data.itemtype);
-                    $('#editrate').val(data.rate);
-                    $('#editquantity').val(data.quantity);
-                    $('#editunitDropdown').val(data.unitId);
-                    $('#editavailableToggle').prop('checked', data.isavailable);
-                    $('#editdefaultTaxToggle').prop('checked', data.defaulttax);
-                    $('#edittaxpercentage').val(data.taxpercentage);
-                    $('#editshortcode').val(data.shortcode);
-                    $('#editdescription').val(data.itemdescription);
-                    $('#edititemImage').val(data.itemimage);
+            data: { modifierGroupId: modifierGroupId,itemId:itemId },
+            success: function (response) {
+                if ($('#editmodifierGroupDetail').find(`.mod-group-${modifierGroupId}`).length === 0) {
+                    $('#editmodifierGroupDetail').append(
+                        `<div class="mod-group-${modifierGroupId} mod-group-detail mt-2">
+                        ${response}
+                    </div>`
+                    );
                 }
             },
             error: function () {
-                alert("Error fetching item details.");
+                console.log("Error loading modifier group details.");
             }
         });
     }
@@ -669,7 +750,9 @@
         }
     });
 
-    deleteItemIds = []; // Store selected item IDs
+    @* --------------------------------------------------------Delete And Mass Delete Item--------------------------------------------------------- *@
+
+        deleteItemIds =[]; // Store selected item IDs
     function openItemDeleteModal(itemId = null) {
         deleteItemIds = []; // Reset array
 
@@ -716,6 +799,36 @@
             }
         });
     });
+
+    @* --------------------------------------------------------ModifierGroup Checkbox------------------------------------------------------------------ *@
+
+        $('#modgroupAll').on('change', 'input[name="modgroupCheckbox"]', function () {
+            var modifierGroupId = $(this).val();
+            var isChecked = $(this).prop('checked');
+
+            if (isChecked) {
+                console.log(modifierGroupId);
+                $.ajax({
+                    url: '/Menu/GetModifierGroupDetails',
+                    type: 'GET',
+                    data: { modifierGroupId: modifierGroupId },
+                    success: function (response) {
+                        if ($('#modifierGroupDetail').find(`.mod-group-${modifierGroupId}`).length === 0) {
+                            $('#modifierGroupDetail').append(
+                                `<div class="mod-group-${modifierGroupId} mod-group-detail mt-2">
+                            ${response}
+                        </div>`
+                            );
+                        }
+                    },
+                    error: function () {
+                        console.log("Error loading modifier group details.");
+                    }
+                });
+            } else {
+                $('#modifierGroupDetail').find(`.mod-group-${modifierGroupId}`).remove();
+            }
+        });
 
 
 

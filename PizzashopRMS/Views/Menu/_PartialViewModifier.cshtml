@@ -139,7 +139,7 @@
                                         </svg>
                                     </div>
                                     <div class="" id="GetAllModifierItems">
-                                        <partial name="_ExistingModifierItemModal.cshtml" , model="Model"></partial>
+                                        <partial name="_ExistingModifierItemModal.cshtml" ></partial>
 
                                     </div>
 
@@ -164,34 +164,61 @@
 
             <!-- Model Edit Modifier -->
             <form method="post" asp-action="UpdateModififerGroup" asp-controller="Menu">
-
                 <div class="modal fade" id="editmodifiermodel" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5">Edit Category</h1>
+                                <h1 class="modal-title fs-5" id="editModalTitle">Edit Modifier Group</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <input type="hidden" id="editModifierId" name="ModifierGroupId">
+                                <div class="" id="editModifierFormSection">
+                                    <input type="hidden" id="editModifierId" name="ModifierGroupId">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="editModifierName"
+                                            name="ModifierGroupName" placeholder="Category Name" required>
+                                        <label for="editModifierName">Name</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <textarea class="form-control" name="ModifierGroupDescription"
+                                            id="editModifierDescription" placeholder="Enter Description"></textarea>
+                                        <label for="editModifierDescription">Description</label>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="#" id="editShowTable">+ Add Existing Modifier</a>
+                                    </div>
+                                    <div class="col mt-3 mb-3 d-flex justify-content-end">
+                                        <button class="btn text-white me-2" style="background-color: #0066A7;"
+                                            type="submit">Save</button>
+                                        <button class="btn" style="border-color: #0066A7; color: #0066A7;" type="button"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                                <div class="" id="editTableSection" style="display: none;">
+                                    <div class="d-flex me-2 p-1 position-relative">
+                                        <input class="search_input form-control me-2 border-0" type="text"
+                                            placeholder="Search" aria-label="Search" id="searchInputModifierEdit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
+                                            fill="currentColor" class="bi bi-search position-absolute search-icon-main"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                        </svg>
+                                    </div>
 
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="editModifierName"
-                                        name="ModifierGroupName" placeholder="Category Name" required>
-                                    <label for="editModifierName">Name</label>
-                                </div>
-                                <div class="form-floating">
-                                    <textarea class="form-control" name="ModifierGroupDescription"
-                                        id="editModifierDescription" placeholder="Enter Description"></textarea>
-                                    <label for="editModifierDescription">Description</label>
-                                </div>
-                                <div class="col mt-3 mb-3 d-flex justify-content-end">
-                                    <button class="btn text-white me-2" style="background-color: #0066A7;"
-                                        type="submit">Save</button>
-                                    <button class="btn" style="border-color: #0066A7; color: #0066A7;" type="button"
-                                        data-bs-dismiss="modal">Cancel</button>
+                                    <div id="GetAllModifierItemsEdit">
+                                        <partial name="_ExistingModifierItemModal.cshtml" ></partial>
+                                    </div>
+
+                                    <!-- Back Button -->
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button class="btn " id="editBackToForm"
+                                            style="border-color: #0066A7; color: #0066A7; text-decoration: none;">Add</button>
+                                        <button class="btn ms-2" id="editBackToForm1"
+                                            style="border-color: #0066A7; color: #0066A7; text-decoration: none;">Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -276,7 +303,40 @@
         });
     }); *@
 
-        @* --------below is for addEventListener existing modifier--------- *@
+        document.addEventListener("DOMContentLoaded", function () {
+            // Show Table Section in Edit Modal
+            document.getElementById("editShowTable").addEventListener("click", function (e) {
+                e.preventDefault();
+                document.getElementById("editModifierFormSection").style.display = "none";
+                document.getElementById("editTableSection").style.display = "block";
+                document.getElementById("editModalTitle").innerText = "Select Modifier Items";
+            });
+
+            // Back to Form from Table
+            document.getElementById("editBackToForm").addEventListener("click", function () {
+                document.getElementById("editModifierFormSection").style.display = "block";
+                document.getElementById("editTableSection").style.display = "none";
+                document.getElementById("editModalTitle").innerText = "Edit Modifier Group";
+            });
+
+            document.getElementById("editBackToForm1").addEventListener("click", function () {
+                document.getElementById("editModifierFormSection").style.display = "block";
+                document.getElementById("editTableSection").style.display = "none";
+                document.getElementById("editModalTitle").innerText = "Edit Modifier Group";
+            });
+
+            // Reset Modal on Close
+            var editModalElement = document.getElementById('editmodifiermodel');
+            editModalElement.addEventListener('hidden.bs.modal', function () {
+                document.getElementById("editModifierFormSection").style.display = "block";
+                document.getElementById("editTableSection").style.display = "none";
+                document.getElementById("editModalTitle").innerText = "Edit Modifier Group";
+            });
+        });
+
+
+
+    @* --------below is for add existing modifier--------- *@
 
         $(document).ready(function () {
             let selectedItems = {}; // Store selected items persistently
@@ -384,7 +444,7 @@
 
     @* ------Load the partail view for all the modifier item---------- *@
         $(document).ready(function () {
-            $('#addmodifer').on('shown.bs.modal', function () {
+            $('#addmodifer, #editmodifiermodel').on('shown.bs.modal', function () {
                 loadModifierItems();
             });
 
@@ -398,17 +458,20 @@
                         SearchKey: searchKey
                     },
                     success: function (response) {
-                        $('#GetAllModifierItems').html(response);
+                        if ($('#addmodifer').hasClass('show')) {
+                            $('#GetAllModifierItems').html(response);
+                        } else if ($('#editmodifiermodel').hasClass('show')) {
+                            $('#GetAllModifierItemsEdit').html(response);
+                        }
                     },
                     error: function () {
-                        alert("Error loading modifier itemsjuhuiijnhuhu.");
+                        alert("Error loading modifier items.");
                     }
                 });
             }
         });
-
-
-
-
+    $('#addModal, #editModal').on('hidden.bs.modal', function () {
+        location.reload();
+    });
 
 </script>
