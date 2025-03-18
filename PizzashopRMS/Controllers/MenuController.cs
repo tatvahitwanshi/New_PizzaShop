@@ -231,25 +231,7 @@ public class MenuController : Controller
         }
     }
 
-    // Adds a new modifier group
-    // [HttpPost]
-    // public IActionResult AddModifierGroup(Modifiersgroup modifier)
-    // {
-    //     if (modifier.Modifiersgroupdescription != null && modifier.Modifiersgroupname != null)
-    //     {
-    //         var newModifier = new Modifiersgroup
-    //         {
 
-    //             Modifiersgroupname = modifier.Modifiersgroupname,
-    //             Modifiersgroupdescription = modifier.Modifiersgroupdescription
-    //         };
-
-    //         TempData["success"] = "Modifier added successfully!";
-    //         _menu.AddModifier(newModifier);
-    //         return RedirectToAction("MenuView");
-    //     }
-    //     return View("MenuView");
-    // }
     [HttpPost]
     public IActionResult AddModifierGroup(Modifiersgroup modifier, string SelectedModifierIds)
     {

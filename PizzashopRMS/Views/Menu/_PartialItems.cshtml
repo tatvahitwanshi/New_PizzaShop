@@ -687,6 +687,12 @@
                                 @* GetModifierGroupDetailsForEdit(group.modifierGroupId,itemId); 
                             });
                         } *@
+                            setTimeout(() => {
+                                let dropdownElements = document.querySelectorAll('.dropdown-toggle');
+                                dropdownElements.forEach(dropdownEl => {
+                                    new bootstrap.Dropdown(dropdownEl);
+                                });
+                            }, 100);
                     }
                 },
                 error: function () {
@@ -694,11 +700,11 @@
                 }
             });
         }
-    function GetModifierGroupDetailsForEdit(modifierGroupId,itemId) {
+    function GetModifierGroupDetailsForEdit(modifierGroupId, itemId) {
         $.ajax({
             url: '/Menu/GetModifierGroupDetails',
             type: 'GET',
-            data: { modifierGroupId: modifierGroupId,itemId:itemId },
+            data: { modifierGroupId: modifierGroupId, itemId: itemId },
             success: function (response) {
                 if ($('#editmodifierGroupDetail').find(`.mod-group-${modifierGroupId}`).length === 0) {
                     $('#editmodifierGroupDetail').append(
@@ -829,6 +835,7 @@
                 $('#modifierGroupDetail').find(`.mod-group-${modifierGroupId}`).remove();
             }
         });
+
 
 
 
