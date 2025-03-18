@@ -446,26 +446,20 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="col-md-4 mt-3 col-12 px-2  overflow-auto"
                         style="background-color: #fff5d7; border-radius: 5px; height: 500px;">
+                        <input type="hidden" id="editmodGroupDataInput" name="AddModGroupWithItems" />
+
                         <div class="dropdown mt-2">
-                            <button class="btn btn-light dropdown-toggle w-100" type="button" id="modifierGroupDropdown"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-light dropdown-toggle w-100" type="button"
+                                id="modifierGroupDropdownEdit" data-bs-toggle="dropdown" aria-expanded="false">
                                 Select Modifier Group
                             </button>
-                            <ul class="dropdown-menu w-100" aria-labelledby="modifierGroupDropdown" id="modgroupAll">
-                                @foreach (var modgroup in Model.ModifierGroupModel)
-                                {
-                                    <li>
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" value="@modgroup.ModifierGroupId" class="me-2"
-                                                name="modgroupCheckbox"> @modgroup.ModifierGroupName
-                                        </label>
-                                    </li>
-                                }
+                            <ul class="dropdown-menu w-100" id="modgroupAllEdit"
+                                aria-labelledby="modifierGroupDropdownEdit">
+                                <!-- Dynamic data will be loaded here -->
                             </ul>
                         </div>
                         <div class="" id="editmodifierGroupDetail">
@@ -511,6 +505,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap Bundle (includes Popper.js) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <script>
 
@@ -608,6 +604,7 @@
                     max: maxValue
                 });
             });
+            console.log(modgroupAll);
             return modgroupAll; // Return the collected data
         }
 
@@ -654,52 +651,95 @@
     });
 
     @* -------------------------------------------------------------- Edit Item--------------------------------------------------------------------- *@
+       
+    var arrayToEdit = [];
 
-        function GetItemDetails(itemId) {
-            $.ajax({
+    function GetItemDetails(itemId) {
+        $.ajax({
+            url: '/Menu/GetItemById',  // Controller action to get item details
+            type: 'GET',
+            data: { id: itemId },
+            success: function (data) {
+                if (data) {
+                    console.log("Fetched Item Data:", data);
+                    $('#editItemId').val(data.itemId);
+                    $('#editcategoryDropdown').val(data.categoryId);
+                    $('#editname').val(data.itemname);
+                    $('#edititemTypeDropdown').val(data.itemtype);
+                    $('#editrate').val(data.rate);
+                    $('#editquantity').val(data.quantity);
+                    $('#editunitDropdown').val(data.unitId);
+                    $('#editavailableToggle').prop('checked', data.isavailable);
+                    $('#editdefaultTaxToggle').prop('checked', data.defaulttax).val(data.defaulttax);;
+                    $('#editdefaultTaxToggle').next('input[type="hidden"]').val(data.defaulttax);
 
-                url: '/Menu/GetItemById',  // Controller action to get item details
-                type: 'GET',
-                data: { id: itemId },
-                success: function (data) {
-                    if (data) {
-                        console.log("Fetched Item Data:", data);
-                        $('#editItemId').val(data.itemId);
-                        $('#editcategoryDropdown').val(data.categoryId);
-                        $('#editname').val(data.itemname);
-                        $('#edititemTypeDropdown').val(data.itemtype);
-                        $('#editrate').val(data.rate);
-                        $('#editquantity').val(data.quantity);
-                        $('#editunitDropdown').val(data.unitId);
-                        $('#editavailableToggle').prop('checked', data.isavailable);
-                        $('#editdefaultTaxToggle').prop('checked', data.defaulttax);
-                        $('#edittaxpercentage').val(data.taxpercentage);
-                        $('#editshortcode').val(data.shortcode);
-                        $('#editdescription').val(data.itemdescription);
-                        $('#edititemImage').val(data.itemimage);
-                        $('#editmodifierGroupDetail').empty();
-                        console.log(data.addModGroupWithItems)
-                        $('#editmodifierGroupDetail').empty();
+                    $('#edittaxpercentage').val(data.taxpercentage);
+                    $('#editshortcode').val(data.shortcode);
+                    $('#editdescription').val(data.itemdescription);
+                    $('#edititemImage').val(data.itemimage);
+                    $('#editmodifierGroupDetail').empty();
+                    arrayToEdit = []; // Clear previous data
 
-                        // Load modifier group details
-                        @* if (data.addModGroupWithItems && data.addModGroupWithItems.length > 0) {
-                            data.addModGroupWithItems.forEach(function (group) {
-                                @* GetModifierGroupDetailsForEdit(group.modifierGroupId,itemId); 
-                            });
-                        } *@
-                            setTimeout(() => {
-                                let dropdownElements = document.querySelectorAll('.dropdown-toggle');
-                                dropdownElements.forEach(dropdownEl => {
-                                    new bootstrap.Dropdown(dropdownEl);
-                                });
-                            }, 100);
+                    console.log(data.addModGroupWithItems);
+
+                    // Load modifier group details
+                    if (data.addModGroupWithItems && data.addModGroupWithItems.length > 0) {
+                        data.addModGroupWithItems.forEach(function (group) {
+                            arrayToEdit.push(group.modifierGroupId);
+                            GetModifierGroupDetailsForEdit(group.modifierGroupId, itemId);
+                        });
                     }
-                },
-                error: function () {
-                    alert("Error fetching item details.");
+
+                    // Fetch and populate modifier group dropdown
+                    LoadModifierGroups();
                 }
-            });
-        }
+            },
+            error: function () {
+                alert("Error fetching item details.");
+            }
+        });
+    }
+
+    // Function to fetch and populate modifier groups
+    function LoadModifierGroups() {
+        $.ajax({
+            url: '/Menu/GetModifierGroups', // Correct URL
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                console.log("Modifier Groups Fetched:", response);
+                var dropdown = $('#modgroupAllEdit');
+                dropdown.empty(); // Clear previous items
+
+                if (!response.success) {
+                    dropdown.append('<li class="dropdown-item text-danger">' + response.message + '</li>');
+                    return;
+                }
+
+                var data = response.data;
+                if (data.length === 0) {
+                    dropdown.append('<li class="dropdown-item">No data available</li>');
+                } else {
+                    $.each(data, function (index, modgroup) {
+                        let isChecked = arrayToEdit.includes(modgroup.modifierGroupId) ? "checked" : "";
+                        dropdown.append(
+                            `<li>
+                            <label class="dropdown-item">
+                                <input type="checkbox" value="${modgroup.modifierGroupId}" class="me-2"
+                                    name="editmodgroupCheckbox" ${isChecked}> ${modgroup.modifierGroupName}
+                            </label>
+                        </li>`
+                        );
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", xhr.responseText);
+                alert('Failed to load modifier groups.');
+            }
+        });
+    }
+
     function GetModifierGroupDetailsForEdit(modifierGroupId, itemId) {
         $.ajax({
             url: '/Menu/GetModifierGroupDetails',
@@ -723,8 +763,10 @@
     $(document).ready(function () {
         $("#edititemform").submit(function (e) {
             e.preventDefault();
-
             var formData = new FormData(this); // Create FormData object for handling file uploads
+            // Get Modifier Group Data and append it
+            var modGroupData = GetModGroupData();
+            formData.append("AddModGroupWithItems", JSON.stringify(modGroupData));
 
             $.ajax({
                 url: '/Menu/EditItems',
@@ -734,18 +776,22 @@
                 contentType: false,
                 success: function (response) {
                     if (response.success) {
-                        alert("Item updated successfully!");
+                        @* alert("Item updated successfully!"); *@
                         $('#edititemModal').modal('hide');
-                        location.reload();
-                    } else {
-                        alert("Error: " + response.message);
-                    }
+                        window.location.href= response.url;
+                        @* location.reload(); *@
+                    } 
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr.responseText);
                     alert("An error occurred while saving the item.");
                 }
             });
+        });
+    });
+    $(document).ready(function () {
+        $('#edititemModal').on('hidden.bs.modal', function () {
+            arrayToEdit = []; // Reset array when modal is closed
         });
     });
     document.getElementById("editdefaultTaxToggle").addEventListener("change", function () {
@@ -758,7 +804,7 @@
 
     @* --------------------------------------------------------Delete And Mass Delete Item--------------------------------------------------------- *@
 
-        deleteItemIds =[]; // Store selected item IDs
+    deleteItemIds =[]; // Store selected item IDs
     function openItemDeleteModal(itemId = null) {
         deleteItemIds = []; // Reset array
 
@@ -837,6 +883,33 @@
         });
 
 
+    $('#modgroupAllEdit').on('change', 'input[name="editmodgroupCheckbox"]', function () {
+        var modifierGroupId = $(this).val();
+        var isChecked = $(this).prop('checked');
+
+        if (isChecked) {
+            console.log(modifierGroupId);
+            $.ajax({
+                url: '/Menu/GetModifierGroupDetails',
+                type: 'GET',
+                data: { modifierGroupId: modifierGroupId },
+                success: function (response) {
+                    if ($('#editmodifierGroupDetail').find(`.mod-group-${modifierGroupId}`).length === 0) {
+                        $('#editmodifierGroupDetail').append(
+                            `<div class="mod-group-${modifierGroupId} mod-group-detail mt-2">
+                            ${response}
+                        </div>`
+                        );
+                    }
+                },
+                error: function () {
+                    console.log("Error loading modifier group details.");
+                }
+            });
+        } else {
+            $('#editmodifierGroupDetail').find(`.mod-group-${modifierGroupId}`).remove();
+        }
+    });
 
 
 </script>

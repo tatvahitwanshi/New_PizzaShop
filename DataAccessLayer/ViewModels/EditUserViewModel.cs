@@ -6,7 +6,7 @@ namespace DataAccessLayer.ViewModels;
 
 public class EditUserViewModel
 {
-    public int? UserId {get; set;}
+    public int? UserId { get; set; }
     [Required]
     public string? Email { get; set; }
     [Required]
@@ -19,6 +19,9 @@ public class EditUserViewModel
     public string? Lastname { get; set; }
     public bool? Isactive { get; set; }
     public IFormFile? Profilepic { get; set; }
+
+    [Required(ErrorMessage = "Zip Code is required")]
+    [RegularExpression(@"^\d{6}$", ErrorMessage = "Zip Code must be exactly 6 digits.")]
     public int? Zipcode { get; set; }
 
 

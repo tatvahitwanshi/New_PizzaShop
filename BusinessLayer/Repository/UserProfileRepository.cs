@@ -70,8 +70,8 @@ public class UserProfileRepository : IUserProfile
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
         if (user == null) return false;
 
-        user.Firstname = model.Firstname;
-        user.Lastname = model.Lastname;
+        user.Firstname = model.Firstname.Trim();
+        user.Lastname = model.Lastname.Trim();
         user.Username = model.Username;
         user.Phone = model.Phone;
         user.Address = model.Address;

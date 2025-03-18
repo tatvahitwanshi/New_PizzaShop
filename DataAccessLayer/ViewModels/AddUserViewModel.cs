@@ -20,7 +20,8 @@ public class AddUserViewModel
 
     public IFormFile? Profilepic { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Zip Code is required")]
+    [RegularExpression(@"^\d{6}$", ErrorMessage = "Zip Code must be exactly 6 digits.")]
     public int? Zipcode { get; set; }
     [Required]
     public string? Address { get; set; }

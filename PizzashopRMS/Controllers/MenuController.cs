@@ -20,12 +20,14 @@ public class MenuController : Controller
 
     // Displays the menu view with categories, items, and units
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult MenuView()
+    public IActionResult MenuView(int categoryId = -1)
     {
         var model = new MenuViewModel();
 
         model.Categories = _menu.GetCategories();
-        model.Items = _menu.GetItemsByCategory(model.Categories[0].CategoryId); // Pass items for a default category or all items
+        if (categoryId == -1) model.Items = _menu.GetItemsByCategory(model.Categories[0].CategoryId); // Pass items for a default category or all items
+        else model.Items = _menu.GetItemsByCategory(categoryId); // Pass items for a default category or all items
+
         model.ItemsUnit = _menu.GetUnits();
         model.ModifierGroupModel = _menu.GetModifierGroups();
         model.ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(model.ModifierGroupModel[0].ModifierGroupId); // Pass items for a default category or all items
@@ -129,6 +131,25 @@ public class MenuController : Controller
         };
         return PartialView("~/Views/Menu/_PartialItems.cshtml", model);
     }
+    [HttpGet]
+    public IActionResult GetModifierGroups()
+    {
+        try
+        {
+            var modifierGroups = _menu.GetModifierGroups();
+
+            if (modifierGroups == null || !modifierGroups.Any())
+            {
+                return Json(new { success = false, message = "No modifier groups found." });
+            }
+
+            return Json(new { success = true, data = modifierGroups });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "Error: " + ex.Message });
+        }
+    }
 
 
     // Displays the view for adding new items
@@ -201,17 +222,33 @@ public class MenuController : Controller
         {
             return Json(new { success = false, message = "Invalid input data" });
         }
+        try
+        {            // Process Modifier Group Data from JSON
+            if (!string.IsNullOrEmpty(Request.Form["AddModGroupWithItems"]))
+            {
+                model.AddModGroupWithItems = JsonConvert.DeserializeObject<List<AddModGroupWithItem>>(Request.Form["AddModGroupWithItems"]);
+            }
+            bool isUpdated = await _menu.UpdateItem(model);
 
-        bool isUpdated = await _menu.UpdateItem(model);
+            if (isUpdated)
+            {
+                TempData["success"] = "Item Updata successfully";
+                return Json(new { success = true, url = $"/Menu/MenuView?categoryId={model.CategoryId}" });
+            }
+            else
+            {
+                TempData["error"] = "Item not found or could not be updated.";
+                return Json(new { success = false, url = $"/Menu/MenuView?categoryId={model.CategoryId}" });
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["error"] = "An error occurred: " + ex.Message;
+            return Json(new { success = false, url =$"/Menu/MenuView?categoryId={model.CategoryId}" });
 
-        if (isUpdated)
-        {
-            return Json(new { success = true });
         }
-        else
-        {
-            return Json(new { success = false, message = "Item not found or could not be updated." });
-        }
+
+
     }
 
     // Soft deletes a category

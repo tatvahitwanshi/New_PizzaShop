@@ -65,8 +65,9 @@
                                 <i class="bi bi-pen"></i>
                             </a>
                             <a href="" class="ms-4 delete-user" style="text-decoration: none; color: grey;"
-                                data-bs-toggle="modal" data-bs-target="#staticBackdrop1" data-userid="@user.Userid">
+                                data-bs-toggle="modal" data-bs-target="#staticBackdrop1" onclick="DeleteUser(@user.Userid)">
                                 <i class="bi bi-trash"></i>
+                                @* data-userid="@user.Userid" *@
                             </a>
                         </div>
                     </td>
@@ -126,22 +127,29 @@
                 </span>
                 @* <a href="@Url.Action("UserListView")?PageSize=@Convert.ToInt32(ViewData["PageSize"])&PageNumber=@(Convert.ToInt32(ViewData["PageNumber"]) - 1)&SortColumn=@ViewData["sortBy"]&SortDirection=@ViewData["sortOrder"]&SearchKey=@ViewData["SearchKey"]"
                     style="text-decoration: none;"> *@
-                    <button class="btn border ms-2 align-self-center pagination-button @(pageNumber == 1 ? "disabled" : "") "
-                        data-page="@((Convert.ToInt32(ViewData["PageNumber"]) - 1))" >
-                        <i class="bi bi-chevron-left"></i>
-                    </button>
+                <button
+                    class="btn border ms-2 align-self-center pagination-button @(pageNumber == 1 ? "disabled" : "") "
+                    data-page="@((Convert.ToInt32(ViewData["PageNumber"]) - 1))">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
                 @* </a> *@
 
                 <!-- Next Button -->
                 @* <a href="@Url.Action("UserListView")?PageSize=@Convert.ToInt32(ViewData["PageSize"])&PageNumber=@(Convert.ToInt32(ViewData["PageNumber"]) + 1)&SortColumn=@ViewData["sortBy"]&SortDirection=@ViewData["sortOrder"]&SearchKey=@ViewData["SearchKey"]"
                     style="text-decoration: none;"> *@
-                    <button class="btn border ms-2 align-self-center pagination-button @((pageNumber * pageSize >= totalCount) ? "disabled" : "") " 
-                        data-page="@((Convert.ToInt32(ViewData["PageNumber"]) + 1))" >
-                        <i class="bi bi-chevron-right"></i>
-                    </button>
+                <button
+                    class="btn border ms-2 align-self-center pagination-button @((pageNumber * pageSize >= totalCount) ? "disabled" : "") "
+                    data-page="@((Convert.ToInt32(ViewData["PageNumber"]) + 1))">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
                 @* </a> *@
             </div>
         </nav>
     </div>
 </div>
-
+<script>
+    function DeleteUser(userId) {
+        console.log(userId);
+        $('#inputdeletexy').val(userId);
+    }
+</script>

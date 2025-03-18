@@ -169,7 +169,7 @@
                             </div>
                             <div class="col-lg-6 col-sm-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" pattern="[0-9]{5}" class="form-control"
+                                    <input type="text" pattern="[0-9]{6}" class="form-control"
                                         placeholder="name@example.com" asp-for="@Model.Zipcode">
                                     <label for="floatingInput">Zip Code</label>
                                     <span asp-validation-for="Zipcode" class="text-danger"></span>
@@ -190,9 +190,7 @@
                 </div>
             </div>
         </form>
-
     </div>
-
 </body>
 
 </html>
@@ -200,6 +198,10 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     <script>
         function loadStates() {
             var countryID = $('#country').val();

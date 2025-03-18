@@ -185,7 +185,7 @@ public class MenuRepository : IMenu
         }
         return "Item added successfully!";
     }
-    public ModifierGroupDetails GetModifierGroupDetails(int modifierGroupId, int itemId=-1)
+    public ModifierGroupDetails GetModifierGroupDetails(int modifierGroupId, int itemId = -1)
     {
 
         Modifiersgroup? groupModel = _db.Modifiersgroups.Where(e => e.Modifiersgroupid == modifierGroupId).FirstOrDefault();
@@ -203,17 +203,18 @@ public class MenuRepository : IMenu
                                    Rate = (int)mi.Modifiersrate
                                }).ToList();
 
-            if(itemId != -1){
-                MapItemsModifiersgroup item=_db.MapItemsModifiersgroups.Where(e=>e.Modifiersgroupid== modifierGroupId && e.Itemid== itemId).FirstOrDefault();
-                model.min= item.Minimum ?? 0;
-                model.max=item.Maximum ?? 0;
+            if (itemId != -1)
+            {
+                MapItemsModifiersgroup item = _db.MapItemsModifiersgroups.Where(e => e.Modifiersgroupid == modifierGroupId && e.Itemid == itemId).FirstOrDefault();
+                model.min = item.Minimum ?? 0;
+                model.max = item.Maximum ?? 0;
             }
         }
 
         return model;
     }
 
-    
+
 
     public AddItemsViewModel GetItemById(int id)
     {
@@ -238,8 +239,8 @@ public class MenuRepository : IMenu
                                      .Select(im => new AddModGroupWithItem
                                      {
                                          ModifierGroupId = im.Modifiersgroupid,
-                                         max = im.Maximum ?? 0, 
-                                         min = im.Minimum ?? 0 
+                                         max = im.Maximum ?? 0,
+                                         min = im.Minimum ?? 0
                                      }).ToList()
             })
             .FirstOrDefault();
@@ -266,6 +267,26 @@ public class MenuRepository : IMenu
         existingItem.Itemdescription = item.Itemdescription;
         existingItem.Itemimage = await _userListRepository.UploadPhotoAsync(item.Itemimage);
         _db.Items.Update(existingItem);
+
+        var existingMappings = _db.MapItemsModifiersgroups.Where(m => m.Itemid == item.ItemId);
+        _db.MapItemsModifiersgroups.RemoveRange(existingMappings);
+
+        // Add new modifier group mappings
+        if (item.AddModGroupWithItems != null && item.AddModGroupWithItems.Any())
+        {
+            foreach (var modGroup in item.AddModGroupWithItems)
+            {
+                var newMapping = new MapItemsModifiersgroup
+                {
+                    Itemid = item.ItemId,
+                    Modifiersgroupid = modGroup.ModifierGroupId,
+                    Minimum = modGroup.min,
+                    Maximum = modGroup.max
+                };
+                _db.MapItemsModifiersgroups.Add(newMapping);
+            }
+        }
+
         await _db.SaveChangesAsync();
         return true;
     }
@@ -273,6 +294,8 @@ public class MenuRepository : IMenu
     public bool SoftDeleteItems(List<int> itemIds)
     {
         var items = _db.Items.Where(i => itemIds.Contains(i.Itemid)).ToList();
+        var deletemap=_db.MapItemsModifiersgroups.Where(i=> itemIds.Contains(i.Itemid)).ToList();
+        _db.MapItemsModifiersgroups.RemoveRange(deletemap);
         if (items.Any())
         {
             foreach (var item in items)

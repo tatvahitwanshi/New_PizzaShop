@@ -50,4 +50,16 @@
         // Uncheck the corresponding checkbox
         $(`input[name="modgroupCheckbox"][value="${modifierGroupId}"]`).prop('checked', false);
     });
+
+        // Handle delete button click inside dynamically loaded content
+    $('#editmodifierGroupDetail').on('click', '.deleteOneGroup', function () {
+        var modifierGroupDiv = $(this).closest('.mod-group-detail'); // Get the parent div
+        var modifierGroupId = modifierGroupDiv.attr('class').match(/mod-group-(\d+)/)[1]; // Extract ID
+
+        // Remove the group detail div
+        modifierGroupDiv.remove();
+
+        // Uncheck the corresponding checkbox
+        $(`input[name="modgroupCheckbox"][value="${modifierGroupId}"]`).prop('checked', false);
+    });
 </script>

@@ -114,14 +114,17 @@ public class UserListRepository : IUserList
         {
             return "Email already exists";
         }
-
         // Check if username already exists
         bool userExists = await _db.Users.AnyAsync(u => u.Username == model.Username);
         if (userExists)
         {
             return "Username already exists";
         }
-
+        // Check if phoneNumber already exists
+        bool phoneNumber = await _db.Users.AnyAsync(u => u.Phone == model.Phone);
+        if(phoneNumber){
+            return "Phone Number already exists";
+        }
         // Validate file extension
         var ext = Path.GetExtension(model.Profilepic.FileName);
         if (!ext.Equals(".jpg") && !ext.Equals(".png") && !ext.Equals(".jpeg"))
@@ -235,7 +238,10 @@ public class UserListRepository : IUserList
         user.Isactive = model.Isactive;
         user.EditedBy = "Admin";
         user.EditDate = DateTime.Now;
-        user.Profilepic = await UploadPhotoAsync(model.Profilepic);
+        if(model.Profilepic!=null)
+        {
+            user.Profilepic = await UploadPhotoAsync(model.Profilepic);
+        }
 
         await _db.SaveChangesAsync();
         return true;

@@ -8,10 +8,16 @@ public class UserProfileViewModel
 {
 
     public string? Email { get; set; }
+    [Required]
+    [RegularExpression(@"^\S+$", ErrorMessage = "No whiteSpaces are allowed")]
     public string? Username { get; set; }
 
+    [Required]
+    [RegularExpression(@"^\S+$", ErrorMessage = "No whiteSpaces are allowed")]
     public string? Firstname { get; set; }
 
+    [Required]
+    [RegularExpression(@"^\S+$", ErrorMessage = "No whiteSpaces are allowed")]
     public string? Lastname { get; set; }
 
     public string? Profilepic { get; set; }

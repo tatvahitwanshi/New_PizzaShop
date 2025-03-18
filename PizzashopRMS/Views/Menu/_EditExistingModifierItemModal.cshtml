@@ -121,7 +121,6 @@
 
     }
 
-
     function PanginationBtnModifierAllEdit(direction) {
         var pageSize = $("#pageSizeEditModifierAll").val();
         var searchKey = $("#searchInputEditModifierAll").val();
@@ -132,7 +131,6 @@
         } else {
             pageNumber += 1;
         }
-
         loadModifierAll(pageSize, searchKey, pageNumber);
     }
 
@@ -142,7 +140,6 @@
         }
     }
     document.addEventListener('keydown', function (event) {
-        // Check if the pressed key is the Enter key
         if (event.key === 'Enter') {
             // Do something when Enter is pressed
             console.log('Enter key was pressed!');
