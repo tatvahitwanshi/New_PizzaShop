@@ -139,7 +139,7 @@
                                         </svg>
                                     </div>
                                     <div class="" id="GetAllModifierItems">
-                                        <partial name="_ExistingModifierItemModal.cshtml" ></partial>
+                                        <partial name="_ExistingModifierItemModal.cshtml"></partial>
 
                                     </div>
 
@@ -209,7 +209,7 @@
                                     </div>
 
                                     <div id="GetAllModifierItemsEdit">
-                                        <partial name="_ExistingModifierItemModal.cshtml" ></partial>
+                                        <partial name="_ExistingModifierItemModal.cshtml"></partial>
                                     </div>
 
                                     <!-- Back Button -->
@@ -257,7 +257,111 @@
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 <script>
+     let selectedModifierIds = [];
+    $(document).on("change", "input[name='addmodgroupCheckbox']", function () {
+        let modId = $(this).val(); // Get the Modifier Group ID
+        let modName = $(this).parent().text().trim(); // Get the Modifier Group Name
+        let selectedContainer = $("#addselectedItemsContainer");
+        console.log(modId);
+        console.log(modName);
+
+        if ($(this).is(":checked")) {
+            // Append selected modifier to display
+            selectedContainer.append(`<span class="badge m-1 selected-modifier text-black" data-id="${modId}">${modName}</span>`);
+            selectedModifierIds.push(modId); // Add to selected list
+
+        } else {
+            // Remove from display if unchecked
+            selectedContainer.find(`.selected-modifier[data-id='${modId}']`).remove();
+            selectedModifierIds = selectedModifierIds.filter(id => id !== modId); // Remove from list
+        }
+        console.log(selectedModifierIds);
+
+        // Store selected modifier group IDs in hidden input field
+        $("#modifierGroupIdsInput").val(selectedModifierIds.join(","));
+    });
+
+    @* --------------------------------load modifier item----------------------------------- *@
+        function loadModifier(pageSize, searchKey, pageNumber, modgroup = 0) {
+            console.log("Page Size:", pageSize, "Search Key:", searchKey, "Page Number:", pageNumber);
+            var ModifierGroupId;
+            if (modgroup == 0) {
+                ModifierGroupId =@Model.ModifierItemViewModel.ParentId;
+
+            }
+            else {
+                ModifierGroupId = modgroup;
+            }
+
+            $.ajax({
+                url: '@Url.Action("GetModifierItemsByModifierGroup", "Menu")',
+                type: 'GET',
+                data: {
+                    modifiergroupid: ModifierGroupId,
+                    PageSize: pageSize,
+                    SearchKey: searchKey,
+                    PageNumber: pageNumber
+                },
+                success: function (data) {
+                    $("#modifierContainer").html(data);
+                },
+                error: function (error) {
+                    console.error('Error loading partial view:', error);
+                    $("#modifierContainer").html("<p>Error loading items.</p>");
+                }
+            });
+        }
+
+    function updatePagePerSizeForModifier(modgroup) {
+        console.log("jgsdfuysf");
+        var pageSize = $("#pageSizeDropdownModifier").val();
+        var searchKey = $("#searchInputModifier").val();
+        var pageNumber = 1;
+
+        loadModifier(pageSize, searchKey, pageNumber, modgroup);
+
+    }
+
+
+    function PanginationBtnModifier(pagenumber, modgroup) {
+        var pageSize = $("#pageSizeDropdownModifier").val();
+        var searchKey = $("#searchInputModifier").val();
+        var pageNumber = pagenumber;
+
+        @* if (direction === "back") {
+            pageNumber -= 1;
+        } else {
+            pageNumber += 1;
+        } *@
+
+            loadModifier(pageSize, searchKey, pageNumber, modgroup);
+    }
+
+    function searchModifierEnter(event) {
+        if (event.key === "Enter") {
+            searchItems();
+        }
+    }
+    document.addEventListener('keydown', function (event) {
+        // Check if the pressed key is the Enter key
+        if (event.key === 'Enter') {
+            // Do something when Enter is pressed
+            console.log('Enter key was pressed!');
+            searchItems();
+        }
+    });
+
+    function searchItems() {
+        var pageSize = $("#pageSizeDropdownModifier").val();
+        var searchKey = $("#searchInputModifier").val();
+        var pageNumber = @Model.ModifierItemViewModel.PageNumber;
+
+        loadModifier(pageSize, searchKey, pageNumber);
+    }
 
     function LoadPartialModifierView(modifierGroupId) {
         console.log("Modifier ID:", modifierGroupId);
@@ -279,6 +383,28 @@
             }
         });
     }
+
+    function GetModifiersItemDetail(id) {
+        console.log("hiiii");
+        @* $("#editModifieritemModal").modal("show"); *@
+            $.ajax({
+                type: "GET",
+                url: "/Menu/GetModifierItemDetails",
+                data: { id: id },
+                success: function (response) {
+                    // Replace modal content with the response (partial view)
+                    $("#editModifieritemModal .modal-content").html(response);
+
+                    // Show the modal
+                    $("#editModifieritemModal").modal("show");
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error Response:", xhr.responseText);
+                    toastr.error("Failed to fetch modifier item details.");
+                }
+            });
+    }
+
     @* document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("showTable").addEventListener("click", function (e) {
             e.preventDefault();

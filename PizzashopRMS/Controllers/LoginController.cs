@@ -55,11 +55,19 @@ namespace PizzaShopApp.Controllers
                     TempData["error"] = message;
                     return RedirectToAction("LoginView", "Login");
                 }
+                bool UserActivation = await _loginRepository.LoginUserActivation(user.Email);
+                if (UserActivation== false)
+                {
+                    TempData["error"] = "User Status is Inactive";
+                    return RedirectToAction("LoginView", "Login");
+                }
+
                 var role = await _loginRepository.GetRoleName(dbUser.Roleid);
                 var token = await _loginRepository.GenerateJwtTokenAsync(dbUser.Email, dbUser.Roleid, Response, user.RememberMe);
                 HttpContext.Session.SetString("Email", dbUser.Email);
                 HttpContext.Session.SetString("ProfilePic", dbUser.Profilepic ?? "~/images/Default_pfp.svg.png"); // Default if null
                 await HttpContext.Session.CommitAsync();
+
 
                 if (role == "admin")
                 {

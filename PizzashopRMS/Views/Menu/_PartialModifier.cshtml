@@ -56,13 +56,13 @@
                             <td>@item.Quantity</td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                        data-bs-target="#edititemModal" onclick="GetItemDetails(@item.ModifierItemId)">
+                                    <a  style="text-decoration: none; color: grey;"
+                                         onclick="GetModifiersItemDetail(@item.ModifierItemId)">
                                         <i class="bi bi-pen"></i>
                                     </a>
                                     <a href="#" class="ms-4" style="text-decoration: none; color: grey;"
-                                        data-bs-toggle="modal" data-bs-target="#itemdeleteModal"
-                                        onclick="openItemDeleteModal(@item.ModifierItemId)"><i class="bi bi-trash"></i></a>
+                                       
+                                        ><i class="bi bi-trash"></i></a>
                                 </div>
                             </td>
                         </tr>
@@ -78,7 +78,7 @@
                             :</span>
                         <select class="form-select form-select-sm ms-2 align-self-center"
                             aria-label="Small select example" style=" width: unset; " id="pageSizeDropdownModifier"
-                             onchange="updatePagePerSize()">
+                             onchange="updatePagePerSizeForModifier(@Model.ModifierItemViewModel.ParentId)">
                             @if (Model.ModifierItemViewModel?.PageSize != null)
                             {
                                 <option value="1" selected="@(Model.ModifierItemViewModel.PageSize == 1 ? true : false)">1
@@ -119,10 +119,10 @@
                                 style="color: red;" class="ms-1">@Model.ModifierItemViewModel.Count</span>
                         </span>
                         <button class="btn border ms-2  align-self-center" type="submit"
-                            onclick="PanginationBtnModifier('back')"><i class="bi bi-chevron-left "></i>
+                            onclick="PanginationBtnModifier(@Model.ModifierItemViewModel.PageNumber-1,@Model.ModifierItemViewModel.ParentId)"><i class="bi bi-chevron-left "></i>
                         </button>
                         <button class="btn border ms-2  align-self-center" type="submit"
-                            onclick="PanginationBtnModifier('next')"><i class="bi bi-chevron-right"></i>
+                            onclick="PanginationBtnModifier(@Model.ModifierItemViewModel.PageNumber+1,@Model.ModifierItemViewModel.ParentId)"><i class="bi bi-chevron-right"></i>
                         </button>
                     </div>
                 </nav>
@@ -154,8 +154,7 @@
         </div>
     </div>
 </div>
-@* Add Modidfier  *@
-
+@* Add Modidfier Item  *@
 <div class="modal " id="addModifieritemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="staticBackdropLabel" aria-hidden=" true">
     <div class="modal-dialog modal-dialog-centered modal-xl"  style="width:95% !important">
@@ -164,15 +163,17 @@
                 <h5 class="modal-title">Add Modifier</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form>
+            <form  asp-action="AddModifierItem" asp-controller="Menu" method="post" id="addModifierItemForm">
+            <input type="hidden" id="modifierGroupIdsInput" name="AddEditModItem.ModifierGroupIds" />
+                
                 <div class="row g-3">
                     <div class="col-md-6">
                        <div class="dropdown w-100 h-100 border">
                         <div class="btn dropdown-toggle w-100 d-flex justify-content-between align-items-center "
                             type="button" data-bs-toggle="dropdown" style="border: none !important;">
-                            Select Modifier Option(s)
+                            Select Modifier Options
                         </div>
-                        <div id="selectedItemsContainer" class="d-flex  flex-wrap p-2 ">
+                        <div id="addselectedItemsContainer" class="d-flex  flex-wrap p-2 ">
                             <!-- Selected items will be displayed here -->
                         </div>
                         <ul class="dropdown-menu p-2" style="max-height: 200px; overflow-y: auto; "
@@ -182,7 +183,7 @@
                                     <li>
                                         <label class="dropdown-item">
                                             <input type="checkbox" value="@modgroup.ModifierGroupId" class="me-2"
-                                                name="modgroupCheckbox"> @modgroup.ModifierGroupName
+                                                name="addmodgroupCheckbox"> @modgroup.ModifierGroupName
                                         </label>
                                     </li>
                                 }
@@ -193,43 +194,48 @@
                     
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="name" placeholder="Name" value="Large">
-                            <label for="name">Name*</label>
+                            <input type="text" class="form-control" asp-for="@Model.AddEditModItem.ModifierItemName" id="addModifieritemname" placeholder="Name" >
+                            <label for="addModifieritemname">Name</label>
+                            <span asp-validation-for="@Model.AddEditModItem.ModifierItemName" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="rate" placeholder="Rate" value="300">
-                            <label for="rate">Rate*</label>
+                            <input type="number" class="form-control" asp-for="@Model.AddEditModItem.Rate" id="addModifieritemrate" placeholder="Rate">
+                            <label for="addModifieritemrate">Rate</label>
+                            <span asp-validation-for="@Model.AddEditModItem.Rate" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="quantity" placeholder="Quantity" value="1">
-                            <label for="quantity">Quantity*</label>
+                            <input type="number" class="form-control" asp-for="@Model.AddEditModItem.Quantity" id="addModifieritemquantity" placeholder="Quantity">
+                            <label for="addModifieritemquantity">Quantity*</label>
+                            <span asp-validation-for="@Model.AddEditModItem.Quantity" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating">
-                            <select class="form-select" id="unit">
-                                <option selected>Pieces</option>
-                                <option value="kg">Kilograms</option>
-                                <option value="ltr">Liters</option>
+                            <select class="form-select" id="addModifieritemunit" asp-for="@Model.AddEditModItem.Modifiersunit">
+                                <@foreach (var itemsUnit in Model.ItemsUnit)
+                                {
+                                    <option value="@itemsUnit.Unitid">@itemsUnit.Unitname</option>
+                                }
                             </select>
-                            <label for="unit">Unit*</label>
+                            <label for="addModifieritemunit">Unit*</label>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating">
-                            <textarea class="form-control" id="description" placeholder="Description"
-                                style="height: 80px;">large</textarea>
-                            <label for="description">Description</label>
+                            <textarea class="form-control" asp-for="@Model.AddEditModItem.ModifierItemDescription" id="addModifieritemdescription" placeholder="Description"
+                                style="height: 80px;"></textarea>
+                            <label for="addModifieritemdescription">Description</label>
+                            <span asp-validation-for="@Model.AddEditModItem.ModifierItemDescription" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mt-3">
-                    <button type="submit" id="savebtn" class="btn text-white" style="background-color: #0066A7;"
+                    <button type="submit" id="addModifieritemsavebtn" class="btn text-white" style="background-color: #0066A7;"
                         type="submit">Save</button>
                     <button type="button" class="btn ms-2"
                         style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
@@ -240,19 +246,91 @@
     </div>
 </div>
 
+@* Edit Modifier Items *@
+<div class="modal " id="editModifieritemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel" aria-hidden=" true">
+    <div class="modal-dialog modal-dialog-centered modal-xl"  style="width:95% !important">
+        <div class="modal-content p-4">
+            <partial name="_EditModifierItemModal.cshtml"></partial>
+        </div>
+    </div>
+</div>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap Bundle (includes Popper.js) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+@section Scripts{
+   
+    <partial name="_ValidationScriptsPartial" />
+
+}
+
 <script>
 
-    @* function openaddModifierGroup() {
-        ("#addModifieritemModal").model('show');
-    } *@
+
+@* -----------------------------add modifierg Item--------------------------------- *@
+    $(document).ready(function () {
+        // Track selected modifier group IDs
+       
+        console.log("khfgysdiucfyuisdyfuy7s0");
+
+        // Handle checkbox change event
 
 
-    function loadModifier(pageSize, searchKey, pageNumber) {
+        // Clear selected items when modal is closed
+        $("#addModifieritemModal").on("hidden.bs.modal", function () {
+            $("#addselectedItemsContainer").empty(); // Clear UI badges
+            $("input[name='addmodgroupCheckbox']").prop("checked", false); // Uncheck all checkboxes
+            selectedModifierIds = []; // Reset selected list
+            $("#modifierGroupIdsInput").val(""); // Clear hidden input
+        });
+
+    
+        $("#addModifierItemForm").on("submit", function (event) 
+        {
+            event.preventDefault(); // Prevent default form submission
+
+            let formData = new FormData(this); // Use FormData instead of serialize()
+
+            // Append selected ModifierGroupIds correctly as an array
+            selectedModifierIds.forEach(id => formData.append("ModifierGroupIds[]", id));
+
+            $.ajax({
+                type: "POST",
+                url: "/Menu/AddModifierItem", // Ensure correct controller action
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        @* alert("Modifier item added successfully!"); *@
+                        $("#addModifieritemModal").modal("hide"); // Close modal
+                        $(".modal-backdrop").remove();
+                        toastr.success(response.message);
+
+                        @* location.reload(); // Refresh page *@
+                    } else {
+                        toastr.error("Failed to add modifier item.");
+                    }
+                },
+                 error: function () {
+                    toastr.error("An error occurred while adding the modifier item.");
+                }
+            });
+        });
+    });
+
+
+@* --------------------------------load modifier item----------------------------------- *@
+    @* function loadModifier(pageSize, searchKey, pageNumber) {
         console.log("Page Size:", pageSize, "Search Key:", searchKey, "Page Number:", pageNumber);
 
         $.ajax({
@@ -274,7 +352,7 @@
         });
     }
 
-    function updatePagePerSize() {
+    function updatePagePerSizeForModifier() {
         console.log("jgsdfuysf");
         var pageSize = $("#pageSizeDropdownModifier").val();
         var searchKey = $("#searchInputModifier").val();
@@ -319,6 +397,6 @@
         var pageNumber = @Model.ModifierItemViewModel.PageNumber;
 
         loadModifier(pageSize, searchKey, pageNumber);
-    }
+    } *@
 
 </script>

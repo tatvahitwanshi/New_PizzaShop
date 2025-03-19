@@ -1,0 +1,138 @@
+@model DataAccessLayer.ViewModels.MenuViewModel
+
+<div class="d-flex justify-content-between">
+    <h5 class="modal-title">Edit Modifier</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form asp-action="EditModifierItem" asp-controller="Menu" method="post" id="editModifierItemForm">
+    <input type="hidden" id="editmodifierGroupIdsInput" name="AddEditModItem.ModifierGroupIds" />
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="dropdown w-100 h-100 border">
+                <div class="btn dropdown-toggle w-100 d-flex justify-content-between align-items-center " type="button"
+                    data-bs-toggle="dropdown" style="border: none !important;">
+                    Select Modifier Options
+                </div>
+                <div id="editselectedItemsContainer" class="d-flex flex-wrap p-2">
+                    @* @if (Model.AddEditModItem?.ModifierGroupIds != null && Model.AddEditModItem.ModifierGroupIds.Any())
+                    {
+                        @foreach (var selectedGroupId in Model.AddEditModItem.ModifierGroupIds)
+                        {
+                            var selectedGroup = Model.ModifierGroupModel?.FirstOrDefault(g => g.ModifierGroupId ==
+                            selectedGroupId);
+                            if (selectedGroup != null)
+                            {
+                                <span class="badge text-black me-2">@selectedGroup.ModifierGroupName</span>
+                            }
+                        }
+                    } *@
+                </div>
+                <ul class="dropdown-menu p-2" style="max-height: 200px; overflow-y: auto;">
+                    @if (Model.ModifierGroupModel != null)
+                    {
+                        @foreach (var modgroup in Model.ModifierGroupModel)
+                        {
+                            bool isChecked = Model.AddEditModItem?.ModifierGroupIds != null &&
+                            Model.AddEditModItem.ModifierGroupIds.Contains(modgroup.ModifierGroupId);
+
+                            <li>
+                                <label class="dropdown-item">
+                                    <input type="checkbox" value="@modgroup.ModifierGroupId" class="me-2 editmodgroupCheckbox"
+                                        name="editmodgroupCheckbox" @(isChecked ? "checked" : "")>
+                                    @modgroup.ModifierGroupName
+                                </label>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="text" class="form-control" asp-for="@Model.AddEditModItem.ModifierItemName"
+                    id="editModifieritemname" placeholder="Name">
+                <label for="editModifieritemname">Name</label>
+                <span asp-validation-for="@Model.AddEditModItem.ModifierItemName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-floating">
+                <input type="number" class="form-control" asp-for="@Model.AddEditModItem.Rate" id="editModifieritemrate"
+                    placeholder="Rate">
+                <label for="editModifieritemrate">Rate</label>
+                <span asp-validation-for="@Model.AddEditModItem.Rate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating">
+                <input type="number" class="form-control" asp-for="@Model.AddEditModItem.Quantity"
+                    id="editModifieritemquantity" placeholder="Quantity">
+                <label for="editModifieritemquantity">Quantity*</label>
+                <span asp-validation-for="@Model.AddEditModItem.Quantity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating">
+                <select class="form-select" id="editModifieritemunit" asp-for="@Model.AddEditModItem.Modifiersunit">
+                    <@foreach (var itemsUnit in Model.ItemsUnit) 
+                    { 
+                        <option value="@itemsUnit.Unitid">
+                    @itemsUnit.Unitname</option>
+                    }
+                </select>
+                <label for="editModifieritemunit">Unit*</label>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-floating">
+                <textarea class="form-control" asp-for="@Model.AddEditModItem.ModifierItemDescription"
+                    id="editModifieritemdescription" placeholder="Description" style="height: 80px;"></textarea>
+                <label for="editModifieritemdescription">Description</label>
+                <span asp-validation-for="@Model.AddEditModItem.ModifierItemDescription" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <button type="submit" id="editModifieritemsavebtn" class="btn text-white" style="background-color: #0066A7;"
+            type="submit">Save</button>
+        <button type="button" class="btn ms-2" style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
+            data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+@* <script>
+    $(document).ready(function () {
+     let editselectedModifierIds = [];
+
+        $(document).on("change", "input[name='editmodgroupCheckbox']", function () {
+            let modId = $(this).val(); // Get the Modifier Group ID
+            let modName = $(this).parent().text().trim(); // Get the Modifier Group Name
+            let editselectedContainer = $("#editselectedItemsContainer");
+
+            if ($(this).is(":checked")) {
+                // Append selected modifier to display
+                editselectedContainer.append(`<span class="badge m-1 selected-modifier text-black" data-id="${modId}">${modName}</span>`);
+                editselectedModifierIds.push(modId); // Add to selected list
+            } else {
+                // Remove from display if unchecked
+                editselectedContainer.find(`.selected-modifier[data-id='${modId}']`).remove();
+                editselectedModifierIds = editselectedModifierIds.filter(id => id !== modId); // Remove from list
+            }
+
+            // Store selected modifier group IDs in hidden input field
+            $("#editmodifierGroupIdsInput").val(selectedModifierIds.join(","));
+        });
+
+        // Clear selected items when modal is closed
+        $("#editModifieritemModal").on("hidden.bs.modal", function () {
+            $("#editselectedItemsContainer").empty(); // Clear UI badges
+            $("input[name='editmodgroupCheckbox']").prop("checked", false); // Uncheck all checkboxes
+            editselectedModifierIds = []; // Reset selected list
+            $("#editmodifierGroupIdsInput").val(""); // Clear hidden input
+        });
+    });
+</script> *@

@@ -36,7 +36,20 @@ public class LoginRepository : ILogin
         var hashedPassword = HashingHelper.ComputeSHA256(password);
         return user.Password == hashedPassword ? (user, "Login Successfull") : (null, "Wrong password");
     }
-
+     public async Task<bool> LoginUserActivation(string email)
+    {
+        var Email= await _db.Users.FirstOrDefaultAsync(e=>e.Email== email && e.Isactive==true );
+       if(Email == null)
+       {
+        return false;
+       }
+       else
+       {
+        return true;
+       }
+                    
+    }
+  
     //Get Rolename from RoleId
     public async Task<string> GetRoleName(int roleId)
     {

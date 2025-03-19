@@ -15,5 +15,6 @@ public interface ILogin
     Task<bool> ResetPasswordAsync(string email, string newPassword);
     Task<TokenViewModel> ValidateToken(string token1);
     Task<string> GetRoleName(int roleId);
+    Task<bool> LoginUserActivation(string email);
 
 }

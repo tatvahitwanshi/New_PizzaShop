@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "OCha/PcS6UITKfoH620+W3WV8cpCJs5OdKAn5j6tW7c=",
+  "Hash": "CY3m0zpi4vJOfmS8XXepnIjqh0IA2tdVUFXjyKkLovI=",
   "Source": "PizzashopRMS",
   "BasePath": "_content/PizzashopRMS",
   "Mode": "Default",
@@ -2227,6 +2227,23 @@
       "OriginalItemSpec": "wwwroot\\userphoto\\3f601609-aada-46c8-8309-618a030d212b_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
     },
     {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\46977291-7005-42df-a172-3e6b0dd3fe2d_Screenshot (1).png",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/46977291-7005-42df-a172-3e6b0dd3fe2d_Screenshot (1).png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\46977291-7005-42df-a172-3e6b0dd3fe2d_Screenshot (1).png"
+    },
+    {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\480a725f-ecf7-45e3-a335-fecd97abeb8f_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",
       "SourceId": "PizzashopRMS",
       "SourceType": "Discovered",
@@ -3143,6 +3160,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\userphoto\\e6c3339e-ead9-4d45-bd47-326881c518e3_profile_div_bg.jpg"
+    },
+    {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\ef39d6df-de4d-4233-8acd-e041564e53fe_Screenshot (1).png",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/ef39d6df-de4d-4233-8acd-e041564e53fe_Screenshot (1).png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\ef39d6df-de4d-4233-8acd-e041564e53fe_Screenshot (1).png"
     },
     {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\f40d9bcf-775f-4fe4-bccb-df5b3dd989cc_Face-Profile-User-Man-Boy-Person-Avatar-512.webp",

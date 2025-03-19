@@ -20,6 +20,8 @@ public class MenuViewModel
 
     public Pagination<ModifierItemViewModel> ModifierItemAll { get; set; } = new Pagination<ModifierItemViewModel>();
 
+    public AddEditModifierItemViewModel AddEditModItem {get; set;}
+
 }
 public class Categories
 {
@@ -149,13 +151,41 @@ public class ModifierItemViewModel
 
     public string? ModifierItemDescription { get; set; }
 
+    // public string? EditedBy { get; set; }
+
+    // public string? CreatedBy { get; set; }
+
+    // public DateTime? EditDate { get; set; }
+
+    // public DateTime? CreatedDate { get; set; }
+
+    public int? Modifiersunit { get; set; }
+
+    public string? ModifierUnitname { get; set; }
+
+
+}
+
+public class AddEditModifierItemViewModel
+{
+    public int ModifierItemId { get; set; }
+    public int ModifierGroupId { get; set; }
+
+    public List<int> ModifierGroupIds { get; set; } = new List<int>(); // Change from int to List<int>
+
+    public string ModifierItemName { get; set; } = null!;
+
+    public int Rate { get; set; }
+
+    public int Quantity { get; set; }
+
+    public string? ModifierItemDescription { get; set; }
+
     public string? EditedBy { get; set; }
 
     public string? CreatedBy { get; set; }
 
     public DateTime? EditDate { get; set; }
-
-    public DateTime? CreatedDate { get; set; }
 
     public int? Modifiersunit { get; set; }
 

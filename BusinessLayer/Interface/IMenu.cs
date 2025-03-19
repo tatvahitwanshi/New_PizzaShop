@@ -46,4 +46,8 @@ public interface IMenu
 
     void AddModifierGroupItemMapping(int modifierGroupId, int modifierItemId);
 
+    public int AddModifierItem(AddEditModifierItemViewModel model);
+
+    public AddEditModifierItemViewModel GetModifierItemById(int id);
+
 }

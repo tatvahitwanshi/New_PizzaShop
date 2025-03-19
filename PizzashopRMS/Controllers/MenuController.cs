@@ -27,7 +27,6 @@ public class MenuController : Controller
         model.Categories = _menu.GetCategories();
         if (categoryId == -1) model.Items = _menu.GetItemsByCategory(model.Categories[0].CategoryId); // Pass items for a default category or all items
         else model.Items = _menu.GetItemsByCategory(categoryId); // Pass items for a default category or all items
-
         model.ItemsUnit = _menu.GetUnits();
         model.ModifierGroupModel = _menu.GetModifierGroups();
         model.ModifierItemViewModel = _menu.GetModifierItemsByModifierGroup(model.ModifierGroupModel[0].ModifierGroupId); // Pass items for a default category or all items
@@ -244,7 +243,7 @@ public class MenuController : Controller
         catch (Exception ex)
         {
             TempData["error"] = "An error occurred: " + ex.Message;
-            return Json(new { success = false, url =$"/Menu/MenuView?categoryId={model.CategoryId}" });
+            return Json(new { success = false, url = $"/Menu/MenuView?categoryId={model.CategoryId}" });
 
         }
 
@@ -390,6 +389,57 @@ public class MenuController : Controller
 
         };
         return PartialView("~/Views/Menu/_ExistingModifierItemModal.cshtml", model);
+    }
+
+    [HttpPost]
+    public IActionResult AddModifierItem([FromForm] MenuViewModel model, [FromForm] List<int> ModifierGroupIds)
+    {
+        AddEditModifierItemViewModel m = model.AddEditModItem;
+        if (m == null || string.IsNullOrEmpty(m.ModifierItemName))
+        {
+            return BadRequest("Invalid data.");
+        }
+
+        try
+        {
+            // Assign ModifierGroupIds correctly
+            m.ModifierGroupIds = ModifierGroupIds ?? new List<int>();
+
+            if (!m.ModifierGroupIds.Any())
+            {
+                return BadRequest("ModifierGroupIds are required.");
+            }
+
+            int itemId = _menu.AddModifierItem(m);
+            // TempData["success"] = "Modifier Item Added successfully!";
+            return Json(new { success = true, message = "Modifier Items Added successfully" });
+        }
+        catch (Exception ex)
+        {
+            TempData["error"] = "Error while adding modifier item !";
+            return Json(new { success = false, message = "Error adding Modifier Item: " + ex.Message });
+        }
+    }
+
+    [HttpGet]
+    public IActionResult GetModifierItemDetails(int id)
+    {
+
+        var modifierItem = _menu.GetModifierItemById(id);
+
+        if (modifierItem == null)
+        {
+            return NotFound("Modifier item not found.");
+        }
+        var viewModel = new MenuViewModel
+        {
+            AddEditModItem = modifierItem,
+            ItemsUnit = _menu.GetUnits(),
+            ModifierGroupModel = _menu.GetModifierGroups()
+           
+        };
+
+        return PartialView("_EditModifierItemModal", viewModel);
     }
 
 

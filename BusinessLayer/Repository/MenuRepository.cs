@@ -294,7 +294,7 @@ public class MenuRepository : IMenu
     public bool SoftDeleteItems(List<int> itemIds)
     {
         var items = _db.Items.Where(i => itemIds.Contains(i.Itemid)).ToList();
-        var deletemap=_db.MapItemsModifiersgroups.Where(i=> itemIds.Contains(i.Itemid)).ToList();
+        var deletemap = _db.MapItemsModifiersgroups.Where(i => itemIds.Contains(i.Itemid)).ToList();
         _db.MapItemsModifiersgroups.RemoveRange(deletemap);
         if (items.Any())
         {
@@ -408,16 +408,13 @@ public class MenuRepository : IMenu
                         ModifierItemName = modifier.Modifiersname,
                         Rate = (int)modifier.Modifiersrate,
                         ModifierItemDescription = modifier.Modifiersdescription,
-                        EditedBy = modifier.EditedBy,
-                        CreatedBy = modifier.CreatedBy,
-                        EditDate = modifier.EditDate,
-                        CreatedDate = modifier.CreatedDate,
+                        Quantity = (int)modifier.Modifiersquantity,
+                        // EditedBy = modifier.EditedBy,
+                        // CreatedBy = modifier.CreatedBy,
+                        // EditDate = modifier.EditDate,
+                        // CreatedDate = modifier.CreatedDate,
                         ModifierUnitname = unit.Unitname,
                     };
-
-
-
-
 
         if (PageNumber < 1)
         {
@@ -454,10 +451,11 @@ public class MenuRepository : IMenu
                         ModifierItemName = modifier.Modifiersname,
                         Rate = (int)modifier.Modifiersrate,
                         ModifierItemDescription = modifier.Modifiersdescription,
-                        EditedBy = modifier.EditedBy,
-                        CreatedBy = modifier.CreatedBy,
-                        EditDate = modifier.EditDate,
-                        CreatedDate = modifier.CreatedDate,
+                        Quantity = (int)modifier.Modifiersquantity,
+                        // EditedBy = modifier.EditedBy,
+                        // CreatedBy = modifier.CreatedBy,
+                        // EditDate = modifier.EditDate,
+                        // CreatedDate = modifier.CreatedDate,
                         ModifierUnitname = unit.Unitname,
                     };
         if (PageNumber < 1)
@@ -483,6 +481,73 @@ public class MenuRepository : IMenu
         return newmodel;
 
     }
+    public int AddModifierItem(AddEditModifierItemViewModel model)
+    {
+        try
+        {
+            // Step 1: Save Modifier Item
+            var modifierItem = new Modifier
+            {
+                Modifiersname = model.ModifierItemName,
+                Modifiersrate = model.Rate,
+                Modifiersquantity = model.Quantity,
+                Modifiersdescription = model.ModifierItemDescription,
+                Modifiersunit = model.Modifiersunit,
+                CreatedBy = "Admin",
+                EditDate = DateTime.Now
+            };
+
+            _db.Modifiers.Add(modifierItem);
+            _db.SaveChanges(); // Save to get ModifierItemId
+
+            // Step 2: Save Modifier Item - Modifier Group Mapping
+            if (model.ModifierGroupIds != null && model.ModifierGroupIds.Any())
+            {
+                List<MapModifiersgroupModifier> mappings = model.ModifierGroupIds.Select(groupId => new MapModifiersgroupModifier
+                {
+                    Modifiersgroupid = groupId,
+                    Modifiersid = modifierItem.Modifiersid
+                }).ToList();
+
+                _db.MapModifiersgroupModifiers.AddRange(mappings); // Use AddRange to optimize
+                _db.SaveChanges();
+            }
+
+            return modifierItem.Modifiersid;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return 0; // Return 0 if insertion fails
+        }
+    }
+
+    public AddEditModifierItemViewModel GetModifierItemById(int id)
+    {
+        var modifierItem = _db.Modifiers
+            .Where(m => m.Modifiersid == id)
+            .Select(m => new AddEditModifierItemViewModel
+            {
+                ModifierItemId = m.Modifiersid,
+                ModifierItemName = m.Modifiersname,
+                Rate = m.Modifiersrate ?? 0,
+                Quantity = m.Modifiersquantity ?? 0,
+                Modifiersunit = m.Modifiersunit,
+                ModifierItemDescription = m.Modifiersdescription,
+                ModifierGroupIds = _db.MapModifiersgroupModifiers
+                                    .Where(mg => mg.Modifiersid == id)
+                                    .Select(mg => mg.Modifiersgroupid)
+                                    .ToList() ?? new List<int>() // Ensure ModifierGroupIds is not null
+            }).FirstOrDefault();
+
+        if (modifierItem == null)
+        {
+            throw new KeyNotFoundException($"Modifier item with ID {id} not found.");
+        }
+
+        return modifierItem;
+    }
+
 
 
 }
