@@ -43,10 +43,10 @@
                 class="sidebar-icons ps-3 @(ViewBag.Active == "Menu" ? "active-icon" : " ")">
             <div class="name-sidebar ps-3 @(ViewBag.Active == "Menu" ? "active-name" : " ") ">Menu</div>
         </a>
-        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
-            style="text-decoration: none;">
-            <img src="~/images/sidebar icons/tables.svg" alt="" class="sidebar-icons ps-3">
-            <div class="name-sidebar ps-3">Table and Section</div>
+        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box @(ViewBag.Active == "SectionTables"? "active-sidebar" :" ")"
+            style="text-decoration: none;" asp-action="SectionTablesView" asp-controller="SectionTables">
+            <img src="~/images/sidebar icons/tables.svg" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "SectionTables" ? "active-icon" : " ")">
+            <div class="name-sidebar ps-3  @(ViewBag.Active == "SectionTables" ? "active-name" : " ")">Table and Section</div>
         </a>
         <a class="d-flex mb-3  justify-content-start align-items-center sidebar-inner-box"
             style="text-decoration: none;">

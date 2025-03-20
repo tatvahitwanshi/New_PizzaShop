@@ -1,0 +1,115 @@
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"><input class="form-check-input main-check" type="checkbox" value=""
+                        id="selectAllCheckbox"></th>
+                <th scope="col">Name</th>
+                <th scope="col">Item Type</th>
+                <th scope="col">Rate </th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Available</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody id="itemsTableBody">
+            @foreach (var item in Model.Items.List)
+            {
+                <tr>
+                    <td>
+                        <input class="form-check-input inner-check" type="checkbox" data-id="@item.ItemId">
+                    </td>
+                    <td>
+                        @if (item.Itemimage != null)
+                        {
+                            <img src="@Url.Content(item.Itemimage)" alt="" width="30px">
+
+                        }
+                        else
+                        {
+                            <img src="~/images/dining-menu.png" alt="" width="30px">
+
+                        }
+                        @* src="@item.Itemimage" *@
+                        @item.Itemname
+                    </td>
+                    <td>
+                        <img src="~/images/icons/@(item.Itemtype == "veg" ? "veg-icon.svg" : "non-veg-icon.svg")"
+                            width="20px" alt="">
+                    </td>
+                    <td>@item.Rate</td>
+                    <td>@item.Quantity</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" style="width: 2.5rem; height: 25px;" type="checkbox"
+                                role="switch" @(item.Isavailable ?? false ? "checked" : "")>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            <a href="#" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
+                                data-bs-target="#edititemModal" onclick="GetItemDetails(@item.ItemId)">
+                                <i class="bi bi-pen"></i>
+                            </a>
+                            <a href="#" class="ms-4" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
+                                data-bs-target="#itemdeleteModal" onclick="openItemDeleteModal(@item.ItemId)"><i
+                                    class="bi bi-trash"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<div class="main-pagination ">
+    <div class="item-show ">
+        <nav aria-label="Page navigation example">
+            <div class="pagination ">
+                <span class="align-self-center">Items Per Page
+                    :</span>
+                <select class="form-select form-select-sm ms-2 align-self-center" aria-label="Small select example"
+                    style=" width: unset; " id="pageSizeDropdownItem" onchange="updatePageSize()">
+                    @if (Model.Items.PageSize != null)
+                    {
+                        <option value="1" selected="@(Model.Items.PageSize == 1 ? true : false)">1</option>
+                        <option value="3" selected="@(Model.Items.PageSize == 3 ? true : false)">3</option>
+                        <option value="5" selected="@(Model.Items.PageSize == 5 ? true : false)">5</option>
+                        <option value="10" selected="@(Model.Items.PageSize == 10 ? true : false)">10</option>
+                        <option value="25" selected="@(Model.Items.PageSize == 25 ? true : false)">25</option>
+                    }
+                </select>
+
+            </div>
+        </nav>
+    </div>
+    <div class="showing-page">
+        <nav aria-label="Page navigation example">
+            <div class="pagination ">
+                <span class=" ms-2  align-self-center">Showing
+                    @{
+                        var startRecord = (Model.Items.PageNumber - 1) * Model.Items.PageSize + 1;
+                        var endRecord = Model.Items.PageNumber * Model.Items.PageSize;
+                        if (endRecord > Model.Items.Count)
+                            endRecord = Model.Items.Count;
+
+                        if (Model.Items.Count == 0)
+                        {
+                            startRecord = 0;
+                            endRecord = 0;
+                        }
+                    }
+                    <span style="color: green;" class="me-1">@startRecord - @endRecord</span> of <span
+                        style="color: red;" class="ms-1">@Model.Items.Count</span>
+                </span>
+                <button class="btn border ms-2  align-self-center" type="submit" onclick="PanginationBtn('back')"><i
+                        class="bi bi-chevron-left "></i>
+                </button>
+                <button class="btn border ms-2  align-self-center" type="submit" onclick="PanginationBtn('next')"><i
+                        class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+</div>

@@ -22,6 +22,7 @@ builder.Services.AddScoped<IUserProfile, UserProfileRepository>();
 builder.Services.AddScoped<IUserList, UserListRepository>();
 builder.Services.AddScoped<IRolesAndPermission, RolesAndPermissionRepository>();
 builder.Services.AddScoped<IMenu, MenuRepository>();
+builder.Services.AddScoped<ISectionTables, SectionTablesRepository>();
 
 
 // Configure JWT settings from appsettings.json

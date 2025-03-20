@@ -1,3 +1,4 @@
+using System.Data.Entity.Infrastructure;
 using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
@@ -436,10 +437,49 @@ public class MenuController : Controller
             AddEditModItem = modifierItem,
             ItemsUnit = _menu.GetUnits(),
             ModifierGroupModel = _menu.GetModifierGroups()
-           
+
         };
 
         return PartialView("_EditModifierItemModal", viewModel);
+    }
+    [HttpPost]
+    public IActionResult UpdateModifierItem(MenuViewModel model, [FromForm] List<int> ModifierGroupIds)
+    {
+        Console.WriteLine("Received ModifierGroupIds: " + string.Join(",", ModifierGroupIds));
+
+        AddEditModifierItemViewModel m = model.AddEditModItem;
+        if (m == null || m.ModifierItemId == 0)
+        {
+            return BadRequest("Invalid data.");
+        }
+
+        try
+        {
+            m.ModifierGroupIds = ModifierGroupIds ?? new List<int>();
+            _menu.UpdateModifierItem(m);
+            return Json(new { success = true });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = ex.Message });
+        }
+    }
+
+    // Soft deletes a category
+    [HttpPost]
+    public IActionResult DeleteModifierItem(List<int> modifieritemIds)
+    {
+        bool isDeleted = _menu.SoftDeleteModifierItems(modifieritemIds);
+        if (isDeleted)
+        {
+            TempData["success"] = " Modifier Items deleted successfully!";
+            return Json(new { success = true });
+        }
+        else
+        {
+            TempData["error"] = " Modifier Failed to delete items!";
+            return Json(new { success = false });
+        }
     }
 
 

@@ -102,6 +102,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+   
     function openEditModal(categoryId) {
         $.ajax({
             url: '/Menu/EditCategory/' + categoryId,
@@ -147,6 +148,7 @@
     });
 
     $(document).ready(function () {
+       
         $('button[data-bs-toggle="tab"]').on('click', function (e) {
             var target = $(e.target).attr("data-bs-target");
 

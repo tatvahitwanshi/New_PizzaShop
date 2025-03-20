@@ -258,10 +258,80 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
 <script>
-     let selectedModifierIds = [];
+
+    @* --------------------------------------------edit modifier item--------------------------------------------- *@
+        function GetModifiersItemDetail(id) {
+            console.log("hiiii");
+            @* $("#editModifieritemModal").modal("show"); *@
+                $.ajax({
+                    type: "GET",
+                    url: "/Menu/GetModifierItemDetails",
+                    data: { id: id },
+                    success: function (response) {
+                        // Replace modal content with the response (partial view)
+                        $("#editModifieritemModal .modal-content").html(response);
+
+                        // Show the modal
+                        $("#editModifieritemModal").modal("show");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Error Response:", xhr.responseText);
+                        toastr.error("Failed to fetch modifier item details.");
+                    }
+                });
+        }
+    let editselectedModifierIds = [];
+
+    $(document).ready(function () {
+
+
+        $(document).on("change", "input[name='editmodgroupCheckbox']", function () {
+            let modId = $(this).val(); // Get the Modifier Group ID
+            let modName = $(this).parent().text().trim(); // Get the Modifier Group Name
+            let editselectedContainer = $("#editselectedItemsContainer");
+
+            if ($(this).is(":checked")) {
+                // Append selected modifier to display
+                editselectedContainer.append(`<span class="badge m-1 selected-modifier text-black" data-id="${modId}">${modName}</span>`);
+                editselectedModifierIds.push(modId); // Add to selected list
+            } else {
+                // Remove from display if unchecked
+                editselectedContainer.find(`.selected-modifier[data-id='${modId}']`).remove();
+                editselectedModifierIds = editselectedModifierIds.filter(id => id !== modId); // Remove from list
+            }
+            console.log(editselectedModifierIds);
+
+            // Store selected modifier group IDs in hidden input field
+            $("#editmodifierGroupIds").val(editselectedModifierIds.join(","));
+        });
+
+        // Clear selected items when modal is closed
+        $("#editModifieritemModal").on("hidden.bs.modal", function () {
+            $("#editselectedItemsContainer").empty(); // Clear UI badges
+            $("input[name='editmodgroupCheckbox']").prop("checked", false); // Uncheck all checkboxes
+            editselectedModifierIds = []; // Reset selected list
+            $("#editmodifierGroupIdsInput").val(""); // Clear hidden input
+        });
+    });
+
+    $(document).ready(function () {
+        console.log("jQuery is loaded and document is ready.");
+
+       @* ------post method ajax call is in the modal partial view(_EditModifierItemModal)----- *@
+
+        // Close Modal and Reset Fields
+        $("#editModifieritemModal").on("hidden.bs.modal", function () {
+            editselectedModifierIds = [];
+            $("#editselectedItemsContainer").empty();
+            $("input[name='editmodgroupCheckbox']").prop("checked", false);
+            $("#editModifierItemForm")[0].reset();
+        });
+    });
+
+
+    @* -------------------------------------------add modifier item checkbox----------------------------- *@
+        let selectedModifierIds = [];
     $(document).on("change", "input[name='addmodgroupCheckbox']", function () {
         let modId = $(this).val(); // Get the Modifier Group ID
         let modName = $(this).parent().text().trim(); // Get the Modifier Group Name
@@ -374,8 +444,8 @@
             type: 'GET',
             data: { modifiergroupid: modifierGroupId },
             success: function (data) {
-                console.log('Partial view loaded successfully:', data);
-                $("#modifierContainer").html(data);
+                @* console.log('Partial view loaded successfully:', data); *@
+                    $("#modifierContainer").html(data);
             },
             error: function (error) {
                 console.error('Error loading partial view:', error);
@@ -384,26 +454,6 @@
         });
     }
 
-    function GetModifiersItemDetail(id) {
-        console.log("hiiii");
-        @* $("#editModifieritemModal").modal("show"); *@
-            $.ajax({
-                type: "GET",
-                url: "/Menu/GetModifierItemDetails",
-                data: { id: id },
-                success: function (response) {
-                    // Replace modal content with the response (partial view)
-                    $("#editModifieritemModal .modal-content").html(response);
-
-                    // Show the modal
-                    $("#editModifieritemModal").modal("show");
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error Response:", xhr.responseText);
-                    toastr.error("Failed to fetch modifier item details.");
-                }
-            });
-    }
 
     @* document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("showTable").addEventListener("click", function (e) {

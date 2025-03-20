@@ -308,6 +308,23 @@ public class MenuRepository : IMenu
         return false;
     }
 
+    public bool SoftDeleteModifierItems(List<int> modifieritemIds)
+    {
+        var items = _db.Modifiers.Where(i => modifieritemIds.Contains(i.Modifiersid)).ToList();
+        var deletemap = _db.MapModifiersgroupModifiers.Where(i => modifieritemIds.Contains(i.Modifiersid)).ToList();
+        _db.MapModifiersgroupModifiers.RemoveRange(deletemap);
+        if (items.Any())
+        {
+            foreach (var item in items)
+            {
+                item.Isdeleted = true;
+            }
+            _db.SaveChanges();
+            return true;
+        }
+        return false;
+    }
+
     public List<ModifierGroupModel> GetModifierGroups()
     {
         return _db.Modifiersgroups
@@ -546,6 +563,70 @@ public class MenuRepository : IMenu
         }
 
         return modifierItem;
+    }
+    public void UpdateModifierItem(AddEditModifierItemViewModel model)
+    {
+        if (model == null || model.ModifierItemId == 0)
+            throw new ArgumentException("Invalid modifier item details");
+
+        var modifierItem = _db.Modifiers.FirstOrDefault(m => m.Modifiersid == model.ModifierItemId);
+
+        if (modifierItem == null)
+            throw new Exception("Modifier item not found");
+
+        // Update values
+        modifierItem.Modifiersname = model.ModifierItemName;
+        modifierItem.Modifiersrate = model.Rate;
+        modifierItem.Modifiersquantity = model.Quantity;
+        modifierItem.Modifiersdescription = model.ModifierItemDescription;
+        modifierItem.Modifiersunit = model.Modifiersunit;
+        modifierItem.EditDate = DateTime.Now;
+        modifierItem.EditedBy = model.EditedBy;
+
+        try
+        {
+            _db.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving modifier item: {ex.Message}");
+            throw;
+        }
+
+        // Remove existing modifier group mappings
+        var existingMappings = _db.MapModifiersgroupModifiers.Where(m => m.Modifiersid == model.ModifierItemId).ToList();
+
+        try
+        {
+            if (existingMappings.Any())
+            {
+                _db.MapModifiersgroupModifiers.RemoveRange(existingMappings);
+                _db.SaveChanges();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error removing existing mappings: {ex.Message}");
+            throw;
+        }
+
+        // Insert new mappings
+        try
+        {
+            List<MapModifiersgroupModifier> newMappings = model.ModifierGroupIds.Select(groupId => new MapModifiersgroupModifier
+            {
+                Modifiersid = model.ModifierItemId,
+                Modifiersgroupid = groupId
+            }).ToList();
+
+            _db.MapModifiersgroupModifiers.AddRange(newMappings);
+            _db.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding new mappings: {ex.Message}");
+            throw;
+        }
     }
 
 

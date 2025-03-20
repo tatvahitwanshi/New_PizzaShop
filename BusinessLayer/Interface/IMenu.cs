@@ -18,7 +18,7 @@ public interface IMenu
     Pagination<ItemsView> GetItemsByCategory(int categoryId, int PageNumber = 1, int PageSize = 3, string SearchKey = "");
 
     List<ItemsUnit> GetUnits();
-    public ModifierGroupDetails GetModifierGroupDetails(int modifierGroupId, int itemId=-1);
+    public ModifierGroupDetails GetModifierGroupDetails(int modifierGroupId, int itemId = -1);
     Task<string> AddItems(AddItemsViewModel model);
 
     AddItemsViewModel GetItemById(int id);
@@ -49,5 +49,7 @@ public interface IMenu
     public int AddModifierItem(AddEditModifierItemViewModel model);
 
     public AddEditModifierItemViewModel GetModifierItemById(int id);
+    void UpdateModifierItem(AddEditModifierItemViewModel model);
+    bool SoftDeleteModifierItems(List<int> modifieritemIds);
 
 }

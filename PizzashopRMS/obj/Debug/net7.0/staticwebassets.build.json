@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CY3m0zpi4vJOfmS8XXepnIjqh0IA2tdVUFXjyKkLovI=",
+  "Hash": "bNkfkTXpZNa8m8l8lYr8iDGuq/qxRa2Vzh3vKVPbTSM=",
   "Source": "PizzashopRMS",
   "BasePath": "_content/PizzashopRMS",
   "Mode": "Default",
@@ -2616,6 +2616,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\userphoto\\71d36e1a-6888-4aa1-b237-e13e10325ebf_Face-Profile-User-Man-Boy-Person-Avatar-512.webp"
+    },
+    {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\74615d0b-d697-4c30-b8a1-a8a34ceaadc1_Screenshot (1).png",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/74615d0b-d697-4c30-b8a1-a8a34ceaadc1_Screenshot (1).png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\74615d0b-d697-4c30-b8a1-a8a34ceaadc1_Screenshot (1).png"
     },
     {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\7566fc28-71f1-424a-a770-a4222cb90c25_dining-menu.png",

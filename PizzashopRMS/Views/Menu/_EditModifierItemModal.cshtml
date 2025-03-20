@@ -4,8 +4,11 @@
     <h5 class="modal-title">Edit Modifier</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<form asp-action="EditModifierItem" asp-controller="Menu" method="post" id="editModifierItemForm">
-    <input type="hidden" id="editmodifierGroupIdsInput" name="AddEditModItem.ModifierGroupIds" />
+
+<form action="UpdateModifierItem" method="post" id="editModifierItemForm">
+<input type="hidden" id="editModifierItemId" name="AddEditModItem.ModifierItemId" value="@Model.AddEditModItem?.ModifierItemId" />
+@* <input type="hidden" name="ModifierItemId" value="@Model.AddEditModItem?.ModifierItemId" /> *@
+@* <input type="text" id="editmodifierGroupIds" name="ModifierGroupIds"/> *@
 
     <div class="row g-3">
         <div class="col-md-6">
@@ -15,7 +18,7 @@
                     Select Modifier Options
                 </div>
                 <div id="editselectedItemsContainer" class="d-flex flex-wrap p-2">
-                    @* @if (Model.AddEditModItem?.ModifierGroupIds != null && Model.AddEditModItem.ModifierGroupIds.Any())
+                    @if (Model.AddEditModItem?.ModifierGroupIds != null && Model.AddEditModItem.ModifierGroupIds.Any())
                     {
                         @foreach (var selectedGroupId in Model.AddEditModItem.ModifierGroupIds)
                         {
@@ -23,10 +26,10 @@
                             selectedGroupId);
                             if (selectedGroup != null)
                             {
-                                <span class="badge text-black me-2">@selectedGroup.ModifierGroupName</span>
+                                <span class="badge m-1 selected-modifier text-black" data-id="@selectedGroup.ModifierGroupId">@selectedGroup.ModifierGroupName</span>
                             }
                         }
-                    } *@
+                    }
                 </div>
                 <ul class="dropdown-menu p-2" style="max-height: 200px; overflow-y: auto;">
                     @if (Model.ModifierGroupModel != null)
@@ -39,7 +42,7 @@
                             <li>
                                 <label class="dropdown-item">
                                     <input type="checkbox" value="@modgroup.ModifierGroupId" class="me-2 editmodgroupCheckbox"
-                                        name="editmodgroupCheckbox" @(isChecked ? "checked" : "")>
+                                        name="editmodgroupCheckbox"  @(isChecked ? "checked" : "")>
                                     @modgroup.ModifierGroupName
                                 </label>
                             </li>
@@ -97,42 +100,70 @@
         </div>
     </div>
     <div class="d-flex justify-content-end mt-3">
-        <button type="submit" id="editModifieritemsavebtn" class="btn text-white" style="background-color: #0066A7;"
-            type="submit">Save</button>
+        <button type="button" id="editModifieritemupdatebtn" class="btn text-white" style="background-color: #0066A7;"
+           >Update</button>
         <button type="button" class="btn ms-2" style="border-color: #0066A7; color: #0066A7; text-decoration: none;"
             data-bs-dismiss="modal">Cancel</button>
     </div>
 </form>
 
-@* <script>
+<script>
     $(document).ready(function () {
-     let editselectedModifierIds = [];
+        console.log("rrrrrr");
 
-        $(document).on("change", "input[name='editmodgroupCheckbox']", function () {
-            let modId = $(this).val(); // Get the Modifier Group ID
-            let modName = $(this).parent().text().trim(); // Get the Modifier Group Name
-            let editselectedContainer = $("#editselectedItemsContainer");
+        var modifierGroups = @Html.Raw(Json.Serialize(Model.AddEditModItem?.ModifierGroupIds ?? new List<int>()));
+        @* console.log(modifierGroups); *@
 
-            if ($(this).is(":checked")) {
-                // Append selected modifier to display
-                editselectedContainer.append(`<span class="badge m-1 selected-modifier text-black" data-id="${modId}">${modName}</span>`);
-                editselectedModifierIds.push(modId); // Add to selected list
-            } else {
-                // Remove from display if unchecked
-                editselectedContainer.find(`.selected-modifier[data-id='${modId}']`).remove();
-                editselectedModifierIds = editselectedModifierIds.filter(id => id !== modId); // Remove from list
-            }
-
-            // Store selected modifier group IDs in hidden input field
-            $("#editmodifierGroupIdsInput").val(selectedModifierIds.join(","));
+        modifierGroups.forEach(function (modGroup) {
+            console.log("Modifier Group ID:", modGroup);
+            editselectedModifierIds.push(modGroup.toString());
         });
 
-        // Clear selected items when modal is closed
-        $("#editModifieritemModal").on("hidden.bs.modal", function () {
-            $("#editselectedItemsContainer").empty(); // Clear UI badges
-            $("input[name='editmodgroupCheckbox']").prop("checked", false); // Uncheck all checkboxes
-            editselectedModifierIds = []; // Reset selected list
-            $("#editmodifierGroupIdsInput").val(""); // Clear hidden input
-        });
     });
-</script> *@
+      $("#editModifieritemModal").on("hidden.bs.modal", function () {
+            editselectedModifierIds = [];
+            console.log("Modal closed!");
+            $('#editModifieritemModal').modal('hide'); // Ensures the modal is properly closed
+          
+        });
+
+    $("#editModifieritemupdatebtn").on("click", function (event) {
+            console.log("Submit event fired!"); // Debugging
+
+            event.preventDefault(); // Prevent default form submission
+
+            var formData = new FormData($("#editModifierItemForm")[0]); // Get form data properly
+            editselectedModifierIds.forEach(id => formData.append("ModifierGroupIds[]", id));
+            console.log(editselectedModifierIds);
+            console.log("Form Data:", formData); // Debugging
+
+            $.ajax({
+                url: $("#editModifierItemForm").attr("action"),
+                type: $("#editModifierItemForm").attr("method"),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log("AJAX Response:", response); // Debugging
+
+                    if (response.success) {
+                        toastr.success("Modifier item updated successfully!");
+                        $("#editModifieritemModal").modal("hide");
+
+                        // Refresh the page after 1 second
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error:", xhr.responseText); // Debugging
+                    toastr.error("Something went wrong.");
+                }
+            });
+        });
+</script>
+
+
