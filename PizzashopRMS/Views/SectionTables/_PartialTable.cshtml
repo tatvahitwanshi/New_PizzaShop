@@ -1,3 +1,5 @@
+@model DataAccessLayer.ViewModels.SectionTablesViewModal
+
 <div class="table-responsive">
     <table class="table">
         <thead>
@@ -5,55 +7,36 @@
                 <th scope="col"><input class="form-check-input main-check" type="checkbox" value=""
                         id="selectAllCheckbox"></th>
                 <th scope="col">Name</th>
-                <th scope="col">Item Type</th>
-                <th scope="col">Rate </th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Available</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
-        <tbody id="itemsTableBody">
-            @foreach (var item in Model.Items.List)
+        <tbody id="TablesBody">
+            @foreach (var table in Model.TablesViews.List)
             {
                 <tr>
                     <td>
-                        <input class="form-check-input inner-check" type="checkbox" data-id="@item.ItemId">
+                        <input class="form-check-input inner-check" type="checkbox" data-id="@table.TablesId">
                     </td>
                     <td>
-                        @if (item.Itemimage != null)
-                        {
-                            <img src="@Url.Content(item.Itemimage)" alt="" width="30px">
-
-                        }
-                        else
-                        {
-                            <img src="~/images/dining-menu.png" alt="" width="30px">
-
-                        }
-                        @* src="@item.Itemimage" *@
-                        @item.Itemname
+                        @table.Tablename
                     </td>
+                    <td>@table.Tablecapacity</td>
                     <td>
-                        <img src="~/images/icons/@(item.Itemtype == "veg" ? "veg-icon.svg" : "non-veg-icon.svg")"
-                            width="20px" alt="">
-                    </td>
-                    <td>@item.Rate</td>
-                    <td>@item.Quantity</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" style="width: 2.5rem; height: 25px;" type="checkbox"
-                                role="switch" @(item.Isavailable ?? false ? "checked" : "")>
-                        </div>
+                        <button class="rounded-pill text-white align-self-center"
+                            style="background-color: @((table.Isoccupied ?? false) ? "grey" : "green"); border: none; width: 80px;">
+                            @((table.Isoccupied ?? false) ? "Occupied" : "Available")
+                        </button>
                     </td>
                     <td>
                         <div class="d-flex">
-                            <a href="#" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                data-bs-target="#edititemModal" onclick="GetItemDetails(@item.ItemId)">
+                            <a href="#" style="text-decoration: none; color: grey;"
+                                onclick="OpenEditTableModal(@table.TablesId)">
                                 <i class="bi bi-pen"></i>
                             </a>
                             <a href="#" class="ms-4" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                data-bs-target="#itemdeleteModal" onclick="openItemDeleteModal(@item.ItemId)"><i
-                                    class="bi bi-trash"></i></a>
+                                data-bs-target="#itemdeleteModal"><i class="bi bi-trash"></i></a>
                         </div>
                     </td>
                 </tr>
@@ -69,14 +52,14 @@
                 <span class="align-self-center">Items Per Page
                     :</span>
                 <select class="form-select form-select-sm ms-2 align-self-center" aria-label="Small select example"
-                    style=" width: unset; " id="pageSizeDropdownItem" onchange="updatePageSize()">
-                    @if (Model.Items.PageSize != null)
+                    style=" width: unset; " id="pageSizeDropdownTable" onchange="updatePageSizeTable()">
+                    @if (Model.TablesViews.PageSize != null)
                     {
-                        <option value="1" selected="@(Model.Items.PageSize == 1 ? true : false)">1</option>
-                        <option value="3" selected="@(Model.Items.PageSize == 3 ? true : false)">3</option>
-                        <option value="5" selected="@(Model.Items.PageSize == 5 ? true : false)">5</option>
-                        <option value="10" selected="@(Model.Items.PageSize == 10 ? true : false)">10</option>
-                        <option value="25" selected="@(Model.Items.PageSize == 25 ? true : false)">25</option>
+                        <option value="1" selected="@(Model.TablesViews.PageSize == 1 ? true : false)">1</option>
+                        <option value="3" selected="@(Model.TablesViews.PageSize == 3 ? true : false)">3</option>
+                        <option value="5" selected="@(Model.TablesViews.PageSize == 5 ? true : false)">5</option>
+                        <option value="10" selected="@(Model.TablesViews.PageSize == 10 ? true : false)">10</option>
+                        <option value="25" selected="@(Model.TablesViews.PageSize == 25 ? true : false)">25</option>
                     }
                 </select>
 
@@ -88,28 +71,304 @@
             <div class="pagination ">
                 <span class=" ms-2  align-self-center">Showing
                     @{
-                        var startRecord = (Model.Items.PageNumber - 1) * Model.Items.PageSize + 1;
-                        var endRecord = Model.Items.PageNumber * Model.Items.PageSize;
-                        if (endRecord > Model.Items.Count)
-                            endRecord = Model.Items.Count;
+                        var startRecord = (Model.TablesViews.PageNumber - 1) * Model.TablesViews.PageSize + 1;
+                        var endRecord = Model.TablesViews.PageNumber * Model.TablesViews.PageSize;
+                        if (endRecord > Model.TablesViews.Count)
+                            endRecord = Model.TablesViews.Count;
 
-                        if (Model.Items.Count == 0)
+                        if (Model.TablesViews.Count == 0)
                         {
                             startRecord = 0;
                             endRecord = 0;
                         }
                     }
                     <span style="color: green;" class="me-1">@startRecord - @endRecord</span> of <span
-                        style="color: red;" class="ms-1">@Model.Items.Count</span>
+                        style="color: red;" class="ms-1">@Model.TablesViews.Count</span>
                 </span>
-                <button class="btn border ms-2  align-self-center" type="submit" onclick="PanginationBtn('back')"><i
-                        class="bi bi-chevron-left "></i>
+                <button class="btn border ms-2  align-self-center" type="submit"
+                    onclick="PanginationBtnTable('back')"><i class="bi bi-chevron-left "></i>
                 </button>
-                <button class="btn border ms-2  align-self-center" type="submit" onclick="PanginationBtn('next')"><i
-                        class="bi bi-chevron-right"></i>
+                <button class="btn border ms-2  align-self-center" type="submit"
+                    onclick="PanginationBtnTable('next')"><i class="bi bi-chevron-right"></i>
                 </button>
             </div>
         </nav>
     </div>
-
 </div>
+
+<!-- Add Table Modal -->
+
+<div class="modal fade" id="addTableModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form class="modal-body" id="tableAddForm" asp-action="AddTable" asp-controller="SectionTables"
+                method="post">
+                <div class="d-flex justify-content-between mb-4">
+                    <h1 class="modal-title fs-5 fw-semibold" id="exampleModalLabel">Add Table</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="row">
+                    <!-- Table Name -->
+                    <div class="form-floating mb-3 col-6">
+                        <input type="text" class="form-control" asp-for="AddEditTables.Tablename" placeholder="Name*">
+                        <label asp-for="AddEditTables.Tablename">Name*</label>
+                        <span class="text-danger" asp-validation-for="AddEditTables.Tablename"></span>
+                    </div>
+
+                    <!-- Table Section -->
+                    <div class="form-floating mb-3 col-6">
+                        <!-- Disabled dropdown for display -->
+                        <select class="form-control" id="tableSectionDisplay" disabled>
+                            @foreach (var sectionFor in Model.SectionViewModals)
+                            {
+                                var isSelected = sectionFor.SectionId == @Model.TablesViews.ParentId;
+                                <option value="@sectionFor.SectionId" selected="@isSelected">@sectionFor.Sectionname
+                                </option>
+                            }
+                        </select>
+
+                        <!-- Hidden input to actually submit the SectionId -->
+                        <input type="hidden" id="tableSection" name="AddEditTables.SectionId"
+                            value="@Model.TablesViews.ParentId" />
+
+                        <label asp-for="AddEditTables.SectionId">Section*</label>
+                        <span class="text-danger" asp-validation-for="AddEditTables.SectionId"></span>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <!-- Table Capacity -->
+                    <div class="form-floating mb-5 col-6">
+                        <input class="form-control" asp-for="AddEditTables.Tablecapacity" type="number"
+                            placeholder="Capacity*" min="1" step="1" max="20">
+                        <label asp-for="AddEditTables.Tablecapacity">Capacity*</label>
+                        <span class="text-danger" asp-validation-for="AddEditTables.Tablecapacity"></span>
+                    </div>
+
+                    <!-- Table Status -->
+                    <div class="form-floating mb-3 col-6">
+                        <select class="form-control" asp-for="AddEditTables.Isoccupied" disabled>
+                            <option value="false">Available</option>
+                            <option value="true">Occupied</option>
+                        </select>
+                        <label asp-for="AddEditTables.Isoccupied">Status*</label>
+                        <span class="text-danger" asp-validation-for="AddEditTables.Isoccupied"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn text-white" style="background-color: #0066A7;"
+                        id="save-btn">Save</button>
+                    <button type="button" class="btn ms-2"
+                        style="border-color: #0066A7; color: #0066A7; text-decoration: none;" id="cancel-btn"
+                        data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Table Modal -->
+<div class="modal fade" id="editTableModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form class="modal-body" id="editTableForm" asp-action="UpdateTable" asp-controller="SectionTables"
+                method="post">
+                <div class="d-flex justify-content-between mb-4">
+                    <h1 class="modal-title fs-5 fw-semibold" id="exampleModalLabel">Edit Table</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Hidden field to hold TableId -->
+                <input type="text" id="editTableId" asp-for="@Model.AddEditTables.TablesId" />
+
+                <div class="row">
+                    <!-- Table Name -->
+                    <div class="form-floating mb-3 col-6">
+                        <input type="text" class="form-control" id="editTableName" asp-for="@Model.AddEditTables.Tablename"
+                            placeholder="Name*">
+                        <label for="editTableName">Name*</label>
+                        <span class="text-danger" asp-validation-for="AddEditTables.Tablename"></span>
+                    </div>
+
+                    <!-- Table Section -->
+                    <div class="form-floating mb-3 col-6">
+                        <!-- Disabled dropdown for display -->
+                        <select class="form-control" id="editTableSectionDisplay" disabled>
+                            @foreach (var sectionFor in Model.SectionViewModals)
+                            {
+                                <option value="@sectionFor.SectionId">@sectionFor.Sectionname</option>
+                            }
+                        </select>
+
+                        <!-- Hidden input for SectionId -->
+                        <input type="hidden" id="editTableSection" name="AddEditTables.SectionId" />
+                        <label for="editTableSection">Section*</label>
+                        <span class="text-danger" asp-validation-for="AddEditTables.SectionId"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Table Capacity -->
+                    <div class="form-floating mb-5 col-6">
+                        <input class="form-control" id="editTableCapacity" name="AddEditTables.Tablecapacity"
+                            type="number" placeholder="Capacity*" min="1" step="1" max="20">
+                        <label for="editTableCapacity">Capacity*</label>
+                        <span class="text-danger" asp-validation-for="AddEditTables.Tablecapacity"></span>
+                    </div>
+
+                    <!-- Table Status -->
+                    <div class="form-floating mb-3 col-6">
+                        <select class="form-control" id="editTableStatus" name="AddEditTables.Isoccupied" disabled>
+                            <option value="Available">Available</option>
+                            <option value="Occupied">Occupied</option>
+                        </select>
+                        <label for="editTableStatus">Status*</label>
+                        <span class="text-danger" asp-validation-for="AddEditTables.Isoccupied"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn text-white" style="background-color: #0066A7;"
+                        id="save-btn">Save</button>
+                    <button type="button" class="btn ms-2" style="border-color: #0066A7; color: #0066A7;"
+                        id="cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function loadTable(pageSize, searchKey, pageNumber) {
+        console.log("Page Size:", pageSize, "Search Key:", searchKey, "Page Number:", pageNumber);
+
+        $.ajax({
+            url: '@Url.Action("GetTablesBySection", "SectionTables")',
+            type: 'GET',
+            data: {
+                sectionId: @Model.TablesViews.ParentId,
+                PageSize: pageSize,
+                SearchKey: searchKey,
+                PageNumber: pageNumber
+            },
+            success: function (data) {
+                $("#tableContainer").html(data);
+            },
+            error: function (error) {
+                console.error('Error loading partial view:', error);
+                $("#tableContainer").html("<p>Error loading items.</p>");
+            }
+        });
+    }
+
+    function updatePageSizeTable() {
+        var pageSize = $("#pageSizeDropdownTable").val();
+        var searchKey = $("#searchInputTable").val();
+        var pageNumber = @Model.TablesViews.PageNumber;
+
+        loadTable(pageSize, searchKey, pageNumber);
+    }
+
+    function PanginationBtnTable(direction) {
+        var pageSize = $("#pageSizeDropdownTable").val();
+        var searchKey = $("#searchInputTable").val();
+        var pageNumber = @Model.TablesViews.PageNumber;
+
+        if (direction === "back") {
+            pageNumber -= 1;
+        } else {
+            pageNumber += 1;
+        }
+
+        loadTable(pageSize, searchKey, pageNumber);
+    }
+
+    function searchTableEnter(event) {
+        if (event.key === "Enter") {
+            searchTable();
+        }
+    }
+    document.addEventListener('keydown', function (event) {
+        // Check if the pressed key is the Enter key
+        if (event.key === 'Enter') {
+            // Do something when Enter is pressed
+            console.log('Enter key was pressed!');
+            searchTable();
+        }
+    });
+
+    function searchTable() {
+        var pageSize = $("#pageSizeDropdownTable").val();
+        var searchKey = $("#searchInputTable").val();
+        var pageNumber = @Model.TablesViews.PageNumber;
+
+        loadTable(pageSize, searchKey, pageNumber);
+    }
+
+    @* --------------------open edit modal--------------------- *@
+
+        function OpenEditTableModal(tableId) {
+
+            $.ajax({
+                url: '@Url.Action("GetTableDetails", "SectionTables")',
+                type: 'GET',
+                data: { tableId: tableId },
+                success: function (data) {
+                    if (data) {
+                        // Populate the modal fields with the data
+                        $("#editTableId").val(data.tablesId);
+                        $("#editTableName").val(data.tablename);
+                        $("#editTableCapacity").val(data.tablecapacity);
+                        console.log(data.isoccupied);
+                        // Check isoccupied and display corresponding status
+                        if (data.isoccupied) {
+                            console.log(data.isoccupied);
+                            $("#editTableStatus").val("Occupied");
+                        } else {
+                            $("#editTableStatus").val("Available");
+                        }
+
+                        $("#editTableSectionDisplay").val(data.sectionId); // Displayed section ID
+                        $("#editTableSection").val(data.sectionId); // Hidden or editable section ID
+
+                        // Show the modal
+                        $("#editTableModel").modal("show");
+                    } else {
+                        alert("No table details found for the provided ID.");
+                    }
+                },
+                error: function (error) {
+                    console.error('Error fetching table details:', error);
+                    alert("Failed to load table details. Please try again.");
+                }
+            });
+        }
+    $("#editTableForm").submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '@Url.Action("UpdateTable", "SectionTables")',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (response) {
+                alert("Table updated successfully.");
+                $("#editTableModel").modal("hide");
+                loadTable($("#pageSizeDropdownTable").val(), "", 1);
+            },
+            error: function (error) {
+                console.error("Error updating table:", error);
+                alert("Failed to update the table. Please try again.");
+            }
+        });
+    });
+
+
+
+</script>

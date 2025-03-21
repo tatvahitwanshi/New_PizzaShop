@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bNkfkTXpZNa8m8l8lYr8iDGuq/qxRa2Vzh3vKVPbTSM=",
+  "Hash": "ppYP6jnQWbrE1SZrPqDuoxolT4GaT4rJYJfRrXYWRVI=",
   "Source": "PizzashopRMS",
   "BasePath": "_content/PizzashopRMS",
   "Mode": "Default",
@@ -1989,6 +1989,23 @@
       "OriginalItemSpec": "wwwroot\\userphoto\\01992e04-6bd8-4e7f-a82d-cbfd59a667ed_dominos_background.jpg"
     },
     {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\04f5b62b-4432-48b9-8a3c-695cec9cb6e5_user-icon-512x512-x23sj495.png",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/04f5b62b-4432-48b9-8a3c-695cec9cb6e5_user-icon-512x512-x23sj495.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\04f5b62b-4432-48b9-8a3c-695cec9cb6e5_user-icon-512x512-x23sj495.png"
+    },
+    {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\0741367f-601e-49b6-9a9e-5383e8badc04_dominos_background.jpg",
       "SourceId": "PizzashopRMS",
       "SourceType": "Discovered",
@@ -2465,6 +2482,40 @@
       "OriginalItemSpec": "wwwroot\\userphoto\\5a3c277d-1ba1-412e-80be-e572c8c180d8_QR.png"
     },
     {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\5c4e87f5-a9b5-466a-874f-a3056bf519ab_user-icon-512x512-x23sj495.png",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/5c4e87f5-a9b5-466a-874f-a3056bf519ab_user-icon-512x512-x23sj495.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\5c4e87f5-a9b5-466a-874f-a3056bf519ab_user-icon-512x512-x23sj495.png"
+    },
+    {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\5cabcd3a-86cc-4acb-9d65-9fdd4d751c59_7. 3hrs_Image Gallery with Filters (jQuery).pdf",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/5cabcd3a-86cc-4acb-9d65-9fdd4d751c59_7. 3hrs_Image Gallery with Filters (jQuery).pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\5cabcd3a-86cc-4acb-9d65-9fdd4d751c59_7. 3hrs_Image Gallery with Filters (jQuery).pdf"
+    },
+    {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\60d018f7-f2ee-4cbb-a0c3-e37bbbcf377b_dominos_background.jpg",
       "SourceId": "PizzashopRMS",
       "SourceType": "Discovered",
@@ -2907,6 +2958,23 @@
       "OriginalItemSpec": "wwwroot\\userphoto\\a59f3d14-2688-4024-b0ba-5905d7a0811b_QR.png"
     },
     {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\a73b65d1-d225-432d-86ba-c48966f6b8fe_7. 3hrs_Image Gallery with Filters (jQuery).pdf",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/a73b65d1-d225-432d-86ba-c48966f6b8fe_7. 3hrs_Image Gallery with Filters (jQuery).pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\a73b65d1-d225-432d-86ba-c48966f6b8fe_7. 3hrs_Image Gallery with Filters (jQuery).pdf"
+    },
+    {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\b04f81fd-efe4-48ed-91d9-4310f5947505_qr-code.png",
       "SourceId": "PizzashopRMS",
       "SourceType": "Discovered",
@@ -3245,6 +3313,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\userphoto\\f954e922-a60c-4f36-a7ae-7d580ba62a75_transperent-pizza.png"
+    },
+    {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\fc30f612-8895-47ed-bc9e-d780d43beaca_user-icon-512x512-x23sj495.png",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "userphoto/fc30f612-8895-47ed-bc9e-d780d43beaca_user-icon-512x512-x23sj495.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\userphoto\\fc30f612-8895-47ed-bc9e-d780d43beaca_user-icon-512x512-x23sj495.png"
     },
     {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\userphoto\\fd538a53-40fa-48e6-a25b-086c5393c4c2_dominos_background.jpg",
