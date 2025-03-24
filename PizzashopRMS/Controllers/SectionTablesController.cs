@@ -215,4 +215,21 @@ public class SectionTablesController : Controller
     }
 
 
+    // Soft deletes a category
+    [HttpPost]
+    public IActionResult DeleteTable(List<int> tableIds)
+    {
+        bool isDeleted = _sectionTables.SoftDeleteTable(tableIds);
+        if (isDeleted)
+        {
+            TempData["success"] = "Items deleted successfully!";
+            return Json(new { success = true });
+        }
+        else
+        {
+            TempData["error"] = "Failed to delete items!";
+            return Json(new { success = false });
+        }
+    }
+
 }

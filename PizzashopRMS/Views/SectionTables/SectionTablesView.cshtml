@@ -123,7 +123,7 @@
     </div>
 </form>
 
-<!-- Model Delete -->
+<!-- Model Delete Section -->
 <div class="modal fade" id="deleteSectionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -151,40 +151,42 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+@* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> *@
 
 <script>
 
+
     @* ---------------------Edit Section ----------------------- *@
-    function openSectionEditModal(sectionId) {
-        $.ajax({
-            url: '/SectionTables/EditSection/' + sectionId,
-            type: 'GET',
-            success: function (data) {
-                if (data) {
-                    console.log("Fetched Data:", data);
-                    $('#editSectionId').val(data.sectionid);
-                    $('#editSectionName').val(data.sectionname);
-                    $('#editSectionDescription').val(data.sectiondescription);
-                } else {
-                    alert("No section data found.");
+        function openSectionEditModal(sectionId) {
+            $.ajax({
+                url: '/SectionTables/EditSection/' + sectionId,
+                type: 'GET',
+                success: function (data) {
+                    if (data) {
+                        console.log("Fetched Data:", data);
+                        $('#editSectionId').val(data.sectionid);
+                        $('#editSectionName').val(data.sectionname);
+                        $('#editSectionDescription').val(data.sectiondescription);
+                    } else {
+                        alert("No section data found.");
+                    }
+                },
+                error: function () {
+                    alert("Failed to load section details.");
                 }
-            },
-            error: function () {
-                alert("Failed to load section details.");
-            }
-        });
-    }
-    
+            });
+        }
+
     @* ----------------------Delete Section--------------------------*@
-    function openSectionDeletModal(sectionId) {
-        console.log("Delete Category ID:", sectionId);
-        deleteSectionId = sectionId;
-        $('#deleteSectionModal').modal('show');
-    }
+        function openSectionDeletModal(sectionId) {
+            console.log("Delete Category ID:", sectionId);
+            deleteSectionId = sectionId;
+            $('#deleteSectionModal').modal('show');
+        }
     $(document).on('click', '#confirmSectionDeleteBtn', function () {
         console.log("Deleting Section ID:", deleteSectionId);
         $.ajax({
@@ -203,28 +205,96 @@
 
     @* -----------------------Load Table on Section----------------------------- *@
 
-    function LoadPartialTableView(sectionId) {
-        console.log("Section ID:", sectionId);
-        var pageSize = $("#pageSizeDropdownTable").val();
-        console.log("Page Size:", pageSize);
+        function LoadPartialTableView(sectionId) {
+            console.log("Section ID:", sectionId);
+            var pageSize = $("#pageSizeDropdownTable").val();
+            console.log("Page Size:", pageSize);
 
-        // Show loading animation
-        @* $("#tableContainer").html("<p>Loading...</p>"); *@
+            // Show loading animation
+            @* $("#tableContainer").html("<p>Loading...</p>"); *@
+                $.ajax({
+                    url: '@Url.Action("GetTablesBySection", "SectionTables")',
+                    type: 'GET',
+                    data: { sectionId: sectionId, PageSize: pageSize },
+                    success: function (data) {
+
+                        $("#tableContainer").html(data);
+                    },
+                    error: function (error) {
+                        console.error('Error loading partial view:', error);
+                        $("#tableContainer").html("<p>Error loading items.</p>");
+                    }
+                });
+        }
+
+    @* --------------------------------------------------------Delete And Mass Delete Table--------------------------------------------------------- *@
+     $(document).ready(function () {
+            // Handle main checkbox click
+            $('.main-check').on('click', function () {
+                var isChecked = $(this).is(':checked');
+                $('.inner-check').prop('checked', isChecked);
+            });
+
+            // Handle individual checkbox clicks
+            $('#TablesBody').on('click', '.inner-check', function () {
+                if (!$(this).is(':checked')) {
+                    // Uncheck main checkbox if one inner checkbox is unchecked
+                    $('.main-check').prop('checked', false);
+                } else {
+                    // Check if all inner checkboxes are checked
+                    var allChecked = $('.inner-check').length === $('.inner-check:checked').length;
+                    $('.main-check').prop('checked', allChecked);
+                }
+            });
+        });
+
+    deleteTableIds = []; // Store selected item IDs
+    function openTableDeleteModal(tableId = null) {
+        deleteTableIds = []; // Reset array
+
+        if (tableId) {
+            console.log("Single delete");
+            deleteTableIds.push(tableId); // Single delete
+        } else {
+            console.log("Multiple delete");
+            $(".inner-check:checked").each(function () {
+                deleteTableIds.push($(this).data("id")); // Fix selector
+            });
+        }
+        if (deleteTableIds.length > 0) {
+            console.log("Items to delete:", deleteTableIds);
+            $('#tabledeleteModal').modal('show'); // Show modal
+
+        } else {
+            alert("Please select at least one item to delete.");
+        }
+    }
+    // Fix mass delete button click event
+    $("#masstableDeleteBtn").on("click", function () {
+        openTableDeleteModal();
+        @* $('#itemdeleteModal').modal('show'); // Show modal *@
+
+    });
+    // Handle delete confirmation
+    $(document).on("click", "#tableconfirmDeleteBtn", function () {
+        console.log("Deleting Items:", deleteTableIds);
         $.ajax({
-            url: '@Url.Action("GetTablesBySection", "SectionTables")',
-            type: 'GET',
-            data: { sectionId: sectionId, PageSize: pageSize },
-            success: function (data) {
-
-                $("#tableContainer").html(data);
+            url: '@Url.Action("DeleteTable", "SectionTables")',
+            type: 'POST',
+            data: { tableIds: deleteTableIds },
+            success: function (response) {
+                deleteTableIds = []; // Reset array
+                if (response.success) {
+                    @* alert('Items deleted successfully!'); *@
+                        location.reload();
+                } else { }
             },
-            error: function (error) {
-                console.error('Error loading partial view:', error);
-                $("#tableContainer").html("<p>Error loading items.</p>");
+            error: function (xhr, status, error) {
+                deleteTableIds = []; // Reset array
+                console.log('Error:', error);
             }
         });
-    }
-    
-    
+    });
+
 
 </script>

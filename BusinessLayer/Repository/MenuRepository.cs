@@ -371,19 +371,70 @@ public class MenuRepository : IMenu
 
 
 
-    //Get Modifier by ID
     public ModifierGroupModel GetModifierById(int id)
     {
-        var modifier = _db.Modifiersgroups.FirstOrDefault(c => c.Modifiersgroupid == id);
-        if (modifier == null) throw new KeyNotFoundException($"Modifier with ID {id} not found.");
+        var modifierGroup = _db.Modifiersgroups
+            .Where(e => e.Modifiersgroupid == id)
+            .Select(modgroup => new ModifierGroupModel
+            {
+                ModifierGroupId = modgroup.Modifiersgroupid,
+                ModifierGroupName = modgroup.Modifiersgroupname,
+                ModifierGroupDescription = modgroup.Modifiersgroupdescription,
+                ExistingModifiers = (from maptable in _db.MapModifiersgroupModifiers
+                                     join moditem in _db.Modifiers on maptable.Modifiersid equals moditem.Modifiersid
+                                     where maptable.Modifiersgroupid == id
+                                     select new ExistingModifiersItemModel
+                                     {
+                                         ModifierItemId = moditem.Modifiersid,
+                                         ModifierItemName = moditem.Modifiersname
+                                     }).ToList()
+            })
+            .FirstOrDefault();
 
-        return new ModifierGroupModel
-        {
-            ModifierGroupId = modifier.Modifiersgroupid,
-            ModifierGroupName = modifier.Modifiersgroupname,
-            ModifierGroupDescription = modifier.Modifiersgroupdescription
-        };
+        return modifierGroup;
     }
+
+
+    public ModifierGroupModel GetModifierByIdWithMappings(int id)
+    {
+        // var modifierGroup = _db.Modifiersgroups
+        //     .Where(c => c.Modifiersgroupid == id)
+        //     .Select(c => new ModifierGroupModel
+        //     {
+        //         ModifierGroupId = c.Modifiersgroupid,
+        //         ModifierGroupName = c.Modifiersgroupname,
+        //         ModifierGroupDescription = c.Modifiersgroupdescription,
+        //         ExistingModifiers = _db.MapModifiersgroupModifiers
+        //             .Where(m => m.Modifiersgroupid == id)
+        //             .Select(m => new ExistingModifiersItemModel
+        //             {
+        //                 ModifierItemId = m.Modifiersid,
+        //                 ModifierItemName = _db.Modifiers
+        //                     .Where(mod => mod.Modifiersid == m.Modifiersid)
+        //                     .Select(mod => mod.Modifiersname)
+        //                     .FirstOrDefault()
+        //             }).ToList()
+        //     })
+        //     .FirstOrDefault();
+        ModifierGroupModel modifierGroup = new ModifierGroupModel();
+        Modifiersgroup modgroup = _db.Modifiersgroups.Where(e => e.Modifiersgroupid == id).FirstOrDefault();
+        modifierGroup.ModifierGroupId = modgroup.Modifiersgroupid;
+        modifierGroup.ModifierGroupName = modgroup.Modifiersgroupname;
+        modifierGroup.ModifierGroupDescription = modgroup.Modifiersgroupdescription;
+
+        modifierGroup.ExistingModifiers = (from maptable in _db.MapModifiersgroupModifiers
+                                           join moditem in _db.Modifiers on maptable.Modifiersid equals moditem.Modifiersid
+                                           where maptable.Modifiersgroupid == id
+                                           select new ExistingModifiersItemModel
+                                           {
+                                               ModifierItemId = maptable.Modifiersid,
+                                               ModifierItemName = moditem.Modifiersname
+                                           }).ToList();
+
+        if (modifierGroup == null) throw new KeyNotFoundException($"Modifier Group with ID {id} not found.");
+        return modifierGroup;
+    }
+
     public void UpdateModifier(Modifiersgroup modifiersgroup)
     {
         var existingCategory = _db.Modifiersgroups.FirstOrDefault(c => c.Modifiersgroupid == modifiersgroup.Modifiersgroupid);
@@ -628,7 +679,6 @@ public class MenuRepository : IMenu
             throw;
         }
     }
-
 
 
 }

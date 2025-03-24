@@ -22,6 +22,7 @@ public class MenuViewModel
 
     public AddEditModifierItemViewModel AddEditModItem {get; set;}
 
+
 }
 public class Categories
 {
@@ -135,6 +136,14 @@ public class ModifierGroupModel
     public string? ModifierGroupDescription { get; set; }
 
     public bool? Isdeleted { get; set; }
+
+    public List<ExistingModifiersItemModel> ExistingModifiers { get; set; } = new();
+
+}
+public class ExistingModifiersItemModel
+{
+    public int ModifierItemId { get; set; }
+    public string ModifierItemName { get; set; } = null!;
 }
 
 public class ModifierItemViewModel

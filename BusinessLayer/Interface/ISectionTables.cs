@@ -18,5 +18,6 @@ public interface ISectionTables
     Task<AddEditTablesView> GetTableByIdAsync(int tableId); // Fetch table details by ID
     bool UpdateTable(AddEditTablesView table);
 
+    bool SoftDeleteTable(List<int> tableIds);
 
 }

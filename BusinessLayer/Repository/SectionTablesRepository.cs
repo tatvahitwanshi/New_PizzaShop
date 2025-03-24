@@ -191,4 +191,19 @@ public class SectionTablesRepository : ISectionTables
         }
         return false;
     }
+    public bool SoftDeleteTable(List<int> tableIds)
+    {
+        var items = _db.Tables.Where(i => tableIds.Contains(i.Tablesid)).ToList();
+        if (items.Any())
+        {
+            foreach (var item in items)
+            {
+                item.Isdeleted = true;
+            }
+            _db.SaveChanges();
+            return true;
+        }
+        return false;
+    }
+
 }

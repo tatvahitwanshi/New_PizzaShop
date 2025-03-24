@@ -104,9 +104,7 @@
             success: function (data) {
                 if ($('#addmodifer').hasClass('show')) {
                     $("#GetAllModifierItems").html(data);
-                } else if ($('#editmodifiermodel').hasClass('show')) {
-                    $("#GetAllModifierItemsEdit").html(data);
-                }
+                } 
             },
             error: function (error) {
                 console.error('Error loading partial view:', error);
@@ -121,9 +119,7 @@ function updatePagePerSizeAll() {
     var searchKey = $("#searchInputModifierAll").val();
     var pageNumber = @Model.ModifierItemAll.PageNumber;
 
-    if ($('#editmodifiermodel').hasClass('show')) {
-        searchKey = $("#searchInputModifierEdit").val();  // Use correct search input
-    }
+   
 
     loadModifierAll(pageSize, searchKey, pageNumber);
 }
@@ -135,9 +131,7 @@ function PanginationBtnModifierAll(direction) {
     var searchKey = $("#searchInputModifierAll").val();
     var pageNumber = @Model.ModifierItemAll.PageNumber;
 
-    if ($('#editmodifiermodel').hasClass('show')) {
-        searchKey = $("#searchInputModifierEdit").val();
-    }
+    
 
     if (direction === "back") {
         pageNumber -= 1;

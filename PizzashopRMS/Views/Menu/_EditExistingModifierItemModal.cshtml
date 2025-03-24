@@ -1,3 +1,4 @@
+@model DataAccessLayer.ViewModels.MenuViewModel
 <div class="table-responsive">
     <table class="table">
         <thead>
@@ -35,7 +36,7 @@
                 <span class="align-self-center">Items Per Page
                     :</span>
                 <select class="form-select form-select-sm ms-2 align-self-center" aria-label="Small select example"
-                    style=" width: unset; " id="pageSizeEditModifierAll" onchange="updatePagePerSizeAllEdit()">
+                    style=" width: unset; " id="pageSizeeditModifierAll" onchange="updatePagePerSizeAllEdit()">
                     @if (Model.ModifierItemViewModel?.PageSize != null)
                     {
                         <option value="1" selected="@(Model.ModifierItemAll.PageSize == 1 ? true : false)">
@@ -77,10 +78,10 @@
                     <span style="color: green;" class="me-1">@startRecord -
                         @endRecord</span> of <span style="color: red;" class="ms-1">@Model.ModifierItemAll.Count</span>
                 </span>
-                <button class="btn border ms-2  align-self-center" type="submit"
+                <button class="btn border ms-2  align-self-center" type="button"
                     onclick="PanginationBtnModifierAllEdit('back')"><i class="bi bi-chevron-left "></i>
                 </button>
-                <button class="btn border ms-2  align-self-center" type="submit"
+                <button class="btn border ms-2  align-self-center" type="button"
                     onclick="PanginationBtnModifierAllEdit('next')"><i class="bi bi-chevron-right"></i>
                 </button>
             </div>
@@ -89,50 +90,57 @@
 </div>
 
 <script>
-    function loadModifierAll(pageSize, searchKey, pageNumber) {
+    function loadModifierAllEdit(pageSize, searchKey, pageNumber) {
         console.log("Page Size:", pageSize, "Search Key:", searchKey, "Page Number:", pageNumber);
 
         $.ajax({
-            url: '@Url.Action("GetModifierItemsAllByModifierGroup", "Menu")',
+            url: '@Url.Action("GetEditModifierItemsAllByModifierGroup", "Menu")',
             type: 'GET',
             data: {
-
                 PageSize: pageSize,
                 SearchKey: searchKey,
                 PageNumber: pageNumber
             },
             success: function (data) {
-                $("#GetAllModifierItems").html(data);
+                if ($('#editmodifiermodel').hasClass('show')) {
+                    $("#GetAllModifierItemsEdit").html(data);
+                } 
             },
             error: function (error) {
                 console.error('Error loading partial view:', error);
-                $("#GetAllModifierItems").html("<p>Error loading items.</p>");
             }
         });
     }
 
-    function updatePagePerSizeAllEdit() {
-        console.log("jgsdfuysf");
-        var pageSize = $("#pageSizeEditModifierAll").val();
-        var searchKey = $("#searchInputEditModifierAll").val();
-        var pageNumber = @Model.ModifierItemAll.PageNumber;
 
-        loadModifierAll(pageSize, searchKey, pageNumber);
 
+function updatePagePerSizeAllEdit() {
+    var pageSize = $("#pageSizeeditModifierAll").val();
+    var searchKey = $("#searchInputModifierAllEdit").val();
+    var pageNumber = @Model.ModifierItemAll.PageNumber;
+
+    loadModifierAllEdit(pageSize, searchKey, pageNumber);
+}
+
+
+
+function PanginationBtnModifierAllEdit(direction) {
+    console.log("pagination side");
+    var pageSize = $("#pageSizeeditModifierAll").val();
+    var searchKey = $("#searchInputModifierAllEdit").val();
+    var pageNumber = @Model.ModifierItemAll.PageNumber;
+
+    
+
+    if (direction === "back") {
+        pageNumber -= 1;
+    } else {
+        pageNumber += 1;
     }
 
-    function PanginationBtnModifierAllEdit(direction) {
-        var pageSize = $("#pageSizeEditModifierAll").val();
-        var searchKey = $("#searchInputEditModifierAll").val();
-        var pageNumber = @Model.ModifierItemAll.PageNumber;
+    loadModifierAllEdit(pageSize, searchKey, pageNumber);
+}
 
-        if (direction === "back") {
-            pageNumber -= 1;
-        } else {
-            pageNumber += 1;
-        }
-        loadModifierAll(pageSize, searchKey, pageNumber);
-    }
 
     function searchModifierEnter(event) {
         if (event.key === "Enter") {
@@ -140,6 +148,7 @@
         }
     }
     document.addEventListener('keydown', function (event) {
+        // Check if the pressed key is the Enter key
         if (event.key === 'Enter') {
             // Do something when Enter is pressed
             console.log('Enter key was pressed!');
@@ -148,11 +157,11 @@
     });
 
     function searchItems() {
-        var pageSize = $("#pageSizeEditModifierAll").val();
-        var searchKey = $("#searchInputEditModifierAll").val();
+        var pageSize = $("#pageSizeDropdownModifierAll").val();
+        var searchKey = $("#searchInputModifierAllEdit").val();
         var pageNumber = @Model.ModifierItemAll.PageNumber;
 
-        loadModifierAll(pageSize, searchKey, pageNumber);
+        loadModifierAllEdit(pageSize, searchKey, pageNumber);
     }
 
 </script>

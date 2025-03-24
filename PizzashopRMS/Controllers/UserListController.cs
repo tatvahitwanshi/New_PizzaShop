@@ -9,7 +9,7 @@ using PizzashopRMS.Helpers;
 
 namespace PizzashopRMS.Controllers;
 
-[CustomAuthorise(new string[] { "admin" })]
+[CustomAuthorise(new string[] { "admin","chef"})]
 public class UserListController : Controller
 {
     private readonly IUserList _userListRepository;

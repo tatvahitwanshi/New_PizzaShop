@@ -251,7 +251,7 @@ public class MenuController : Controller
 
     }
 
-    // Soft deletes a category
+    // Soft deletes a item
     [HttpPost]
     public IActionResult DeleteItem(List<int> itemIds)
     {
@@ -312,13 +312,21 @@ public class MenuController : Controller
         {
             return Json(null);
         }
+
         return Json(new
         {
             modifiergroupid = modifier.ModifierGroupId,
             modifiergroupname = modifier.ModifierGroupName,
-            modifiergroupdescription = modifier.ModifierGroupDescription
+            modifiergroupdescription = modifier.ModifierGroupDescription,
+            existingModifiers = modifier.ExistingModifiers.Select(x => new
+            {
+                ModifierId = x.ModifierItemId,
+                ModifierName = x.ModifierItemName
+            })
         });
     }
+
+
 
     // Updates an existing category
     [HttpPost]
@@ -381,6 +389,7 @@ public class MenuController : Controller
         return PartialView("~/Views/Menu/_PartialModifier.cshtml", model);
     }
 
+    //Controller for add modifier group add existing
     public IActionResult GetModifierItemsAllByModifierGroup(int PageNumber = 1, int PageSize = 5, string SearchKey = "")
     {
         var model = new MenuViewModel
@@ -392,6 +401,19 @@ public class MenuController : Controller
         return PartialView("~/Views/Menu/_ExistingModifierItemModal.cshtml", model);
     }
 
+    //Controller for edit modifier group add existing
+    public IActionResult GetEditModifierItemsAllByModifierGroup(int PageNumber = 1, int PageSize = 5, string SearchKey = "")
+    {
+        var model = new MenuViewModel
+        {
+
+            ModifierItemAll = _menu.GetAllModifierItems(PageNumber, PageSize, SearchKey),
+
+        };
+        return PartialView("~/Views/Menu/_EditExistingModifierItemModal.cshtml", model);
+    }
+
+    //add modifier item
     [HttpPost]
     public IActionResult AddModifierItem([FromForm] MenuViewModel model, [FromForm] List<int> ModifierGroupIds)
     {
@@ -422,6 +444,7 @@ public class MenuController : Controller
         }
     }
 
+    //Get modifier item for edit modifier item
     [HttpGet]
     public IActionResult GetModifierItemDetails(int id)
     {
@@ -442,6 +465,8 @@ public class MenuController : Controller
 
         return PartialView("_EditModifierItemModal", viewModel);
     }
+
+    //Update Modifier item
     [HttpPost]
     public IActionResult UpdateModifierItem(MenuViewModel model, [FromForm] List<int> ModifierGroupIds)
     {
