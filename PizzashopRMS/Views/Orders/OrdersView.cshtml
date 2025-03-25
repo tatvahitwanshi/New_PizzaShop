@@ -1,0 +1,147 @@
+@* @model DataAccessLayer.ViewModels.SectionTablesViewModal *@
+@{
+    Layout = "~/Views/Shared/_LayoutCustom.cshtml";
+    ViewData["Title"] = " Orders Page";
+    ViewBag.Active = "Orders";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Font Icon CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/Orders.css">
+    <title>Orders Page</title>
+
+</head>
+
+<body>
+    <div class="container-fluid p-4">
+        @* <div class="row ">
+            <div class="col-4 h2  fw-bold" style="color: #0066A7;">
+                Orders
+            </div>
+            <div class="col-8 d-flex justify-content-evenly">
+                <div class="d-flex  me-2 p-1 position-relative bg-white">
+                    <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
+                        aria-label="Search" id="searchInputItem">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                        class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16"
+                        onclick="searchItems()">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </div>
+                <div class=" me-2 p-1 bg-white w-25">
+                    <select class="form-select border-0" aria-label="Default select example">
+                        <option selected>All status</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class=" me-2 p-1 bg-white w-25">
+                    <select class="form-select border-0" aria-label="Default select example">
+                        <option selected>Time</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+        </div> *@
+        <div class="row d-flex justify-content-end justify-content-xl-between align-items-center mb-3">
+
+            <div class="col-auto d-flex fs-2 fw-bold special-color">Orders</div>
+
+            <!-- Search, Dropdowns, Export - Aligned Right -->
+            <div class="col-auto">
+                <div class="d-flex flex-wrap flex-xl-nowrap gap-2 align-items-center justify-content-end">
+
+                    <!-- Search Input -->
+                    <div class="search-box d-flex align-items-center bg-white px-2 py-2">
+                        <input type="text" placeholder="Search" id="searchOrderInput"
+                            class="text-bark border-0 shadow-none w-100" style="outline: none;" oninput="doSearch()">
+                        <img src="~/images/search.png" alt="" id="search-order-img">
+                    </div>
+
+                    <!-- Order Status Dropdown -->
+                    <div class="search-box bg-white px-2 py-2" style="height: 44px;">
+                        <select class="border-0 shadow-none text-bark custom-select w-100" id="searchOrderSelect"
+                            style="outline: none;">
+                            <option selected value=0 class="select-all">All Status</option>
+                            <option selected value="Pending" class="select-all">Pending</option>
+                            @* @foreach (var status in @Model.OrderStatus)
+                            {
+                                <option value="@status.Id"
+                                    selected="@(Model.tables.OrderStatusId == status.Id ? true : false)">@status.Status
+                                </option>
+                            } *@
+                        </select>
+                    </div>
+
+                    <!-- Time Filter Dropdown -->
+                    <div class="search-box bg-white px-2 py-2" style="height: 44px;">
+                        <select class="border-0 shadow-none text-bark custom-select w-100" id="searchTimeFilter"
+                            style="outline: none;">
+                            <option value="All Time" selected>All Time</option>
+                            <option value="Last 7 Days">Last 7 Days</option>
+                            <option value="Last 30 Days">Last 30 Days</option>
+                            <option value="This Month">This Month</option>
+                            <option value="This Year">This Year</option>
+                        </select>
+                    </div>
+                    <!-- Export Button -->
+                    <a class="d-flex align-items-center justify-content-center px-3 fs-6" id="export-btn"
+                        style="height: 44px; text-decoration: none;">
+                        <div class="d-flex align-items-center justify-content-center w-100 h-100">
+                            <img src="/images/export-icon.png" alt="" style="filter: invert(1); height: 17px;">
+                            <span class="d-none d-sm-flex ms-2 fw-bold">Export</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <!-- Date Filter -->
+        <div
+            class="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-end align-items-end align-items-sm-center mb-3">
+            <div class="d-flex">
+                <div class="dateSelection form-floating px-2 my-1 my-lg-0" style="width: 165px;">
+                    <input type="date" class="form-control" id="orderFromDate" style="height: 48px;"
+                       >
+                    <label for="itemName" class="mx-2" style="font-size: 15px;">From Date</label>
+                </div>
+                <div class="dateSelection form-floating px-2 my-1 my-lg-0" style="width: 165px;">
+                    <input type="date" class="form-control" id="orderToDate" style="height: 48px;"
+                        >
+                    <label for="itemName" class="mx-2" style="font-size: 15px;">To Date</label>
+                </div>
+            </div>
+            <div class="d-flex ms-2 p-1" style="display:flex; justify-content: end;">
+                <a class="d-flex align-items-center justify-content-center px-3 fs-6 me-2" id="search-btn"
+                    style="height: 48px; text-decoration: none;" onclick="ApplyFilters()">
+                    <div class="d-flex align-items-center justify-content-center w-100 h-100">
+                        <span class="fw-bold">Search</span>
+                    </div>
+                </a>
+                <a class="d-flex align-items-center justify-content-center px-3 fs-6" id="clear-btn"
+                    style="height: 48px; text-decoration: none;">
+                    <div class="d-flex align-items-center justify-content-center w-100 h-100">
+                        <span class="fw-bold">Clear</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row  p-2 mt-4">
+            <partial name="_PartialOrderList.cshtml"></partial>
+        </div>
+    </div>
+</body>
+
+</html>

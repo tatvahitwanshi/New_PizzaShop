@@ -24,6 +24,8 @@ builder.Services.AddScoped<IRolesAndPermission, RolesAndPermissionRepository>();
 builder.Services.AddScoped<IMenu, MenuRepository>();
 builder.Services.AddScoped<ISectionTables, SectionTablesRepository>();
 builder.Services.AddScoped<ITaxesFees, TaxesFeesRespository>();
+builder.Services.AddScoped<IOrders, OrdersRepository>();
+
 
 
 // Configure JWT settings from appsettings.json

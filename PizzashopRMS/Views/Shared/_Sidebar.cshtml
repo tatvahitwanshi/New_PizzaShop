@@ -53,10 +53,10 @@
             <img src="~/images/sidebar icons/taxes.svg" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "TaxesFees" ? "active-icon" : " ")">
             <div class="name-sidebar ps-3 @(ViewBag.Active == "TaxesFees" ? "active-name" : " ")">Taxes and Fees</div>
         </a>
-        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
-            style="text-decoration: none;">
-            <img src="~/images/sidebar icons/orders.svg" alt="" class="sidebar-icons ps-3">
-            <div class="name-sidebar ps-3">Orders</div>
+        <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box @(ViewBag.Active == "Orders"? "active-sidebar" :" ")"
+            style="text-decoration: none;" asp-action="OrdersView" asp-controller="Orders">
+            <img src="~/images/sidebar icons/orders.svg" alt="" class="sidebar-icons ps-3 @(ViewBag.Active == "Orders" ? "active-icon" : " ")">
+            <div class="name-sidebar ps-3 @(ViewBag.Active == "Orders" ? "active-name" : " ")">Orders</div>
         </a>
         <a class="d-flex mb-3 justify-content-start align-items-center sidebar-inner-box"
             style="text-decoration: none;">

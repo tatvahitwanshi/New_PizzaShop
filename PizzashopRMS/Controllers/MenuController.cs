@@ -175,7 +175,6 @@ public class MenuController : Controller
 
     // Adds a new item 
     [HttpPost]
-    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<JsonResult> AddItemsPost(AddItemsViewModel model)
     {
         try
@@ -223,7 +222,7 @@ public class MenuController : Controller
             return Json(new { success = false, message = "Invalid input data" });
         }
         try
-        {            // Process Modifier Group Data from JSON
+        {    // Process Modifier Group Data from JSON
             if (!string.IsNullOrEmpty(Request.Form["AddModGroupWithItems"]))
             {
                 model.AddModGroupWithItems = JsonConvert.DeserializeObject<List<AddModGroupWithItem>>(Request.Form["AddModGroupWithItems"]);
@@ -326,16 +325,14 @@ public class MenuController : Controller
         });
     }
 
-
-
-    // Updates an existing category
     [HttpPost]
-    public IActionResult UpdateModififerGroup(ModifierGroupModel modifier)
+    public IActionResult UpdateModifierGroup(ModifierGroupModel modifier, string SelectedEditModifierIds)
     {
         if (ModelState.IsValid)
         {
             try
             {
+                // Update Modifier Group details
                 var updatedModifier = new Modifiersgroup
                 {
                     Modifiersgroupid = modifier.ModifierGroupId,
@@ -343,12 +340,18 @@ public class MenuController : Controller
                     Modifiersgroupdescription = modifier.ModifierGroupDescription
                 };
 
+                // Parse the JSON string of modifier IDs into a list of integers
+                var existingModifierIds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(SelectedEditModifierIds);
 
-                _menu.UpdateModifier(updatedModifier);
+                // Update the Modifier Group and its mappings
+                _menu.UpdateModifier(updatedModifier, existingModifierIds);
+
                 TempData["success"] = "Modifier Group updated successfully!";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Log the exception (optional)
+                Console.WriteLine(ex.Message);
                 TempData["error"] = "An error occurred while updating the Modifier Group.";
             }
         }
@@ -359,6 +362,7 @@ public class MenuController : Controller
 
         return RedirectToAction("MenuView");
     }
+
 
     // Soft deletes a category
     [HttpPost]
@@ -377,7 +381,7 @@ public class MenuController : Controller
         }
     }
 
-    // Retrieves items based on selected category
+    // Retrieves items based on selected modifier group
     public IActionResult GetModifierItemsByModifierGroup(int modifiergroupid, int PageNumber = 1, int PageSize = 5, string SearchKey = "")
     {
         var model = new MenuViewModel

@@ -265,7 +265,10 @@ public class MenuRepository : IMenu
         existingItem.Taxpercentage = item.Taxpercentage;
         existingItem.Shortcode = item.Shortcode;
         existingItem.Itemdescription = item.Itemdescription;
-        existingItem.Itemimage = await _userListRepository.UploadPhotoAsync(item.Itemimage);
+        if(item.Itemimage != null)
+        {
+            existingItem.Itemimage = await _userListRepository.UploadPhotoAsync(item.Itemimage);
+        }
         _db.Items.Update(existingItem);
 
         var existingMappings = _db.MapItemsModifiersgroups.Where(m => m.Itemid == item.ItemId);
@@ -435,16 +438,45 @@ public class MenuRepository : IMenu
         return modifierGroup;
     }
 
-    public void UpdateModifier(Modifiersgroup modifiersgroup)
+    public void UpdateModifier(Modifiersgroup modifiersgroup, List<int> existingModifiers)
     {
         var existingCategory = _db.Modifiersgroups.FirstOrDefault(c => c.Modifiersgroupid == modifiersgroup.Modifiersgroupid);
         if (existingCategory != null)
         {
+            // Update Modifier Group details
             existingCategory.Modifiersgroupname = modifiersgroup.Modifiersgroupname;
             existingCategory.Modifiersgroupdescription = modifiersgroup.Modifiersgroupdescription;
+
+            // Remove existing mappings
+            var existingMappings = _db.MapModifiersgroupModifiers
+                .Where(m => m.Modifiersgroupid == modifiersgroup.Modifiersgroupid)
+                .ToList();
+
+            if (existingMappings.Any())
+            {
+                _db.MapModifiersgroupModifiers.RemoveRange(existingMappings);
+            }
+
+            // Add new mappings
+            if (existingModifiers != null && existingModifiers.Any())
+            {
+                foreach (var modifierId in existingModifiers)
+                {
+                    var newMapping = new MapModifiersgroupModifier
+                    {
+                        Modifiersgroupid = modifiersgroup.Modifiersgroupid,
+                        Modifiersid = modifierId
+                    };
+
+                    _db.MapModifiersgroupModifiers.Add(newMapping);
+                }
+            }
+
+            // Save changes
             _db.SaveChanges();
         }
     }
+
 
     // Performs a soft delete on a category by marking it as deleted
     public bool SoftDeleteModfierGroup(int modifiergroupid)
@@ -661,7 +693,7 @@ public class MenuRepository : IMenu
             throw;
         }
 
-        // Insert new mappings
+            // Insert new mappings
         try
         {
             List<MapModifiersgroupModifier> newMappings = model.ModifierGroupIds.Select(groupId => new MapModifiersgroupModifier

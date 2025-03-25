@@ -7,10 +7,6 @@ public partial class Order
 {
     public int Orderid { get; set; }
 
-    public bool? Rating { get; set; }
-
-    public bool? Totalamount { get; set; }
-
     public int Tablesid { get; set; }
 
     public int Customerid { get; set; }
@@ -26,6 +22,10 @@ public partial class Order
     public DateTime? CreatedDate { get; set; }
 
     public DateTime? EditDate { get; set; }
+
+    public decimal? Totalamount { get; set; }
+
+    public short? Rating { get; set; }
 
     public virtual Customer Customer { get; set; } = null!;
 

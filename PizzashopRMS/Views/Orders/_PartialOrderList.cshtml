@@ -1,0 +1,77 @@
+
+
+<!-- Order Table -->
+<div class="order-table-container bg-white p-3 rounded shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle" style="background-color: transparent !important;">
+            <thead class="table-light">
+                <tr class="text-center">
+                    <th scope="col" class="text-nowrap" style="text-align: center;">
+                        #Order
+                        @* <div class="d-inline-flex">
+                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'OrderNo')"><i class="bi bi-arrow-up @((Model.tables.sortDr == "asc" && Model.tables.sortCol == "OrderNo") ? "text-primary" : "text-muted") "></i></button>
+                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'OrderNo')"><i class="bi bi-arrow-down @((Model.tables.sortDr != "asc" && Model.tables.sortCol == "OrderNo") ? "text-primary" : "text-muted") "></i></button>
+                        </div> *@
+                    </th>
+                    <th scope="col" class="text-nowrap">Date
+                        @* <div class="d-inline-flex">
+                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'OrderDate')"><i class="bi bi-arrow-up @((Model.tables.sortDr == "asc" && Model.tables.sortCol == "OrderDate") ? "text-primary" : "text-muted") "></i></button>
+                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'OrderDate')"><i class="bi bi-arrow-down @((Model.tables.sortDr != "asc" && Model.tables.sortCol == "OrderDate") ? "text-primary" : "text-muted") "></i></button>
+                        </div> *@
+                    </th>
+                    <th scope="col" class="text-nowrap">Customer
+                        @* <div class="d-inline-flex">
+                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'CustomerName')"><i class="bi bi-arrow-up @((Model.tables.sortDr == "asc" && Model.tables.sortCol == "CustomerName") ? "text-primary" : "text-muted") "></i></button>
+                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'CustomerName')"><i class="bi bi-arrow-down @((Model.tables.sortDr != "asc" && Model.tables.sortCol == "CustomerName") ? "text-primary" : "text-muted") "></i></button>
+                        </div> *@
+                    </th>
+                    <th scope="col" class="text-nowrap">Status</th>
+                    <th scope="col" class="text-nowrap">Payment Mode</th>
+                    <th scope="col" class="text-nowrap">Rating</th>
+                    <th scope="col" class="text-nowrap">Total Amount
+                        @* <div class="d-inline-flex">
+                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'TotalAmount')"><i class="bi bi-arrow-up @((Model.tables.sortDr == "asc" && Model.tables.sortCol == "TotalAmount") ? "text-primary" : "text-muted") "></i></button>
+                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'TotalAmount')"><i class="bi bi-arrow-down @((Model.tables.sortDr != "asc" && Model.tables.sortCol == "TotalAmount") ? "text-primary" : "text-muted") "></i></button>
+                        </div> *@
+                    </th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @* @foreach(var order in Model.tables.tableList)
+                {
+                    <tr class="text-center">
+                        <td>#@order.OrderNo</td>
+                        <td>@order.OrderDate</td>
+                        <td>@order.CustomerName</td>
+                        <td><span class="">@order.Status</span></td>
+                        <td>@order.PaymentMode</td>
+                        <td>
+                            @for (int i = 0; i < order.AvgRating; i++)
+                            {
+                                <i class="bi bi-star-fill text-warning"></i>
+                            }
+                            @for (int i = order.AvgRating; i < 5; i++)
+                            {
+                                <i class="bi bi-star text-muted"></i>
+                            }
+                        </td>
+                        <td>₹@order.TotalAmount</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn" title="Download PDF">
+                                    <i class="bi bi-filetype-pdf"></i>
+                                </a>
+                                <button class="btn" title="View Order">
+                                    <i class="bi bi-eye-fill"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                } *@
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Pagination-->

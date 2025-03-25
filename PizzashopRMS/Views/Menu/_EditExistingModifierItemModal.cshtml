@@ -3,7 +3,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col"><input class="form-check-input main-check" type="checkbox" value=""
+                <th scope="col"><input class="form-check-input main-check-edit" type="checkbox" value=""
                         id="selectAllCheckbox"></th>
                 <th scope="col">Name</th>
                 <th scope="col">Unit</th>
@@ -17,7 +17,7 @@
             {
                 <tr>
                     <td>
-                        <input class="form-check-input inner-check" type="checkbox" data-id="@item.ModifierItemId">
+                        <input class="form-check-input inner-check-edit" type="checkbox" data-id="@item.ModifierItemId">
                     </td>
                     <td>@item.ModifierItemName</td>
                     <td>@item.ModifierUnitname</td>
@@ -90,6 +90,17 @@
 </div>
 
 <script>
+
+    $(document).ready(function(){
+        document.querySelectorAll(".inner-check-edit").forEach(function(checkbox){
+            const id=parseInt(checkbox.getAttribute('data-id'));
+            if(selectedEditModifierIds.includes(id))
+            {
+                checkbox.checked=true;
+            }
+            @* console.log("iiiiii",id); *@
+        });
+    });
     function loadModifierAllEdit(pageSize, searchKey, pageNumber) {
         console.log("Page Size:", pageSize, "Search Key:", searchKey, "Page Number:", pageNumber);
 

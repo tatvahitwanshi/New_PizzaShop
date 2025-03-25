@@ -469,12 +469,10 @@ public partial class PizzaShopContext : DbContext
                 .HasColumnName("edited_by");
             entity.Property(e => e.Orderstatusid).HasColumnName("orderstatusid");
             entity.Property(e => e.Paymentid).HasColumnName("paymentid");
-            entity.Property(e => e.Rating)
-                .HasDefaultValueSql("false")
-                .HasColumnName("rating");
+            entity.Property(e => e.Rating).HasColumnName("rating");
             entity.Property(e => e.Tablesid).HasColumnName("tablesid");
             entity.Property(e => e.Totalamount)
-                .HasDefaultValueSql("true")
+                .HasPrecision(10, 2)
                 .HasColumnName("totalamount");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
@@ -533,22 +531,9 @@ public partial class PizzaShopContext : DbContext
             entity.ToTable("orderstatus");
 
             entity.Property(e => e.Orderstatusid).HasColumnName("orderstatusid");
-            entity.Property(e => e.Completed)
-                .HasDefaultValueSql("(0)::bit(1)")
-                .HasColumnType("bit(1)")
-                .HasColumnName("completed");
-            entity.Property(e => e.Inprogess)
-                .HasDefaultValueSql("(0)::bit(1)")
-                .HasColumnType("bit(1)")
-                .HasColumnName("inprogess");
-            entity.Property(e => e.Pending)
-                .HasDefaultValueSql("(0)::bit(1)")
-                .HasColumnType("bit(1)")
-                .HasColumnName("pending");
-            entity.Property(e => e.Running)
-                .HasDefaultValueSql("(0)::bit(1)")
-                .HasColumnType("bit(1)")
-                .HasColumnName("running");
+            entity.Property(e => e.Statusname)
+                .HasMaxLength(50)
+                .HasColumnName("statusname");
         });
 
         modelBuilder.Entity<Payment>(entity =>

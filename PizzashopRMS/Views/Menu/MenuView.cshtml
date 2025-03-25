@@ -101,8 +101,8 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
 
+<script>
     function openEditModal(categoryId) {
         $.ajax({
             url: '/Menu/EditCategory/' + categoryId,
@@ -163,52 +163,11 @@
 
     @* Now for modifier *@
 
-        function openEditModifierModal(modifierId) {
-            $.ajax({
-                url: '/Menu/EditModifierGroup/' + modifierId,
-                type: 'GET',
-                success: function (data) {
-                    if (data) {
-                        console.log("Fetched Data:", data);
-                        // Populate the form fields
-                        $('#editModifierId').val(data.modifiergroupid);
-                        $('#editModifierName').val(data.modifiergroupname);
-                        $('#editModifierDescription').val(data.modifiergroupdescription);
-
-                        // Populate the existing modifiers
-                        const container = $('#editselectedItemsContainer');
-                        container.empty(); // Clear the container first
-                        if (data.existingModifiers && data.existingModifiers.length > 0) {
-                            data.existingModifiers.forEach(modifier => {
-                                const badge = `<div class="selected-item badge text-black me-2 mb-2 p-2 d-flex align-items-center border">
-                                    <span class="me-2">${modifier.modifierName}</span>
-                                    <button type="button" class="btn-close remove-item" aria-label="Close" data-id="${modifier.modifierid}"></button>
-                                </div>`
-                                container.append(badge);
-                            });
-                            container.show();
-                        } else {
-                            container.hide();
-                        }
-
-                        // Show the modal
-                        $('#editmodifiermodel').modal('show');
-                    } else {
-                        alert("No modifier data found.");
-                    }
-                },
-                error: function () {
-                    alert("Failed to load modifier details.");
-                }
-            });
+        function openModifierGroupDeleteModal(ModifierId) {
+            console.log("Delete Category ID:", ModifierId);
+            deleteModifierId = ModifierId;
+            $('#deleteModifierGroupModal').modal('show');
         }
-
-
-    function openModifierGroupDeleteModal(ModifierId) {
-        console.log("Delete Category ID:", ModifierId);
-        deleteModifierId = ModifierId;
-        $('#deleteModifierGroupModal').modal('show');
-    }
 
     $('#confirmModifierGroupDelete').click(function () {
         console.log("Deleting Modifier ID:", deleteModifierId);
@@ -225,38 +184,90 @@
         });
     });
 
-    @* ------------------------------------------------------------------- *@
-        $(document).on('change', '.inner-check', function () {
-            const checkbox = $(this);
-            const modifierId = checkbox.data('id');
-            const modifierName = checkbox.closest('tr').find('td:nth-child(2)').text().trim();
-            const container = $('#editselectedItemsContainer');
+    @* ----------------------------edit modifier group with add existing modifier--------------------------------------- *@
+    let selectedEditModifierIds = [];
+    function openEditModifierModal(modifierId) {
+        $.ajax({
+            url: '/Menu/EditModifierGroup/' + modifierId,
+            type: 'GET',
+            success: function (data) {
+                if (data) {
+                    console.log("Fetched Data:", data);
+                    // Populate the form fields
+                    $('#editModifierId').val(data.modifiergroupid);
+                    $('#editModifierName').val(data.modifiergroupname);
+                    $('#editModifierDescription').val(data.modifiergroupdescription);
 
-            if (checkbox.is(':checked')) {
-                // Add the selected item to the div
-                const badge = `
+                    // Populate the existing modifiers
+                    const container = $('#editselectedItemsContainer');
+                    container.empty(); // Clear the container first
+                    selectedEditModifierIds = [];
+                    if (data.existingModifiers && data.existingModifiers.length > 0) {
+                        data.existingModifiers.forEach(modifier => {
+                            selectedEditModifierIds.push(modifier.modifierId);
+                            const badge = `<div class="selected-item badge text-black me-2 mb-2 p-2 d-flex align-items-center border">
+                                    <span class="me-2">${modifier.modifierName}</span>
+                                    <button type="button" class="btn-close remove-item" aria-label="Close" data-id="${modifier.modifierId}"></button>
+                                </div>`
+                            container.append(badge);
+
+                        });
+                        container.show();
+                    } else {
+                        container.hide();
+                    }
+                    console.log("dhfjdshfj",selectedEditModifierIds);
+                    $('#selectedEditModifierIds').val(JSON.stringify(selectedEditModifierIds)); 
+                    // Show the modal
+                    $('#editmodifiermodel').modal('show');
+                } else {
+                    alert("No modifier data found.");
+                }
+            },
+            error: function () {
+                alert("Failed to load modifier details.");
+            }
+        });
+    }
+    
+
+    $(document).on('change', '.inner-check-edit', function () {
+        const checkbox = $(this);
+        const modifierId = checkbox.data('id');
+        const modifierName = checkbox.closest('tr').find('td:nth-child(2)').text().trim();
+        const container = $('#editselectedItemsContainer');
+
+        if (checkbox.is(':checked')) {
+            // Add the selected item to the div
+            const badge = `
             <div class="selected-item badge text-black me-2 mb-2 p-2 d-flex align-items-center border">
                 <span class="me-2">${modifierName}</span>
                 <button type="button" class="btn-close remove-item" aria-label="Close" data-id="${modifierId}"></button>
             </div>`;
-                container.append(badge);
-                container.show();
-            } else {
-                // Remove the item from the div
-                container.find(`.remove-item[data-id="${modifierId}"]`).parent().remove();
-                if (container.children().length === 0) {
-                    container.hide();
-                }
+            container.append(badge);
+            selectedEditModifierIds.push(modifierId);
+            console.log("qqqq",selectedEditModifierIds);
+            container.show();
+
+        } else {
+            selectedEditModifierIds = selectedEditModifierIds.filter(id => id !== modifierId);
+            console.log("Remove",selectedEditModifierIds);
+            // Remove the item from the div
+            container.find(`.remove-item[data-id="${modifierId}"]`).parent().remove();
+            if (container.children().length === 0) {
+                container.hide();
             }
-        });
+        }
+    });
 
     // Handle click on remove button in selected items div
     $(document).on('click', '.remove-item', function () {
         const button = $(this);
         const modifierId = button.data('id');
 
+        selectedEditModifierIds=selectedEditModifierIds.filter(id => id !== modifierId);
         // Uncheck the checkbox in the table
-        $(`.inner-check[data-id="${modifierId}"]`).prop('checked', false);
+        $(`.inner-check-edit[data-id="${modifierId}"]`).prop('checked', false);
 
         // Remove the item from the div
         button.parent().remove();
@@ -265,24 +276,5 @@
             container.hide();
         }
     });
-    if (data.existingModifiers && data.existingModifiers.length > 0) {
-        const container = $('#editselectedItemsContainer');
-        container.empty(); // Clear the container first
-
-        data.existingModifiers.forEach(modifier => {
-            const badge = `
-            <div class="selected-item badge text-black me-2 mb-2 p-2 d-flex align-items-center border">
-                <span class="me-2">${modifier.ModifierName}</span>
-                <button type="button" class="btn-close remove-item" aria-label="Close" data-id="${modifier.ModifierId}"></button>
-            </div>`;
-            container.append(badge);
-
-            // Check the checkbox for the corresponding modifier
-            $(`.inner-check[data-id="${modifier.ModifierId}"]`).prop('checked', true);
-        });
-
-        container.show();
-    }
-
-
+   
 </script>
