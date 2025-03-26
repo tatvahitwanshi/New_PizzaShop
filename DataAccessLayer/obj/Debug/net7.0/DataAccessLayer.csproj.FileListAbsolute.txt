@@ -12,3 +12,17 @@ D:\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\refint\DataAccessLayer.dll
 D:\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.pdb
 D:\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.genruntimeconfig.cache
 D:\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\ref\DataAccessLayer.dll
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\bin\Debug\net7.0\DataAccessLayer.deps.json
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\bin\Debug\net7.0\DataAccessLayer.runtimeconfig.json
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\bin\Debug\net7.0\DataAccessLayer.dll
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\bin\Debug\net7.0\DataAccessLayer.pdb
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.csproj.AssemblyReference.cache
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.AssemblyInfoInputs.cache
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.AssemblyInfo.cs
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.csproj.CoreCompileInputs.cache
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.dll
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\refint\DataAccessLayer.dll
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.pdb
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\DataAccessLayer.genruntimeconfig.cache
+D:\Pizzashop_daily\New_PizzaShop\DataAccessLayer\obj\Debug\net7.0\ref\DataAccessLayer.dll
