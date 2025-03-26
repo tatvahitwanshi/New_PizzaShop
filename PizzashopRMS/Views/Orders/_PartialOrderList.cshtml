@@ -1,5 +1,3 @@
-
-
 <!-- Order Table -->
 <div class="order-table-container bg-white p-3 rounded shadow-sm">
     <div class="table-responsive">
@@ -8,59 +6,72 @@
                 <tr class="text-center">
                     <th scope="col" class="text-nowrap" style="text-align: center;">
                         #Order
-                        @* <div class="d-inline-flex">
-                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'OrderNo')"><i class="bi bi-arrow-up @((Model.tables.sortDr == "asc" && Model.tables.sortCol == "OrderNo") ? "text-primary" : "text-muted") "></i></button>
-                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'OrderNo')"><i class="bi bi-arrow-down @((Model.tables.sortDr != "asc" && Model.tables.sortCol == "OrderNo") ? "text-primary" : "text-muted") "></i></button>
-                        </div> *@
+                        <div class="d-inline-flex">
+                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'Orderid')"><i
+                                    class="bi bi-arrow-up @((Model.OrderPage.sortDr == "asc" && Model.OrderPage.sortCol == "OrderNo") ? "text-primary" : "text-muted") "></i></button>
+                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'Orderid')"><i
+                                    class="bi bi-arrow-down @((Model.OrderPage.sortDr != "asc" && Model.OrderPage.sortCol == "OrderNo") ? "text-primary" : "text-muted") "></i></button>
+                        </div>
                     </th>
                     <th scope="col" class="text-nowrap">Date
-                        @* <div class="d-inline-flex">
-                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'OrderDate')"><i class="bi bi-arrow-up @((Model.tables.sortDr == "asc" && Model.tables.sortCol == "OrderDate") ? "text-primary" : "text-muted") "></i></button>
-                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'OrderDate')"><i class="bi bi-arrow-down @((Model.tables.sortDr != "asc" && Model.tables.sortCol == "OrderDate") ? "text-primary" : "text-muted") "></i></button>
-                        </div> *@
+                        <div class="d-inline-flex">
+                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'CreatedDate')"><i
+                                    class="bi bi-arrow-up @((Model.OrderPage.sortDr == "asc" && Model.OrderPage.sortCol == "OrderDate") ? "text-primary" : "text-muted") "></i></button>
+                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'CreatedDate')"><i
+                                    class="bi bi-arrow-down @((Model.OrderPage.sortDr != "asc" && Model.OrderPage.sortCol == "OrderDate") ? "text-primary" : "text-muted") "></i></button>
+                        </div>
                     </th>
                     <th scope="col" class="text-nowrap">Customer
-                        @* <div class="d-inline-flex">
-                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'CustomerName')"><i class="bi bi-arrow-up @((Model.tables.sortDr == "asc" && Model.tables.sortCol == "CustomerName") ? "text-primary" : "text-muted") "></i></button>
-                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'CustomerName')"><i class="bi bi-arrow-down @((Model.tables.sortDr != "asc" && Model.tables.sortCol == "CustomerName") ? "text-primary" : "text-muted") "></i></button>
-                        </div> *@
+                        <div class="d-inline-flex">
+                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'CustomerName')"><i
+                                    class="bi bi-arrow-up @((Model.OrderPage.sortDr == "asc" && Model.OrderPage.sortCol == "CustomerName") ? "text-primary" : "text-muted") "></i></button>
+                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'CustomerName')"><i
+                                    class="bi bi-arrow-down @((Model.OrderPage.sortDr != "asc" && Model.OrderPage.sortCol == "CustomerName") ? "text-primary" : "text-muted") "></i></button>
+                        </div>
                     </th>
                     <th scope="col" class="text-nowrap">Status</th>
                     <th scope="col" class="text-nowrap">Payment Mode</th>
                     <th scope="col" class="text-nowrap">Rating</th>
                     <th scope="col" class="text-nowrap">Total Amount
-                        @* <div class="d-inline-flex">
-                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'TotalAmount')"><i class="bi bi-arrow-up @((Model.tables.sortDr == "asc" && Model.tables.sortCol == "TotalAmount") ? "text-primary" : "text-muted") "></i></button>
-                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'TotalAmount')"><i class="bi bi-arrow-down @((Model.tables.sortDr != "asc" && Model.tables.sortCol == "TotalAmount") ? "text-primary" : "text-muted") "></i></button>
-                        </div> *@
+                        <div class="d-inline-flex">
+                            <button class="p-0 custom-btn" onclick="sortCol('asc', 'TotalAmount')"><i class="bi bi-arrow-up @((Model.OrderPage.sortDr == "asc" && Model.OrderPage.sortCol == "TotalAmount") ? "text-primary" : "text-muted") "></i></button>
+                            <button class="p-0 custom-btn" onclick="sortCol('desc', 'TotalAmount')"><i class="bi bi-arrow-down @((Model.OrderPage.sortDr != "asc" && Model.OrderPage.sortCol == "TotalAmount") ? "text-primary" : "text-muted") "></i></button>
+                        </div>
                     </th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @* @foreach(var order in Model.tables.tableList)
+                @foreach (var order in Model.OrderPage.OrderTableLists)
                 {
                     <tr class="text-center">
-                        <td>#@order.OrderNo</td>
-                        <td>@order.OrderDate</td>
+                        <td>#@order.Orderid</td>
+                        <td>@order.CreatedDate?.ToString("dd/MM/yyyy")</td>
                         <td>@order.CustomerName</td>
-                        <td><span class="">@order.Status</span></td>
+                        <td>@order.Status</td>
                         <td>@order.PaymentMode</td>
                         <td>
-                            @for (int i = 0; i < order.AvgRating; i++)
+                            @if (order.Rating > 0)
                             {
-                                <i class="bi bi-star-fill text-warning"></i>
+                                @for (int i = 0; i < order.Rating; i++)
+                                {
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                }
+                                @for (int i = order.Rating; i < 5; i++)
+                                {
+                                    <i class="bi bi-star text-warning"></i>
+                                }
                             }
-                            @for (int i = order.AvgRating; i < 5; i++)
+                            else
                             {
-                                <i class="bi bi-star text-muted"></i>
+                                <span class="text-muted">No Rating</span>
                             }
                         </td>
                         <td>₹@order.TotalAmount</td>
                         <td>
                             <div class="d-flex justify-content-center">
                                 <a class="btn" title="Download PDF">
-                                    <i class="bi bi-filetype-pdf"></i>
+                                    <img src="~/images/filetype-pdf.svg" alt="">
                                 </a>
                                 <button class="btn" title="View Order">
                                     <i class="bi bi-eye-fill"></i>
@@ -68,10 +79,73 @@
                             </div>
                         </td>
                     </tr>
-                } *@
+                }
             </tbody>
+
         </table>
     </div>
-</div>
+    <div class="main-pagination">
+        <div class="item-show">
+            <nav aria-label="Page navigation example">
+                <div class="pagination">
+                    <span for="itemsPerPage" class="align-self-center">Items Per Page:</span>
+                    <select class="form-select form-select-sm ms-2 align-self-center" aria-label="Small select example"
+                        style="width: unset;" id="ordersPerPageList" onchange="UpdatePageSizeOrder()">
+                        @if (Model.OrderPage.Pagesize != null)
+                        {
+                            <option value="1" selected="@(Model.OrderPage.Pagesize == 1 ? true : false)">1</option>
+                            <option value="2" selected="@(Model.OrderPage.Pagesize == 2 ? true : false)">2</option>
+                            <option value="5" selected="@(Model.OrderPage.Pagesize == 5 ? true : false)">5</option>
+                            <option value="10" selected="@(Model.OrderPage.Pagesize == 10 ? true : false)">10</option>
+                            <option value="25" selected="@(Model.OrderPage.Pagesize == 25 ? true : false)">25</option>
+                        }
+                    </select>
+                </div>
+            </nav>
+        </div>
+        <div class="showing-page">
+            <nav aria-label="Page navigation example">
+                <div class="pagination">
+                    <span class="ms-2 align-self-center">
+                        Showing
+                        @{
+                            var startRecord = (Model.OrderPage.Pagenumber - 1) * Model.OrderPage.Pagesize + 1;
+                            var endRecord = Model.OrderPage.Pagenumber * Model.OrderPage.Pagesize;
+                            if (endRecord > Model.OrderPage.Count)
+                                endRecord = Model.OrderPage.Count;
 
-<!-- Pagination-->
+                            if (Model.OrderPage.Count == 0)
+                            {
+                                startRecord = 0;
+                                endRecord = 0;
+                            }
+                        }
+                    <span style="color: green;" class="me-1">@startRecord  -  @endRecord</span>  of  
+                    <span style="color: red;" class="ms-1">@Model.OrderPage.Count</span>
+                    </span>
+                    <button class="btn border ms-2 align-self-center prev-btn" type="button" onclick="updateListPageTable('back')"><i
+                            class="bi bi-chevron-left"></i></button>
+                    <button class="btn border ms-2 align-self-center next-btn" type="button" onclick="updateListPageTable('next')"><i
+                            class="bi bi-chevron-right"></i></button>
+                </div>
+            </nav>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    function getDataValues() {
+        return {
+            Pagenumber:@Model.OrderPage.Pagenumber,
+            Pagesize:@Model.OrderPage.Pagesize,
+            Searchkey: "@Model.OrderPage.Searchkey",
+            OrderStatusId: @Model.OrderPage.OrderStatusId,
+            sortDr: "@Model.OrderPage.sortDr",
+            sortCol: "@Model.OrderPage.sortCol",
+            lastDays: "@Model.OrderPage.lastDays",
+            startDate: "@Model.OrderPage.startDate",
+            endDate: "@Model.OrderPage.endDate"
+        }
+    }
+</script>

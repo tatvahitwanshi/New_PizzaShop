@@ -15,7 +15,6 @@ public class UserListController : Controller
     private readonly IUserList _userListRepository;
     private readonly ILogger<UserListController> _logger;
 
-
     public UserListController(IUserList userListRepository, ILogger<UserListController> logger)
     {
         _userListRepository = userListRepository;
@@ -78,7 +77,6 @@ public class UserListController : Controller
 
     // Fetch states based on selected country
     [HttpGet]
-    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public JsonResult GetStates(int countryId)
     {
         var states = _userListRepository.GetStatesByCountry(countryId);
@@ -87,7 +85,6 @@ public class UserListController : Controller
 
     // Fetch cities based on selected state
     [HttpGet]
-    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public JsonResult GetCities(int stateId)
     {
         var cities = _userListRepository.GetCitiesByState(stateId);

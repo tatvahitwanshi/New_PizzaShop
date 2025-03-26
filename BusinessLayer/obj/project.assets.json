@@ -4691,19 +4691,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Dell\\.nuget\\packages\\": {}
+    "C:\\Users\\pcq112\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Pizzashop_daily\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj",
+      "projectUniqueName": "D:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj",
       "projectName": "BusinessLayer",
-      "projectPath": "D:\\Pizzashop_daily\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj",
-      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "D:\\Pizzashop_daily\\New_PizzaShop\\BusinessLayer\\obj\\",
+      "projectPath": "D:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj",
+      "packagesPath": "C:\\Users\\pcq112\\.nuget\\packages\\",
+      "outputPath": "D:\\New_PizzaShop\\BusinessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\pcq112\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -4715,8 +4715,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\Pizzashop_daily\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "D:\\Pizzashop_daily\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
+            "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
+              "projectPath": "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
             }
           }
         }

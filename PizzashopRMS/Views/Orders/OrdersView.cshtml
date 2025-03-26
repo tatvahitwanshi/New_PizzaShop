@@ -1,4 +1,4 @@
-@* @model DataAccessLayer.ViewModels.SectionTablesViewModal *@
+@model DataAccessLayer.ViewModels.OrdersViewModel
 @{
     Layout = "~/Views/Shared/_LayoutCustom.cshtml";
     ViewData["Title"] = " Orders Page";
@@ -21,40 +21,6 @@
 
 <body>
     <div class="container-fluid p-4">
-        @* <div class="row ">
-            <div class="col-4 h2  fw-bold" style="color: #0066A7;">
-                Orders
-            </div>
-            <div class="col-8 d-flex justify-content-evenly">
-                <div class="d-flex  me-2 p-1 position-relative bg-white">
-                    <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
-                        aria-label="Search" id="searchInputItem">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
-                        class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16"
-                        onclick="searchItems()">
-                        <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                    </svg>
-                </div>
-                <div class=" me-2 p-1 bg-white w-25">
-                    <select class="form-select border-0" aria-label="Default select example">
-                        <option selected>All status</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-                <div class=" me-2 p-1 bg-white w-25">
-                    <select class="form-select border-0" aria-label="Default select example">
-                        <option selected>Time</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-            </div>
-        </div> *@
         <div class="row d-flex justify-content-end justify-content-xl-between align-items-center mb-3">
 
             <div class="col-auto d-flex fs-2 fw-bold special-color">Orders</div>
@@ -66,7 +32,7 @@
                     <!-- Search Input -->
                     <div class="search-box d-flex align-items-center bg-white px-2 py-2">
                         <input type="text" placeholder="Search" id="searchOrderInput"
-                            class="text-bark border-0 shadow-none w-100" style="outline: none;" oninput="doSearch()">
+                            class="text-bark border-0 shadow-none w-100" style="outline: none;" asp-for="@Model.OrderPage.Searchkey" oninput="onKeySearch()">
                         <img src="~/images/search.png" alt="" id="search-order-img">
                     </div>
 
@@ -75,19 +41,16 @@
                         <select class="border-0 shadow-none text-bark custom-select w-100" id="searchOrderSelect"
                             style="outline: none;">
                             <option selected value=0 class="select-all">All Status</option>
-                            <option selected value="Pending" class="select-all">Pending</option>
-                            @* @foreach (var status in @Model.OrderStatus)
+                            @foreach(var status in Model.OrderStatus)
                             {
-                                <option value="@status.Id"
-                                    selected="@(Model.tables.OrderStatusId == status.Id ? true : false)">@status.Status
-                                </option>
-                            } *@
+                                <option value="@status.Orderstatusid">@status.Statusname</option>
+                            }
                         </select>
                     </div>
 
                     <!-- Time Filter Dropdown -->
                     <div class="search-box bg-white px-2 py-2" style="height: 44px;">
-                        <select class="border-0 shadow-none text-bark custom-select w-100" id="searchTimeFilter"
+                        <select class="border-0 shadow-none text-bark custom-select w-100" id="searchTimeFilter"asp-for="@Model.OrderPage.lastDays"
                             style="outline: none;">
                             <option value="All Time" selected>All Time</option>
                             <option value="Last 7 Days">Last 7 Days</option>
@@ -109,28 +72,25 @@
             </div>
         </div>
         <!-- Date Filter -->
-        <div
-            class="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-end align-items-end align-items-sm-center mb-3">
+        <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-end align-items-end align-items-sm-center mb-3">
             <div class="d-flex">
                 <div class="dateSelection form-floating px-2 my-1 my-lg-0" style="width: 165px;">
-                    <input type="date" class="form-control" id="orderFromDate" style="height: 48px;"
-                       >
+                    <input type="date" class="form-control" id="orderFromDate" style="height: 48px;" asp-for="@Model.OrderPage.startDate">
                     <label for="itemName" class="mx-2" style="font-size: 15px;">From Date</label>
                 </div>
                 <div class="dateSelection form-floating px-2 my-1 my-lg-0" style="width: 165px;">
-                    <input type="date" class="form-control" id="orderToDate" style="height: 48px;"
-                        >
+                    <input type="date" class="form-control" id="orderToDate" style="height: 48px;" asp-for="@Model.OrderPage.endDate">
                     <label for="itemName" class="mx-2" style="font-size: 15px;">To Date</label>
                 </div>
             </div>
             <div class="d-flex ms-2 p-1" style="display:flex; justify-content: end;">
-                <a class="d-flex align-items-center justify-content-center px-3 fs-6 me-2" id="search-btn"
-                    style="height: 48px; text-decoration: none;" onclick="ApplyFilters()">
+                <a class="d-flex align-items-center justify-content-center px-3 fs-6 me-2" id="search-btn" onclick="ApplyFilters()"
+                    style="height: 48px; text-decoration: none;">
                     <div class="d-flex align-items-center justify-content-center w-100 h-100">
                         <span class="fw-bold">Search</span>
                     </div>
                 </a>
-                <a class="d-flex align-items-center justify-content-center px-3 fs-6" id="clear-btn"
+                <a class="d-flex align-items-center justify-content-center px-3 fs-6" id="clear-btn"  onclick="ClearFilters()"
                     style="height: 48px; text-decoration: none;">
                     <div class="d-flex align-items-center justify-content-center w-100 h-100">
                         <span class="fw-bold">Clear</span>
@@ -138,10 +98,15 @@
                 </a>
             </div>
         </div>
-        <div class="row  p-2 mt-4">
+        <div class="row  p-2 mt-4" id="orderTablePartialView">
             <partial name="_PartialOrderList.cshtml"></partial>
         </div>
     </div>
 </body>
 
 </html>
+
+@section scripts {
+    <script src="~/js/orders.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+}
