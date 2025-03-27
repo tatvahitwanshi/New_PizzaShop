@@ -24,6 +24,17 @@ public class TaxesFeesController : Controller
 
         return View(taxesFeesViewModel);
     }
+    public IActionResult TaxesFeesTableView(string SearchKey="")
+    {
+        // Fetch data using the repository
+        var taxesFeesViewModel = new TaxesFeesViewModel
+        {
+            TaxesViewModal = _taxes.GetAllTaxesFees(SearchKey)
+        };
+
+        return PartialView("_PartialTaxesFees", taxesFeesViewModel);
+    }
+
     [HttpPost]
     public IActionResult AddTax(TaxesFeesViewModel model)
     {

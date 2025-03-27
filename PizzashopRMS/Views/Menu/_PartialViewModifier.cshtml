@@ -54,7 +54,8 @@
                         </div>
                         <div class="modal-body">
                             <!-- Form Section -->
-                            <form method="post" asp-action="AddModifierGroup" asp-controller="Menu" id="addModifierForm"> 
+                            <form method="post" asp-action="AddModifierGroup" asp-controller="Menu"
+                                id="addModifierForm">
                                 <div id="formSection">
                                     <input type="hidden" id="SelectedModifierIds" name="SelectedModifierIds">
                                     <input type="hidden" id="Modifiersgroupid" name="Modifiersgroupid">
@@ -91,16 +92,18 @@
                             <div id="tableSection" style="display: none;">
                                 <div class="d-flex  me-2 p-1 position-relative">
                                     <input class="search_input form-control me-2 border-0" type="text"
-                                        placeholder="Search" aria-label="Search" id="searchInputModifierAll">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
-                                        class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16">
-                                        <path
-                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                                    </svg>
+                                        placeholder="Search" aria-label="Search" id="searchInputModifierAll" oninput="doSearchModifierAll()">
+                                    <div class="" onclick="doSearchModifierAll()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
+                                            fill="currentColor" class="bi bi-search position-absolute search-icon-main"
+                                            viewBox="0 0 16 16" >
+                                            <path
+                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                        </svg>
+                                    </div>
                                 </div>
                                 <div class="" id="GetAllModifierItems">
                                     <partial name="_ExistingModifierItemModal.cshtml"></partial>
-
                                 </div>
 
                                 <!-- Back Button -->
@@ -164,7 +167,7 @@
                             <div class="" id="editTableSection" style="display: none;">
                                 <div class="d-flex me-2 p-1 position-relative">
                                     <input class="search_input form-control me-2 border-0" type="text"
-                                        placeholder="Search" aria-label="Search" id="searchInputModifierEdit">
+                                        placeholder="Search" aria-label="Search" id="searchInputModifierEdit" oninput="doSearchEditModifierAll()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
                                         class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16">
                                         <path
@@ -213,8 +216,39 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-10" id="modifierContainer">
-            <partial name="_PartialModifier.cshtml" , model="Model"></partial>
+        <div class="col-xl-10">
+            <div class="row">
+                <div class="col">
+                    <span class="h4 fw-bold " style="color: #0066A7;" data-bs-toggle="offcanvas"
+                        href="#offcanvasExample1" role="button1" aria-controls="offcanvasExample1">Modifiers</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="d-flex " role="search">
+                        <div class="d-flex  me-2 p-1 position-relative">
+                            <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
+                                aria-label="Search" id="searchInputModifier" oninput="doSearch()">
+                            <div class="" onclick="doSearch()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                                    class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="  btn border " id="massDeleteModifierItemBtn"><i
+                                class="bi bi-trash h4 text-muted"></i></div>
+                        <button class="btn text-white d-none d-md-block ms-2" style=" background-color: #0066A7;"
+                            type="button" data-bs-target="#addModifieritemModal" data-bs-toggle="modal">
+                            +New Modifier</button>
+                        <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="" id="modifierContainer">
+                <partial name="_PartialModifier.cshtml" , model="Model"></partial>
+            </div>
         </div>
     </div>
 </div>
@@ -359,10 +393,10 @@
     @* --------------------------------load modifier item----------------------------------- *@
         function loadModifier(pageSize, searchKey, pageNumber, modgroup = 0) {
             console.log("Page Size:", pageSize, "Search Key:", searchKey, "Page Number:", pageNumber);
+            console.log($("#searchInputModifier").val());
             var ModifierGroupId;
             if (modgroup == 0) {
                 ModifierGroupId =@Model.ModifierItemViewModel.ParentId;
-
             }
             else {
                 ModifierGroupId = modgroup;
@@ -412,27 +446,22 @@
             loadModifier(pageSize, searchKey, pageNumber, modgroup);
     }
 
-    function searchModifierEnter(event) {
-        if (event.key === "Enter") {
-            searchItems();
-        }
-    }
-    document.addEventListener('keydown', function (event) {
-        // Check if the pressed key is the Enter key
-        if (event.key === 'Enter') {
-            // Do something when Enter is pressed
-            console.log('Enter key was pressed!');
-            searchItems();
-        }
-    });
-
-    function searchItems() {
+    function doSearch() {
         var pageSize = $("#pageSizeDropdownModifier").val();
         var searchKey = $("#searchInputModifier").val();
-        var pageNumber = @Model.ModifierItemViewModel.PageNumber;
+        var pageNumber = 1;
 
-        loadModifier(pageSize, searchKey, pageNumber);
+        var modgroup = $("#ModifierGroupIdForSearch").val();
+
+        @* if (direction === "back") {
+            pageNumber -= 1;
+        } else {
+            pageNumber += 1;
+        } *@
+
+            loadModifier(pageSize, searchKey, pageNumber, modgroup);
     }
+
 
     function LoadPartialModifierView(modifierGroupId) {
         console.log("Modifier ID:", modifierGroupId);
@@ -446,7 +475,8 @@
             data: { modifiergroupid: modifierGroupId },
             success: function (data) {
                 @* console.log('Partial view loaded successfully:', data); *@
-                    $("#modifierContainer").html(data);
+                    $("#searchInputModifier").val("");
+                $("#modifierContainer").html(data);
             },
             error: function (error) {
                 console.error('Error loading partial view:', error);

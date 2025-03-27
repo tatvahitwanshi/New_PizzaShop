@@ -38,6 +38,14 @@ public class OrdersController : Controller
         };
         return PartialView("_PartialOrderList",model);
     }
+
+    
+    [HttpGet]
+    public async Task<IActionResult> ExportToExcelFile(int OrderStatusId = 0, string lastDays = "All Time", string Searchkey = "")
+    {
+        byte[] fileBytes = await _orders.ExportToExcel(OrderStatusId, lastDays, Searchkey);
+        return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Orders.xlsx");
+    }
 }
 
 

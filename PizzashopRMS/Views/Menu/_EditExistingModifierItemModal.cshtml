@@ -91,14 +91,13 @@
 
 <script>
 
-    $(document).ready(function(){
-        document.querySelectorAll(".inner-check-edit").forEach(function(checkbox){
-            const id=parseInt(checkbox.getAttribute('data-id'));
-            if(selectedEditModifierIds.includes(id))
-            {
-                checkbox.checked=true;
+    $(document).ready(function () {
+        document.querySelectorAll(".inner-check-edit").forEach(function (checkbox) {
+            const id = parseInt(checkbox.getAttribute('data-id'));
+            if (selectedEditModifierIds.includes(id)) {
+                checkbox.checked = true;
             }
-            @* console.log("iiiiii",id); *@
+           
         });
     });
     function loadModifierAllEdit(pageSize, searchKey, pageNumber) {
@@ -115,7 +114,7 @@
             success: function (data) {
                 if ($('#editmodifiermodel').hasClass('show')) {
                     $("#GetAllModifierItemsEdit").html(data);
-                } 
+                }
             },
             error: function (error) {
                 console.error('Error loading partial view:', error);
@@ -123,54 +122,35 @@
         });
     }
 
-
-
-function updatePagePerSizeAllEdit() {
-    var pageSize = $("#pageSizeeditModifierAll").val();
-    var searchKey = $("#searchInputModifierAllEdit").val();
-    var pageNumber = @Model.ModifierItemAll.PageNumber;
-
-    loadModifierAllEdit(pageSize, searchKey, pageNumber);
-}
-
-
-
-function PanginationBtnModifierAllEdit(direction) {
-    console.log("pagination side");
-    var pageSize = $("#pageSizeeditModifierAll").val();
-    var searchKey = $("#searchInputModifierAllEdit").val();
-    var pageNumber = @Model.ModifierItemAll.PageNumber;
-
-    
-
-    if (direction === "back") {
-        pageNumber -= 1;
-    } else {
-        pageNumber += 1;
-    }
-
-    loadModifierAllEdit(pageSize, searchKey, pageNumber);
-}
-
-
-    function searchModifierEnter(event) {
-        if (event.key === "Enter") {
-            searchItems();
-        }
-    }
-    document.addEventListener('keydown', function (event) {
-        // Check if the pressed key is the Enter key
-        if (event.key === 'Enter') {
-            // Do something when Enter is pressed
-            console.log('Enter key was pressed!');
-            searchItems();
-        }
-    });
-
-    function searchItems() {
-        var pageSize = $("#pageSizeDropdownModifierAll").val();
+    function updatePagePerSizeAllEdit() {
+        var pageSize = $("#pageSizeeditModifierAll").val();
         var searchKey = $("#searchInputModifierAllEdit").val();
         var pageNumber = @Model.ModifierItemAll.PageNumber;
+
+        loadModifierAllEdit(pageSize, searchKey, pageNumber);
+    }
+
+    function PanginationBtnModifierAllEdit(direction) {
+        console.log("pagination side");
+        var pageSize = $("#pageSizeeditModifierAll").val();
+        var searchKey = $("#searchInputModifierAllEdit").val();
+        var pageNumber = @Model.ModifierItemAll.PageNumber;
+
+
+
+        if (direction === "back") {
+            pageNumber -= 1;
+        } else {
+            pageNumber += 1;
+        }
+
+        loadModifierAllEdit(pageSize, searchKey, pageNumber);
+    }
+
+    function doSearchEditModifierAll() {
+        var pageSize = $("#pageSizeeditModifierAll").val();
+        var searchKey = $("#searchInputModifierEdit").val();
+        var pageNumber = 1;
 
         loadModifierAllEdit(pageSize, searchKey, pageNumber);
     }

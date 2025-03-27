@@ -102,8 +102,9 @@
             },
             success: function (data) {
                 if ($('#addmodifer').hasClass('show')) {
+                  
                     $("#GetAllModifierItems").html(data);
-                } 
+                }
             },
             error: function (error) {
                 console.error('Error loading partial view:', error);
@@ -111,44 +112,7 @@
         });
     }
 
-
-
-function updatePagePerSizeAll() {
-    var pageSize = $("#pageSizeDropdownModifierAll").val();
-    var searchKey = $("#searchInputModifierAll").val();
-    var pageNumber = @Model.ModifierItemAll.PageNumber;
-   
-    loadModifierAll(pageSize, searchKey, pageNumber);
-}
-
-function PanginationBtnModifierAll(direction) {
-    var pageSize = $("#pageSizeDropdownModifierAll").val();
-    var searchKey = $("#searchInputModifierAll").val();
-    var pageNumber = @Model.ModifierItemAll.PageNumber;
-    
-    if (direction === "back") {
-        pageNumber -= 1;
-    } else {
-        pageNumber += 1;
-    }
-    loadModifierAll(pageSize, searchKey, pageNumber);
-}
-
-    function searchModifierEnter(event) {
-        if (event.key === "Enter") {
-            searchItems();
-        }
-    }
-    document.addEventListener('keydown', function (event) {
-        // Check if the pressed key is the Enter key
-        if (event.key === 'Enter') {
-            // Do something when Enter is pressed
-            console.log('Enter key was pressed!');
-            searchItems();
-        }
-    });
-
-    function searchItems() {
+    function updatePagePerSizeAll() {
         var pageSize = $("#pageSizeDropdownModifierAll").val();
         var searchKey = $("#searchInputModifierAll").val();
         var pageNumber = @Model.ModifierItemAll.PageNumber;
@@ -156,4 +120,24 @@ function PanginationBtnModifierAll(direction) {
         loadModifierAll(pageSize, searchKey, pageNumber);
     }
 
+    function PanginationBtnModifierAll(direction) {
+        var pageSize = $("#pageSizeDropdownModifierAll").val();
+        var searchKey = $("#searchInputModifierAll").val();
+        var pageNumber = @Model.ModifierItemAll.PageNumber;
+
+        if (direction === "back") {
+            pageNumber -= 1;
+        } else {
+            pageNumber += 1;
+        }
+        loadModifierAll(pageSize, searchKey, pageNumber);
+    }
+
+    function doSearchModifierAll() {
+        var pageSize = $("#pageSizeDropdownModifierAll").val();
+        var searchKey = $("#searchInputModifierAll").val();
+        var pageNumber = 1;
+
+        loadModifierAll(pageSize, searchKey, pageNumber);
+    }
 </script>

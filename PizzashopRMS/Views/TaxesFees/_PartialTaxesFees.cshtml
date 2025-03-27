@@ -1,25 +1,6 @@
 @model DataAccessLayer.ViewModels.TaxesFeesViewModel
 
-<div class="row">
-    <div class="col-12 d-flex justify-content-end">
-        <form class="d-flex " role="search">
-            <div class="d-flex  me-2 p-1 position-relative">
-                <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
-                    aria-label="Search" id="searchInputItem" >
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
-                    class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16" onclick="searchItems()">
-                    <path
-                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                </svg>
-            </div>
-            <button class="btn text-white d-none d-md-block ms-2" style=" background-color: #0066A7;" type="button"
-                data-bs-toggle="modal" data-bs-target="#addTaxesModel">
-                +New Tax</button>
-            <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;">+</button>
-        </form>
-    </div>
-</div>
 <div class="row mt-3">
     <div class="col">
         <div class="table-responsive">
@@ -38,15 +19,15 @@
                     @foreach (var taxes in Model.TaxesViewModal)
                     {
                         <tr>
-                          
+
                             <td>
-                                                            
+
                                 @taxes.Taxname
                             </td>
                             <td>
-                               @taxes.Taxtype
+                                @taxes.Taxtype
                             </td>
-                            <td>  
+                            <td>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" style="width: 2.5rem; height: 25px;" type="checkbox"
                                         role="switch" @(taxes.Isenabled ?? false ? "checked" : "") disabled>
@@ -59,38 +40,34 @@
                                 </div>
                             </td>
                             <td>
-                                @if(taxes.Taxtype=="Amount")
+                                @if (taxes.Taxtype == "Amount")
                                 {
-                                    
+
                                     <span>₹</span>
                                 }
-                                
                                 @taxes.Taxvalue
-                                
-                                @if(taxes.Taxtype=="Percentage")
+                                @if (taxes.Taxtype == "Percentage")
                                 {
-                                    
+
                                     <span>%</span>
                                 }
-                              
                             </td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                        data-bs-target="#editTaxesModel" onclick="openEditTableModal(@taxes.TaxesId)">
+                                    <a href="#" style="text-decoration: none; color: grey;"
+                                        onclick="openEditTaxModal(@taxes.TaxesId)">
                                         <i class="bi bi-pen"></i>
                                     </a>
                                     <a href="#" class="ms-4" style="text-decoration: none; color: grey;"
-                                        data-bs-toggle="modal" data-bs-target="#taxdeleteModal"
-                                        ><i class="bi bi-trash" onclick="openDeleteTableModal(@taxes.TaxesId)"></i></a>
+                                        onclick="openDeleteTableModal(@taxes.TaxesId)">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
                     }
                 </tbody>
-
             </table>
         </div>
-       
     </div>
 </div>

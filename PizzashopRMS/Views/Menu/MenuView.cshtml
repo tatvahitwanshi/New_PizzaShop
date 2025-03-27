@@ -79,14 +79,14 @@
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
                         tabindex="0">
                         <div id="items-content">
-                            <partial name="~/Views/Menu/_PartialViewTab.cshtml" />
+                            <partial name="_PartialViewTab.cshtml" />
                         </div>
                     </div>
 
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
                         tabindex="0">
                         <div id="modifier-content">
-                            <partial name="~/Views/Menu/_PartialViewModifier.cshtml" />
+                            <partial name="_PartialViewModifier.cshtml" />
                         </div>
                     </div>
                 </div>
@@ -113,6 +113,7 @@
                     $('#editCategoryId').val(data.categoryid);
                     $('#editCategoryName').val(data.categoryname);
                     $('#editCategoryDescription').val(data.categorydescription);
+                    $("#staticBackdrop2").modal("show");
                 } else {
                     alert("No category data found.");
                 }
@@ -146,19 +147,21 @@
             }
         });
     });
-
+@* 
     $(document).ready(function () {
 
         $('button[data-bs-toggle="tab"]').on('click', function (e) {
             var target = $(e.target).attr("data-bs-target");
 
             if (target === '#nav-home') {
-                $('#items-content').load('~/Views/Menu/_PartialViewTab.cshtml');
+                console.log(target);
+                $('#items-content').load('/Menu/_PartialViewTab.cshtml');
             } else if (target === '#nav-profile') {
-                $('#modifier-content').load('~/Views/Menu/_PartialViewModifier.cshtml');
+                 console.log(target);
+                $('#modifier-content').load('/Menu/_PartialViewModifier.cshtml');
             }
         });
-    });
+    }); *@
     let deleteItemIds = [];
 
     @* Now for modifier *@

@@ -24,7 +24,6 @@ public class MenuController : Controller
     public IActionResult MenuView(int categoryId = -1)
     {
         var model = new MenuViewModel();
-
         model.Categories = _menu.GetCategories();
         if (categoryId == -1) model.Items = _menu.GetItemsByCategory(model.Categories[0].CategoryId); // Pass items for a default category or all items
         else model.Items = _menu.GetItemsByCategory(categoryId); // Pass items for a default category or all items
@@ -382,6 +381,7 @@ public class MenuController : Controller
     }
 
     // Retrieves items based on selected modifier group
+    //pwd
     public IActionResult GetModifierItemsByModifierGroup(int modifiergroupid, int PageNumber = 1, int PageSize = 5, string SearchKey = "")
     {
         var model = new MenuViewModel

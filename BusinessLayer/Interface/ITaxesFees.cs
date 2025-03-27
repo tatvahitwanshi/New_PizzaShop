@@ -7,7 +7,8 @@ public interface ITaxesFees
 {
     string? GetEmailFromToken(HttpRequest request);
 
-    List<TaxesView> GetAllTaxesFees();
+    public List<TaxesView> GetAllTaxesFees(string SearchKey="");
+
     bool AddTax(AddEditTaxes model, string email);
 
     TaxesFeesViewModel GetTaxById(int id); 

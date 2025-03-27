@@ -27,10 +27,10 @@ public class TaxesFeesRespository : ITaxesFees
         var email = jwtToken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value;
         return email;
     }
-    public List<TaxesView> GetAllTaxesFees()
+    public List<TaxesView> GetAllTaxesFees(string SearchKey="")
     {
         return _db.Taxes
-            .Where(t => !(t.Isdeleted ?? false))
+            .Where(t => !(t.Isdeleted ?? false) && (t.Taxname.ToLower().Contains(SearchKey.ToLower()) || t.Taxtype.ToLower().Contains(SearchKey.ToLower())))
             .Select(t => new TaxesView
             {
                 TaxesId = t.Taxesid,

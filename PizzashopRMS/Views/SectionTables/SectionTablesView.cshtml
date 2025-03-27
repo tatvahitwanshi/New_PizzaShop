@@ -45,7 +45,7 @@
 
 <!-- Model Add Section -->
 <form method="post" asp-action="AddSections" asp-controller="SectionTables">
-    <div class="modal" id="addsection" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade" id="addsection" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdrop1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -153,24 +153,45 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 }
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-@* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> *@
+
 
 <script>
 
+    @* -------------------------open add section model------------- *@
+        $(document).ready(function () {
+            // Open the modal
+            $(document).on('click', '.open-addsection-modal', function () {
+                $('#addsection').modal('show'); // Open the modal
+            });
+
+            // Close the modal
+            $(document).on('click', '.btn-close, [data-bs-dismiss="modal"]', function () {
+                $('#addsection').modal('hide'); // Close the modal
+            });
+        });
 
     @* ---------------------Edit Section ----------------------- *@
         function openSectionEditModal(sectionId) {
+            // Fetch data via AJAX
             $.ajax({
                 url: '/SectionTables/EditSection/' + sectionId,
                 type: 'GET',
                 success: function (data) {
                     if (data) {
                         console.log("Fetched Data:", data);
+                        // Populate modal fields
                         $('#editSectionId').val(data.sectionid);
                         $('#editSectionName').val(data.sectionname);
                         $('#editSectionDescription').val(data.sectiondescription);
+
+                        // Open the modal
+                        $('#editsection').modal('show');
                     } else {
                         alert("No section data found.");
                     }
@@ -181,26 +202,48 @@
             });
         }
 
+    // Close modal on cancel or close button
+    $(document).on('click', '.btn-close, [data-bs-dismiss="modal"]', function () {
+        $('#editsection').modal('hide'); // Close the modal
+    });
+
     @* ----------------------Delete Section--------------------------*@
         function openSectionDeletModal(sectionId) {
-            console.log("Delete Category ID:", sectionId);
-            deleteSectionId = sectionId;
-            $('#deleteSectionModal').modal('show');
+            console.log("Delete Section ID:", sectionId);
+            deleteSectionId = sectionId; // Save the section ID to a variable
+            $('#deleteSectionModal').modal('show'); // Open the modal
         }
+
+    // Handle the confirmation of deletion
     $(document).on('click', '#confirmSectionDeleteBtn', function () {
         console.log("Deleting Section ID:", deleteSectionId);
-        $.ajax({
-            url: '@Url.Action("DeleteSection", "SectionTables")',
-            type: 'POST',
-            data: { sectionId: deleteSectionId },
-            success: function (response) {
-                $('#deleteSectionModal').modal('hide');
-                location.reload();
-            },
-            error: function () {
-                toastr.error('An error occurred while deleting the category.');
-            }
-        });
+        if (deleteSectionId) {
+            $.ajax({
+                url: '@Url.Action("DeleteSection", "SectionTables")', // URL to the controller action
+                type: 'POST',
+                data: { sectionId: deleteSectionId }, // Pass the section ID to the server
+                success: function (response) {
+                    $('#deleteSectionModal').modal('hide'); // Close the modal
+                    if (response.success) {
+                        toastr.success('Section deleted successfully.');
+                        location.reload(); // Reload the page to reflect changes
+                    } else {
+                        toastr.error('Failed to delete the section.');
+                    }
+                },
+                error: function () {
+                    toastr.error('An error occurred while deleting the section.');
+                    $('#deleteSectionModal').modal('hide');
+                }
+            });
+        } else {
+            toastr.error('Invalid section ID.');
+        }
+    });
+
+    // Close the modal when clicking "No" or the close button
+    $(document).on('click', '.btn-close, [data-bs-dismiss="modal"]', function () {
+        $('#deleteSectionModal').modal('hide');
     });
 
     @* -----------------------Load Table on Section----------------------------- *@
@@ -209,6 +252,8 @@
             console.log("Section ID:", sectionId);
             var pageSize = $("#pageSizeDropdownTable").val();
             console.log("Page Size:", pageSize);
+
+            $("#searchInputTable").val("");
 
             // Show loading animation
             @* $("#tableContainer").html("<p>Loading...</p>"); *@
@@ -228,25 +273,29 @@
         }
 
     @* --------------------------------------------------------Delete And Mass Delete Table--------------------------------------------------------- *@
-     $(document).ready(function () {
+        let deleteSectionId = null;
+        $(document).ready(function () {
             // Handle main checkbox click
-            $('.main-check').on('click', function () {
+            $('.main-checked-table').on('click', function () {
+                console.log("main-checkfffffff");
                 var isChecked = $(this).is(':checked');
-                $('.inner-check').prop('checked', isChecked);
+                $('.inner-checked-table').prop('checked', isChecked);
             });
 
             // Handle individual checkbox clicks
-            $('#TablesBody').on('click', '.inner-check', function () {
+            $(document).on('click', '.inner-checked-table', function () {
                 if (!$(this).is(':checked')) {
                     // Uncheck main checkbox if one inner checkbox is unchecked
-                    $('.main-check').prop('checked', false);
+                    $('.main-checked-table').prop('checked', false);
                 } else {
                     // Check if all inner checkboxes are checked
-                    var allChecked = $('.inner-check').length === $('.inner-check:checked').length;
-                    $('.main-check').prop('checked', allChecked);
+                    var allChecked = $('.inner-checked-table').length === $('.inner-checked-table:checked').length;
+                    $('.main-checked-table').prop('checked', allChecked);
                 }
             });
         });
+
+
 
     deleteTableIds = []; // Store selected item IDs
     function openTableDeleteModal(tableId = null) {
@@ -257,7 +306,7 @@
             deleteTableIds.push(tableId); // Single delete
         } else {
             console.log("Multiple delete");
-            $(".inner-check:checked").each(function () {
+            $(".inner-checked-table:checked").each(function () {
                 deleteTableIds.push($(this).data("id")); // Fix selector
             });
         }
@@ -266,15 +315,13 @@
             $('#tabledeleteModal').modal('show'); // Show modal
 
         } else {
-            alert("Please select at least one item to delete.");
+            toastr.error("Please select at least one item to delete.");
         }
     }
     // Fix mass delete button click event
-    $("#masstableDeleteBtn").on("click", function () {
+    function OpenmassDelete() {
         openTableDeleteModal();
-        @* $('#itemdeleteModal').modal('show'); // Show modal *@
-
-    });
+    }
     // Handle delete confirmation
     $(document).on("click", "#tableconfirmDeleteBtn", function () {
         console.log("Deleting Items:", deleteTableIds);

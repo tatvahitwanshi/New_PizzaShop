@@ -10,6 +10,22 @@ $(document).ready(function () {
 
 });
 
+function StatusOnChange()
+{   console.log("Status Drop Down");
+    let data = getDataValues();
+    data.Pagenumber = 1; 
+    data.OrderStatusId = $(searchOrderSelect).val(); 
+    OrderUpdatePage(data.Pagenumber, data.Pagesize, data.Searchkey, data.OrderStatusId, data.sortDr, data.sortCol, data.lastDays, data.startDate, data.endDate);
+}
+
+function TimeOnChange()
+{
+    let data = getDataValues(); 
+    data.Pagenumber = 1; 
+    data.lastDays = $(searchTimeFilter).val(); 
+    OrderUpdatePage(data.Pagenumber, data.Pagesize, data.Searchkey, data.OrderStatusId, data.sortDr, data.sortCol, data.lastDays, data.startDate, data.endDate);
+}
+
 function OrderUpdatePage(Pagenumber = 1, Pagesize = 5, Searchkey = "", OrderStatusId = 0, sortDr = "asc", sortCol = "OrderNo", lastDays = "All Time", startDate = "", endDate = "")
 {
     console.log(startDate);
@@ -35,79 +51,108 @@ function OrderUpdatePage(Pagenumber = 1, Pagesize = 5, Searchkey = "", OrderStat
 
 function UpdatePageSizeOrder()
 {
-    var params = getDataValues();
-    params.Pagenumber = 1;
-    params.Pagesize = $("#ordersPerPageList").val();
-    OrderUpdatePage(params.Pagenumber, params.Pagesize, params.Searchkey, params.OrderStatusId, params.sortDr, params.sortCol, params.lastDays, params.startDate, params.endDate);
+    var data = getDataValues();
+    data.Pagenumber = 1;
+    data.Pagesize = $("#ordersPerPageList").val();
+    OrderUpdatePage(data.Pagenumber, data.Pagesize, data.Searchkey, data.OrderStatusId, data.sortDr, data.sortCol, data.lastDays, data.startDate, data.endDate);
 }
 
 function updateListPageTable(dir)
 {
-    var params = getDataValues();
+    var data = getDataValues();
 
     if (dir == 'back')
-        params.Pagenumber = params.Pagenumber - 1;
+        data.Pagenumber = data.Pagenumber - 1;
     else if (dir == 'next') 
-        params.Pagenumber = params.Pagenumber + 1;
+        data.Pagenumber = data.Pagenumber + 1;
 
-    OrderUpdatePage(params.Pagenumber, params.Pagesize, params.Searchkey, params.OrderStatusId, params.sortDr, params.sortCol, params.lastDays, params.startDate, params.endDate);
+    OrderUpdatePage(data.Pagenumber, data.Pagesize, data.Searchkey, data.OrderStatusId, data.sortDr, data.sortCol, data.lastDays, data.startDate, data.endDate);
 
 }
 
 function onKeySearch()
 {
-    var params = getDataValues();
-    params.Pagenumber = 1;
-    params.Searchkey = $("#searchOrderInput").val();
-    OrderUpdatePage(params.Pagenumber, params.Pagesize, params.Searchkey, params.OrderStatusId, params.sortDr, params.sortCol, params.lastDays, params.startDate, params.endDate);
+    var data = getDataValues();
+    data.Pagenumber = 1;
+    data.Searchkey = $("#searchOrderInput").val();
+    OrderUpdatePage(data.Pagenumber, data.Pagesize, data.Searchkey, data.OrderStatusId, data.sortDr, data.sortCol, data.lastDays, data.startDate, data.endDate);
 
 }
 
 function ApplyFilters()
 {
-    var params = getDataValues();
-    params.Pagenumber = 1;
-    params.OrderStatusId = $("#searchOrderSelect").val();
-    params.lastDays = $("#searchTimeFilter").val();
-    params.sortCol = "Orderid";
-    params.sortDr = "asc";
-    params.startDate = $("#orderFromDate").val();
-    params.endDate = $("#orderToDate").val();
-    OrderUpdatePage(params.Pagenumber, params.Pagesize, params.Searchkey, params.OrderStatusId, params.sortDr, params.sortCol, params.lastDays, params.startDate, params.endDate);
+    var data = getDataValues();
+    data.Pagenumber = 1;
+    data.OrderStatusId = $("#searchOrderSelect").val();
+    data.lastDays = $("#searchTimeFilter").val();
+    data.sortCol = "Orderid";
+    data.sortDr = "asc";
+    data.startDate = $("#orderFromDate").val();
+    data.endDate = $("#orderToDate").val();
+    OrderUpdatePage(data.Pagenumber, data.Pagesize, data.Searchkey, data.OrderStatusId, data.sortDr, data.sortCol, data.lastDays, data.startDate, data.endDate);
 
 }
 
 function ClearFilters()
 {
-    var params = getDataValues();
-    params.Pagenumber = 1;
+    var data = getDataValues();
+    data.Pagenumber = 1;
 
-    params.OrderStatusId = 0;
+    data.OrderStatusId = 0;
     $("#searchOrderSelect").val(0);
 
-    params.lastDays = "All Time";
+    data.lastDays = "All Time";
     $("#searchTimeFilter").val("All Time");
 
-    params.sortCol = "OrderNo";
-    params.sortDr = "asc";
+    data.sortCol = "OrderNo";
+    data.sortDr = "asc";
     
-    params.startDate = "";
+    data.startDate = "";
     $("#orderFromDate").val("");
 
-    params.endDate = "";
+    data.endDate = "";
     $("#orderToDate").val("");
 
-    params.Searchkey = "";
+    data.Searchkey = "";
     $("#searchOrderInput").val("");
 
-    OrderUpdatePage(params.Pagenumber, params.Pagesize, params.Searchkey, params.OrderStatusId, params.sortDr, params.sortCol, params.lastDays, params.startDate, params.endDate);   
+    OrderUpdatePage(data.Pagenumber, data.Pagesize, data.Searchkey, data.OrderStatusId, data.sortDr, data.sortCol, data.lastDays, data.startDate, data.endDate);   
 }
 
 function sortCol(sortDr, sortCol)
 {
-    var params = getDataValues();
-    params.sortDr = sortDr;
-    params.sortCol = sortCol;
-    OrderUpdatePage(params.Pagenumber, params.Pagesize, params.Searchkey, params.OrderStatusId, params.sortDr, params.sortCol, params.lastDays, params.startDate, params.endDate);
+    var data = getDataValues();
+    data.sortDr = sortDr;
+    data.sortCol = sortCol;
+    OrderUpdatePage(data.Pagenumber, data.Pagesize, data.Searchkey, data.OrderStatusId, data.sortDr, data.sortCol, data.lastDays, data.startDate, data.endDate);
 
+}
+
+function exportToExcelFile()
+{
+    var search = $("#searchOrderInput").val();
+    var orderStatus = $("#searchOrderSelect").val();
+    var lastDays = $("#searchTimeFilter").val();
+
+    $.ajax({
+        url: "/Orders/ExportToExcelFile",
+        type: "GET",
+        data: {
+            Searchkey: search,
+            OrderStatusId: orderStatus,
+            lastDays: lastDays
+        },
+        xhrFields: {
+            responseType: 'blob' // This ensures we receive binary data
+        },
+        success: function (data, status, xhr) {
+            var blob = new Blob([data], { type: xhr.getResponseHeader("Content-Type") });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = "Orders.xlsx";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        },
+    });
 }

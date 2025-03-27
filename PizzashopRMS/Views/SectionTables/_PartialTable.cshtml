@@ -4,7 +4,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col"><input class="form-check-input main-check" type="checkbox" value=""
+                <th scope="col"><input class="form-check-input main-checked-table" type="checkbox" value=""
                         id="selectAllCheckbox"></th>
                 <th scope="col">Name</th>
                 <th scope="col">Capacity</th>
@@ -17,7 +17,7 @@
             {
                 <tr>
                     <td>
-                        <input class="form-check-input inner-check" type="checkbox" data-id="@table.TablesId">
+                        <input class="form-check-input inner-checked-table" type="checkbox" data-id="@table.TablesId">
                     </td>
                     <td>
                         @table.Tablename
@@ -35,9 +35,10 @@
                                 onclick="OpenEditTableModal(@table.TablesId)">
                                 <i class="bi bi-pen"></i>
                             </a>
-                            <a href="#" class="ms-4" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                data-bs-target="#tabledeleteModal" onclick="openTableDeleteModal(@table.TablesId)">
-                                <i class="bi bi-trash"></i></a>
+                            <a href="#" class="ms-4 delete-btn" style="text-decoration: none; color: grey;"
+                                onclick="openTableDeleteModal(@table.TablesId)">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>
@@ -189,8 +190,8 @@
                 <div class="row">
                     <!-- Table Name -->
                     <div class="form-floating mb-3 col-6">
-                        <input type="text" class="form-control" id="editTableName" asp-for="@Model.AddEditTables.Tablename"
-                            placeholder="Name*">
+                        <input type="text" class="form-control" id="editTableName"
+                            asp-for="@Model.AddEditTables.Tablename" placeholder="Name*">
                         <label for="editTableName">Name*</label>
                         <span class="text-danger" asp-validation-for="AddEditTables.Tablename"></span>
                     </div>
@@ -244,9 +245,11 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    
+
     function loadTable(pageSize, searchKey, pageNumber) {
         console.log("Page Size:", pageSize, "Search Key:", searchKey, "Page Number:", pageNumber);
 
@@ -273,6 +276,8 @@
         var pageSize = $("#pageSizeDropdownTable").val();
         var searchKey = $("#searchInputTable").val();
         var pageNumber = @Model.TablesViews.PageNumber;
+
+        console.log(searchKey);
 
         loadTable(pageSize, searchKey, pageNumber);
     }
@@ -305,51 +310,67 @@
         }
     });
 
-    function searchTable() {
+    function doSearch() {
         var pageSize = $("#pageSizeDropdownTable").val();
         var searchKey = $("#searchInputTable").val();
-        var pageNumber = @Model.TablesViews.PageNumber;
-
+        var pageNumber =1;
+        console.log(searchKey);
         loadTable(pageSize, searchKey, pageNumber);
     }
+
+    @* -------------------------------------Open add table model---------------------------------------------------- *@
+        $(document).ready(function () {
+            // Open modal when the button is clicked
+            $('#openModalBtn').on('click', function () {
+                $('#addTableModel').modal('show'); // Open the modal
+            });
+
+            // Close modal when the cancel button is clicked
+            $('#cancel-btn, .btn-close').on('click', function () {
+                $('#addTableModel').modal('hide'); // Close the modal
+            });
+        });
 
     @* --------------------open edit modal--------------------- *@
 
         function OpenEditTableModal(tableId) {
 
-            $.ajax({
-                url: '@Url.Action("GetTableDetails", "SectionTables")',
-                type: 'GET',
-                data: { tableId: tableId },
-                success: function (data) {
-                    if (data) {
-                        // Populate the modal fields with the data
-                        $("#editTableId").val(data.tablesId);
-                        $("#editTableName").val(data.tablename);
-                        $("#editTableCapacity").val(data.tablecapacity);
-                        console.log(data.isoccupied);
-                        // Check isoccupied and display corresponding status
-                        if (data.isoccupied) {
+            $.ajax
+                ({
+                    url: '@Url.Action("GetTableDetails", "SectionTables")',
+                    type: 'GET',
+                    data: { tableId: tableId },
+                    success: function (data) {
+                        if (data) {
+                            // Populate the modal fields with the data
+                            $("#editTableId").val(data.tablesId);
+                            $("#editTableName").val(data.tablename);
+                            $("#editTableCapacity").val(data.tablecapacity);
                             console.log(data.isoccupied);
-                            $("#editTableStatus").val("Occupied");
-                        } else {
-                            $("#editTableStatus").val("Available");
+                            // Check isoccupied and display corresponding status
+                            if (data.isoccupied) {
+                                console.log(data.isoccupied);
+                                $("#editTableStatus").val("Occupied");
+                            } else {
+                                $("#editTableStatus").val("Available");
+                            }
+
+                            $("#editTableSectionDisplay").val(data.sectionId); // Displayed section ID
+                            $("#editTableSection").val(data.sectionId); // Hidden or editable section ID
+
+                            // Show the modal
+                            $("#editTableModel").modal("show");
                         }
+                        else {
+                            alert("No table details found for the provided ID.");
 
-                        $("#editTableSectionDisplay").val(data.sectionId); // Displayed section ID
-                        $("#editTableSection").val(data.sectionId); // Hidden or editable section ID
-
-                        // Show the modal
-                        $("#editTableModel").modal("show");
-                    } else {
-                        alert("No table details found for the provided ID.");
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error fetching table details:', error);
+                        alert("Failed to load table details. Please try again.");
                     }
-                },
-                error: function (error) {
-                    console.error('Error fetching table details:', error);
-                    alert("Failed to load table details. Please try again.");
-                }
-            });
+                });
         }
     $("#editTableForm").submit(function (e) {
         e.preventDefault();
@@ -359,18 +380,15 @@
             type: 'POST',
             data: $(this).serialize(),
             success: function (response) {
-                alert("Table updated successfully.");
+                toastr.success("Table updated successfully.");
                 $("#editTableModel").modal("hide");
                 loadTable($("#pageSizeDropdownTable").val(), "", 1);
             },
             error: function (error) {
                 console.error("Error updating table:", error);
-                alert("Failed to update the table. Please try again.");
+                toastr.error("Failed to update the table. Please try again.");
             }
         });
     });
-
-   
-    
 
 </script>

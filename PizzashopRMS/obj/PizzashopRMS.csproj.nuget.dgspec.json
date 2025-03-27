@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "d:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj": {}
+    "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj": {}
   },
   "projects": {
     "D:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj": {
@@ -26,8 +26,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
-                "projectPath": "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
+              "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
+                "projectPath": "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
               }
             }
           }
@@ -42,6 +42,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[7.7.0, )"
+            },
             "EntityFrameworkCore.SqlServer.HierarchyId": {
               "target": "Package",
               "version": "[4.0.0, )"
@@ -87,14 +91,14 @@
         }
       }
     },
-    "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
+    "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj",
+        "projectUniqueName": "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj",
         "projectName": "DataAccessLayer",
-        "projectPath": "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj",
+        "projectPath": "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj",
         "packagesPath": "C:\\Users\\pcq112\\.nuget\\packages\\",
-        "outputPath": "d:\\New_PizzaShop\\DataAccessLayer\\obj\\",
+        "outputPath": "D:\\New_PizzaShop\\DataAccessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pcq112\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -156,14 +160,14 @@
         }
       }
     },
-    "d:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj": {
+    "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
+        "projectUniqueName": "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
         "projectName": "PizzashopRMS",
-        "projectPath": "d:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
+        "projectPath": "D:\\New_PizzaShop\\PizzashopRMS\\PizzashopRMS.csproj",
         "packagesPath": "C:\\Users\\pcq112\\.nuget\\packages\\",
-        "outputPath": "d:\\New_PizzaShop\\PizzashopRMS\\obj\\",
+        "outputPath": "D:\\New_PizzaShop\\PizzashopRMS\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pcq112\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -181,8 +185,8 @@
               "D:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj": {
                 "projectPath": "D:\\New_PizzaShop\\BusinessLayer\\BusinessLayer.csproj"
               },
-              "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
-                "projectPath": "d:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
+              "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj": {
+                "projectPath": "D:\\New_PizzaShop\\DataAccessLayer\\DataAccessLayer.csproj"
               }
             }
           }

@@ -1,7 +1,10 @@
+using System.Drawing;
 using BusinessLayer.Interface;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace BusinessLayer.Repository;
 
@@ -24,6 +27,7 @@ public class OrdersRepository : IOrders
                           c.Customername.ToLower().Contains(searchKey.ToLower()) ||
                           os.Statusname.ToLower().Contains(searchKey.ToLower()) ||
                           ps.Paymentmode.ToLower().Contains(searchKey.ToLower())
+                    orderby o.Orderid
                     select new
                     {
                         order = o,
@@ -48,11 +52,11 @@ public class OrdersRepository : IOrders
                 break;
             case "This Month":
                 query = query.Where(o => o.order.CreatedDate.HasValue &&
-                                         o.order.CreatedDate.Value.Month >= DateTime.Now.Month);
+                                         o.order.CreatedDate.Value.Month == DateTime.Now.Month);
                 break;
             case "This Year":
                 query = query.Where(o => o.order.CreatedDate.HasValue &&
-                                       o.order.CreatedDate.Value.Year >= DateTime.Now.Year);
+                                       o.order.CreatedDate.Value.Year == DateTime.Now.Year);
                 break;
 
             default:
@@ -61,49 +65,49 @@ public class OrdersRepository : IOrders
         if (startDate != null)
             query = query.Where(o => o.order.CreatedDate.HasValue &&
                                      o.order.CreatedDate.Value.Date >= startDate.Value.Date);
-        if (endDate  != null)
+        if (endDate != null)
             query = query.Where(o => o.order.CreatedDate.HasValue &&
-                                     o.order.CreatedDate.Value.Date >= endDate .Value.Date);
+                                     o.order.CreatedDate.Value.Date <= endDate.Value.Date);
 
-        var mainquery= query.Select(o=> new OrderList
+        var mainquery = query.Select(o => new OrderList
         {
-            Orderid=o.order.Orderid,
-            CreatedDate=o.order.CreatedDate,
-            CustomerName=o.customer.Customername,
-            Status=o.orderstatus.Statusname,
-            PaymentMode=o.paymentStatus.Paymentmode,
-            Rating=o.order.Rating,
-            TotalAmount=o.order.Totalamount
-        });
+            Orderid = o.order.Orderid,
+            CreatedDate = o.order.CreatedDate,
+            CustomerName = o.customer.Customername,
+            Status = o.orderstatus.Statusname,
+            PaymentMode = o.paymentStatus.Paymentmode,
+            Rating = o.order.Rating,
+            TotalAmount = o.order.Totalamount
+        }).OrderBy(o => o.Orderid);
 
-         if(sortCol == "OrderNo")
+        if (sortCol == "OrderNo")
         {
-            if(sortDr == "asc") mainquery = mainquery.OrderBy(x => x.CreatedDate);
+            if (sortDr == "asc") mainquery = mainquery.OrderBy(x => x.CreatedDate);
             else mainquery = mainquery.OrderByDescending(x => x.CreatedDate);
         }
-        else if(sortCol == "OrderDate")
+        else if (sortCol == "OrderDate")
         {
-            if(sortDr == "asc") mainquery = mainquery.OrderBy(x => x.CreatedDate);
+            if (sortDr == "asc") mainquery = mainquery.OrderBy(x => x.CreatedDate);
             else mainquery = mainquery.OrderByDescending(x => x.CreatedDate);
         }
-        else if(sortCol == "CustomerName")
+        else if (sortCol == "CustomerName")
         {
-            if(sortDr == "asc") mainquery = mainquery.OrderBy(x => x.CustomerName);
+            if (sortDr == "asc") mainquery = mainquery.OrderBy(x => x.CustomerName);
             else mainquery = mainquery.OrderByDescending(x => x.CustomerName);
         }
-        else if(sortCol == "TotalAmount")
+        else if (sortCol == "TotalAmount")
         {
-            if(sortDr == "asc") mainquery = mainquery.OrderBy(x => x.TotalAmount);
+            if (sortDr == "asc") mainquery = mainquery.OrderBy(x => x.TotalAmount);
             else mainquery = mainquery.OrderByDescending(x => x.TotalAmount);
         }
-        orders.Count= mainquery.Count();
+        orders.Count = mainquery.Count();
         if (pageNumber < 1) pageNumber = 1;
         var totalPages = (int)Math.Ceiling((double)orders.Count / pageSize);
         if (pageNumber > totalPages) pageNumber = totalPages;
         if (pageNumber < 1) pageNumber = 1;
 
-        orders.OrderStatusId=orderStatusId;
-        orders.Pagenumber=pageNumber;
+        orders.OrderStatusId = orderStatusId;
+        orders.Pagenumber = pageNumber;
         orders.Pagesize = pageSize;
         orders.Searchkey = searchKey;
         orders.sortDr = sortDr;
@@ -127,5 +131,74 @@ public class OrdersRepository : IOrders
                 }).ToList();
 
     }
+
+    public async Task<byte[]> ExportToExcel(int orderStatusId = 0, string lastDays = "All Time", string searchKey = "")
+    {
+        OrderPage orders = new OrderPage();
+        var query = from o in _db.Orders
+                    join c in _db.Customers on o.Customerid equals c.Customerid
+                    join os in _db.Orderstatuses on o.Orderstatusid equals os.Orderstatusid
+                    join ps in _db.Payments on o.Paymentid equals ps.Paymentid
+                    where o.Orderid.ToString().ToLower().Contains(searchKey.ToLower()) ||
+                          c.Customername.ToLower().Contains(searchKey.ToLower()) ||
+                          os.Statusname.ToLower().Contains(searchKey.ToLower()) ||
+                          ps.Paymentmode.ToLower().Contains(searchKey.ToLower())
+                    orderby o.Orderid
+                    select new
+                    {
+                        order = o,
+                        customer = c,
+                        orderstatus = os,
+                        paymentStatus = ps
+                    };
+
+
+        if (orderStatusId != 0) query = query.Where(o => o.order.Orderstatusid == orderStatusId);
+        switch (lastDays)
+        {
+            case "All  Time":
+                break;
+
+            case "Last 7 Days":
+                query = query.Where(o => o.order.CreatedDate.HasValue &&
+                                         o.order.CreatedDate.Value.Date >= DateTime.Now.AddDays(-7).Date);
+                break;
+
+            case "Last 30 Days":
+                query = query.Where(o => o.order.CreatedDate.HasValue &&
+                                         o.order.CreatedDate.Value.Date >= DateTime.Now.AddDays(-30).Date);
+                break;
+            case "This Month":
+                query = query.Where(o => o.order.CreatedDate.HasValue &&
+                                         o.order.CreatedDate.Value.Month == DateTime.Now.Month);
+                break;
+            case "This Year":
+                query = query.Where(o => o.order.CreatedDate.HasValue &&
+                                       o.order.CreatedDate.Value.Year == DateTime.Now.Year);
+                break;
+
+            default:
+                break;
+        }
+        int totalCount = query.Count();
+
+        List<OrderList> list = await query
+                                .Select(o => new OrderList
+                                {
+                                    Orderid = o.order.Orderid,
+                                    CreatedDate = o.order.CreatedDate,
+                                    CustomerName = o.customer.Customername,
+                                    Status = o.orderstatus.Statusname,
+                                    PaymentMode = o.paymentStatus.Paymentmode,
+                                    Rating = o.order.Rating ?? 0,
+                                    TotalAmount = o.order.Totalamount
+                                }).ToListAsync();
+
+        var createExcelHelper = new Helper.CreateExcel(_db);
+        return await createExcelHelper.CreateExcelFile(list, searchKey, lastDays, orderStatusId, totalCount);
+
+    }
+    
+
 
 }

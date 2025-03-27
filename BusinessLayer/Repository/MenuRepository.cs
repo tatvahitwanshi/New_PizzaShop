@@ -197,7 +197,7 @@ public class MenuRepository : IMenu
             model.ItemShows = (from mi in _db.Modifiers
                                join map in _db.MapModifiersgroupModifiers on mi.Modifiersid equals map.Modifiersid
                                where map.Modifiersgroupid == modifierGroupId
-                               select new ItemShow
+                               select new ItemShow  
                                {
                                    ModifierItemName = mi.Modifiersname,
                                    Rate = (int)mi.Modifiersrate
@@ -545,6 +545,7 @@ public class MenuRepository : IMenu
         var query = from
             modifier in _db.Modifiers
                     join unit in _db.ItemsUnits on modifier.Modifiersunit equals unit.Unitid
+                    where modifier.Isdeleted != true && modifier.Modifiersname.ToLower().Contains(SearchKey.ToLower())
                     select new ModifierItemViewModel
                     {
                         ModifierItemId = modifier.Modifiersid,

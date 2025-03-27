@@ -6,40 +6,40 @@
             <div class="row d-none d-xl-flex flex-column">
                 <div class="">
                     <span class="h4 fw-bold " style="color: #0066A7;">Sections
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#addsection"
-                            style="text-decoration: none; border: none; background-color: white; "><i
-                                class="bi bi-plus-square ms-2 h5"></i>
+                        <button type="button" class="open-addsection-modal"
+                            style="text-decoration: none; border: none; background-color: white;">
+                            <i class="bi bi-plus-square ms-2 h5"></i>
                         </button>
-
                     </span>
                 </div>
                 <div class="section overflow-auto mt-3">
                     @foreach (var sections in Model.SectionViewModals)
                     {
                         <a class="justify-content-start align-items-center category-inner-box mt-2 text-reset"
-                            style="text-decoration: none;" href="javascript:void(0);" onclick="LoadPartialTableView(@sections.SectionId)">
+                            style="text-decoration: none;" href="javascript:void(0);"
+                            onclick="LoadPartialTableView(@sections.SectionId)">
 
                             <div class="mb-3 name-sidebar ms-1 active-name" id="category-container">
                                 <img src="~/images/logos/sixdot.png" alt="" style="width:20px; height: 15px;"
                                     class="active-icon">
-                                    @sections.Sectionname
+                                @sections.Sectionname
                                 <a class="editButtom" href="javascript:void(0);" style="text-decoration: none; color: grey;"
-                                    id="editSection" onclick="openSectionEditModal(@sections.SectionId)" data-bs-target="#editsection" data-bs-toggle="modal">
+                                    id="editSection" onclick="openSectionEditModal(@sections.SectionId)">
                                     <i class="bi bi-pen float-end"></i>
                                 </a>
-                                <a class="deleteButton" href="javascript:void(0);"
-                                    style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                    data-bs-target="#deleteSectionModal" onclick="openSectionDeletModal(@sections.SectionId)" >
+
+                                <a class="deleteButton" href="javascript:void(0);"style="text-decoration: none; color: grey;" 
+                                    onclick="openSectionDeletModal(@sections.SectionId)">
                                     <i class="bi bi-trash float-end"></i>
                                 </a>
                             </div>
                         </a>
-                    } 
-                   
+                    }
+
                 </div>
 
             </div>
-            
+
 
             @* offcanvas for the category *@
             @* <div class="offcanvas offcanvas-start d-xl-none" tabindex="-1" id="offcanvasExample1"
@@ -93,10 +93,10 @@
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-end">
-                    <form class="d-flex " role="search">
+                    <div class="d-flex " role="search">
                         <div class="d-flex  me-2 p-1 position-relative">
                             <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
-                                aria-label="Search" id="searchInputTable" >
+                                aria-label="Search" id="searchInputTable" oninput="doSearch()">
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
                                 class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16">
@@ -104,12 +104,14 @@
                                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                             </svg>
                         </div>
-                        <div class="  btn border " id="masstableDeleteBtn"><i class="bi bi-trash h4 text-muted"></i></div>
-                        <button class="btn text-white d-none d-md-block ms-2" style=" background-color: #0066A7;"
-                            type="button" data-bs-toggle="modal" data-bs-target="#addTableModel">
-                            +New Table</button>
-                        <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;" >+</button>
-                    </form>
+                        <div class="btn border " id="masstablesDeleteBtn" onclick="OpenmassDelete()"><i
+                                class="bi bi-trash h4 text-muted"></i></div>
+                        <button class="btn text-white d-none d-md-block ms-2" style="background-color: #0066A7;"
+                            type="button" id="openModalBtn">
+                            +New Table
+                        </button>
+                        <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;">+</button>
+                    </div>
                 </div>
             </div>
             <div class="row mt-3">
@@ -143,5 +145,3 @@
         </div>
     </div>
 </div>
-
-

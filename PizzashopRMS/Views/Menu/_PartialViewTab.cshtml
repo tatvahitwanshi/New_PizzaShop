@@ -5,9 +5,10 @@
             <div class="row d-none d-xl-flex flex-column">
                 <div class="">
                     <span class="h4 fw-bold " style="color: #0066A7;">Category
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
-                            style="text-decoration: none; border: none; background-color: white; "><i
-                                class="bi bi-plus-square ms-2 h5"></i>
+                        <!-- Button to open the modal -->
+                        <button type="button" onclick="openAddCategoryModal()"
+                            style="text-decoration: none; border: none; background-color: white;">
+                            <i class="bi bi-plus-square ms-2 h5"></i>
                         </button>
 
                     </span>
@@ -26,13 +27,12 @@
 
 
                                 <a class="editButtom" href="javascript:void(0);" style="text-decoration: none; color: grey;"
-                                    id="editCategory" onclick="openEditModal(@category.CategoryId)"
-                                    data-bs-target="#staticBackdrop2" data-bs-toggle="modal">
+                                    id="editCategory" onclick="openEditModal(@category.CategoryId)">
                                     <i class="bi bi-pen float-end"></i>
                                 </a>
                                 <a class="deleteButton" href="javascript:void(0);"
-                                    style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" onclick="openDeleteModal(@category.CategoryId)">
+                                    style="text-decoration: none; color: grey;"
+                                    onclick="openDeleteModal(@category.CategoryId)">
                                     <i class="bi bi-trash float-end"></i>
                                 </a>
 
@@ -88,43 +88,8 @@
             </div>
 
             <!-- Model Add Category -->
-            @* <form method="post" asp-action="AddCategory" asp-controller="Menu">
-                <div class="modal " id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdrop1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add
-                                    Category</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="hidden" id="Categoryid" name="Categoryid"> <!-- Hidden ID Field -->
-
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="Categoryname" name="Categoryname"
-                                        placeholder="Category Name" required>
-                                    <label for="Categoryname">Name</label>
-                                </div>
-                                <div class="form-floating">
-                                    <textarea class="form-control" name="Categorydescription" id="Categorydescription"
-                                        placeholder="Enter Description" required></textarea>
-                                    <label for="Categorydescription">Description</label>
-                                </div>
-                                <div class="col mt-3 mb-3 d-flex justify-content-end">
-                                    <button class="btn text-white me-2" style="background-color: #0066A7;"
-                                        type="submit">Save</button>
-                                    <button class="btn" style="border-color: #0066A7; color: #0066A7;" type="button"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form> *@
             <form method="post" asp-action="AddCategory" asp-controller="Menu">
-                <div class="modal " id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false"
+                <div class="modal fade " id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdrop1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -138,14 +103,14 @@
 
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="Categoryname" name="Categoryname"
-                                        placeholder="Category Name" >
+                                        placeholder="Category Name">
                                     <label for="Categoryname">Name</label>
                                     <span class="text-danger validation-message" id="CategorynameValidation"></span>
                                 </div>
 
                                 <div class="form-floating">
                                     <textarea class="form-control" name="Categorydescription" id="Categorydescription"
-                                        placeholder="Enter Description" ></textarea>
+                                        placeholder="Enter Description"></textarea>
                                     <label for="Categorydescription">Description</label>
                                     <span class="text-danger validation-message"
                                         id="CategorydescriptionValidation"></span>
@@ -226,8 +191,42 @@
             </div>
 
         </div>
-        <div class="col-xl-10" id="itemsContainer">
-            <partial name="_PartialItems.cshtml" , model="Model"></partial>
+        <div class="col-xl-10" >
+
+            <div class="row">
+                <div class="col">
+                    <span class="h4 fw-bold " style="color: #0066A7;" data-bs-toggle="offcanvas"
+                        href="#offcanvasExample1" role="button1" aria-controls="offcanvasExample1">Items</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end">
+                    <div class="d-flex " role="search">
+                        <div class="d-flex  me-2 p-1 position-relative">
+                            <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
+                                aria-label="Search" id="searchInputItem" value="@Model.Items.SearchKey" oninput="doSearchItem()">
+                            <div class="" onclick="doSearchItem()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                                    class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16"
+                                    onclick="">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg>
+                            </div>
+
+                        </div>
+                        <div class="  btn border " id="massDeleteBtn"><i class="bi bi-trash h4 text-muted"></i></div>
+                        <button class="btn text-white d-none d-md-block ms-2" style=" background-color: #0066A7;"
+                            type="button" data-bs-toggle="modal" data-bs-target="#additemModal">
+                            +New Item</button>
+
+                        <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="" id="itemsContainer">
+                <partial name="_PartialItems.cshtml" , model="Model" />
+            </div>
         </div>
     </div>
 </div>
@@ -246,7 +245,8 @@
             type: 'GET',
             data: { categoryId: categoryId, PageSize: pageSize },
             success: function (data) {
-
+                
+                $("#searchInputItem").val("");
                 $("#itemsContainer").html(data);
             },
             error: function (error) {
@@ -255,6 +255,12 @@
             }
         });
     }
+    @* ------------------------Category add model------------------------------ *@
+        function openAddCategoryModal() {
+            $("#staticBackdrop1").modal("show");
+        }
+
+    //Validation
     $(document).ready(function () {
         $("#saveCategoryBtn").click(function (event) {
             let isValid = true;

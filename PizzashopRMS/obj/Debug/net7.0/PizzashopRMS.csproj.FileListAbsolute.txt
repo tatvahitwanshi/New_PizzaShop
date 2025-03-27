@@ -95,14 +95,11 @@ D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win-x64\native\Microsoft
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win-x64\native\SqlServerSpatial160.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win-x86\native\SqlServerSpatial160.dll
-D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
 D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
@@ -276,3 +273,10 @@ D:\Pizzashop_daily\New_PizzaShop\PizzashopRMS\obj\Debug\net7.0\refint\PizzashopR
 D:\Pizzashop_daily\New_PizzaShop\PizzashopRMS\obj\Debug\net7.0\PizzashopRMS.pdb
 D:\Pizzashop_daily\New_PizzaShop\PizzashopRMS\obj\Debug\net7.0\PizzashopRMS.genruntimeconfig.cache
 D:\Pizzashop_daily\New_PizzaShop\PizzashopRMS\obj\Debug\net7.0\ref\PizzashopRMS.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\EPPlus.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\EPPlus.Interfaces.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\EPPlus.System.Drawing.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\Microsoft.Extensions.Configuration.Json.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\Microsoft.IO.RecyclableMemoryStream.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\System.Text.Json.dll
+D:\New_PizzaShop\PizzashopRMS\bin\Debug\net7.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
