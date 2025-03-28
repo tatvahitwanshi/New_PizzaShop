@@ -33,6 +33,10 @@
       "PackagePath": "staticwebassets\\css\\navbar.css"
     },
     {
+      "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\css\\orderdetails.css",
+      "PackagePath": "staticwebassets\\css\\orderdetails.css"
+    },
+    {
       "Id": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\css\\orders.css",
       "PackagePath": "staticwebassets\\css\\orders.css"
     },

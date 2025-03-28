@@ -5,7 +5,7 @@
             <div class="row d-none d-xl-flex flex-column">
                 <div class="">
                     <span class="h4 fw-bold " style="color: #0066A7;">Modifier Group
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#addmodifer"
+                        <button type="button" id="openAddModifierModal"
                             style="text-decoration: none; border: none; background-color: white;"><i
                                 class="bi bi-plus-square ms-2 h5"></i>
                         </button>
@@ -92,11 +92,12 @@
                             <div id="tableSection" style="display: none;">
                                 <div class="d-flex  me-2 p-1 position-relative">
                                     <input class="search_input form-control me-2 border-0" type="text"
-                                        placeholder="Search" aria-label="Search" id="searchInputModifierAll" oninput="doSearchModifierAll()">
+                                        placeholder="Search" aria-label="Search" id="searchInputModifierAll"
+                                        oninput="doSearchModifierAll()">
                                     <div class="" onclick="doSearchModifierAll()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
                                             fill="currentColor" class="bi bi-search position-absolute search-icon-main"
-                                            viewBox="0 0 16 16" >
+                                            viewBox="0 0 16 16">
                                             <path
                                                 d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                                         </svg>
@@ -167,7 +168,8 @@
                             <div class="" id="editTableSection" style="display: none;">
                                 <div class="d-flex me-2 p-1 position-relative">
                                     <input class="search_input form-control me-2 border-0" type="text"
-                                        placeholder="Search" aria-label="Search" id="searchInputModifierEdit" oninput="doSearchEditModifierAll()">
+                                        placeholder="Search" aria-label="Search" id="searchInputModifierEdit"
+                                        oninput="doSearchEditModifierAll()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
                                         class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16">
                                         <path
@@ -240,7 +242,7 @@
                         <div class="  btn border " id="massDeleteModifierItemBtn"><i
                                 class="bi bi-trash h4 text-muted"></i></div>
                         <button class="btn text-white d-none d-md-block ms-2" style=" background-color: #0066A7;"
-                            type="button" data-bs-target="#addModifieritemModal" data-bs-toggle="modal">
+                            type="button" id="openAddModifierItemModal">
                             +New Modifier</button>
                         <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;">+</button>
                     </div>
@@ -256,6 +258,55 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+
+    deleteModifierItemIds = []; // Store selected item IDs
+    function openModifierItemDeleteModal(itemId = null) {
+        deleteModifierItemIds = []; // Reset array
+
+        if (itemId) {
+            console.log("Single delete");
+            deleteModifierItemIds.push(itemId); // Single delete
+        } else {
+            console.log("Multiple delete");
+            $(".inner-check-modifier:checked").each(function () {
+                deleteModifierItemIds.push($(this).data("id")); // Fix selector
+            });
+        }
+        if (deleteModifierItemIds.length > 0) {
+            console.log("Items to delete:", deleteModifierItemIds);
+            $('#modifieritemdeleteModal').modal('show'); // Show modal
+
+        } else {
+            alert("Please select at least one item to delete.");
+        }
+    }
+    // Fix mass delete button click event
+    $("#massDeleteModifierItemBtn").on("click", function () {
+        openModifierItemDeleteModal();
+        @* $('#itemdeleteModal').modal('show'); // Show modal *@
+
+    });
+    // Handle delete confirmation
+    $(document).on("click", "#modifieritemconfirmDeleteBtn", function () {
+        console.log("Deleting Items:", deleteModifierItemIds);
+        $.ajax({
+            url: '@Url.Action("DeleteModifierItem", "Menu")',
+            type: 'POST',
+            data: { modifieritemIds: deleteModifierItemIds },
+            success: function (response) {
+                deleteModifierItemIds = []; // Reset array
+                if (response.success) {
+                    @* alert('Items deleted successfully!'); *@
+                        location.reload();
+                } else { }
+            },
+            error: function (xhr, status, error) {
+                deleteModifierItemIds = []; // Reset array
+                console.log('Error:', error);
+            }
+        });
+    });
+
     $(document).ready(function () {
         // Initialize form validation
         $("#addModifierForm").validate({
@@ -364,9 +415,15 @@
             });
     });
 
-
     @* -------------------------------------------add modifier item checkbox----------------------------- *@
-        let selectedModifierIds = [];
+        @* -------------------open add modifier item---------------------------- *@
+        $(document).ready(function () {
+            $('#openAddModifierItemModal').click(function () {
+                $('#addModifieritemModal').modal('show'); // Programmatically opens the modal
+            });
+        });
+
+    let selectedModifierIds = [];
     $(document).on("change", "input[name='addmodgroupCheckbox']", function () {
         let modId = $(this).val(); // Get the Modifier Group ID
         let modName = $(this).parent().text().trim(); // Get the Modifier Group Name
@@ -437,13 +494,7 @@
         var searchKey = $("#searchInputModifier").val();
         var pageNumber = pagenumber;
 
-        @* if (direction === "back") {
-            pageNumber -= 1;
-        } else {
-            pageNumber += 1;
-        } *@
-
-            loadModifier(pageSize, searchKey, pageNumber, modgroup);
+        loadModifier(pageSize, searchKey, pageNumber, modgroup);
     }
 
     function doSearch() {
@@ -453,13 +504,7 @@
 
         var modgroup = $("#ModifierGroupIdForSearch").val();
 
-        @* if (direction === "back") {
-            pageNumber -= 1;
-        } else {
-            pageNumber += 1;
-        } *@
-
-            loadModifier(pageSize, searchKey, pageNumber, modgroup);
+        loadModifier(pageSize, searchKey, pageNumber, modgroup);
     }
 
 
@@ -522,110 +567,115 @@
 
 
     @* --------below is for add existing modifier--------- *@
-
         $(document).ready(function () {
-            let selectedItems = {}; // Store selected items persistently
-            let selectedIds = []; // Store selected modifier IDs
-
-            // Show table section
-            $("#showTable").click(function (e) {
-                e.preventDefault();
-                $("#formSection").hide();
-                $("#tableSection").show();
-                $("#modalTitle").text("Select Modifier Items");
+            $('#openAddModifierModal').click(function () {
+                $('#addmodifer').modal('show'); // Programmatically opens the modal
             });
+        });
 
-            // Hide table section and show form section
-            $("#backToForm, #backToForm1").click(function () {
-                $("#formSection").show();
-                $("#tableSection").hide();
-                $("#modalTitle").text("Add Modifier Group");
+    $(document).ready(function () {
+        let selectedItems = {}; // Store selected items persistently
+        let selectedIds = []; // Store selected modifier IDs
+
+        // Show table section
+        $("#showTable").click(function (e) {
+            e.preventDefault();
+            $("#formSection").hide();
+            $("#tableSection").show();
+            $("#modalTitle").text("Select Modifier Items");
+        });
+
+        // Hide table section and show form section
+        $("#backToForm, #backToForm1").click(function () {
+            $("#formSection").show();
+            $("#tableSection").hide();
+            $("#modalTitle").text("Add Modifier Group");
+        });
+
+        // Restore checkbox state when table is loaded or paginated
+        function restoreCheckboxState() {
+            $(".inner-check").each(function () {
+                let itemId = $(this).data("id");
+                if (selectedItems[itemId]) {
+                    $(this).prop("checked", true);
+                }
             });
+        }
 
-            // Restore checkbox state when table is loaded or paginated
-            function restoreCheckboxState() {
-                $(".inner-check").each(function () {
-                    let itemId = $(this).data("id");
-                    if (selectedItems[itemId]) {
-                        $(this).prop("checked", true);
-                    }
-                });
+        // Handle checkbox selection
+        $(document).on("change", ".inner-check", function () {
+            let itemId = $(this).data("id");
+            let itemName = $(this).closest("tr").find("td:nth-child(2)").text().trim();
+
+            if ($(this).is(":checked")) {
+                selectedItems[itemId] = { id: itemId, name: itemName };
+            } else {
+                delete selectedItems[itemId];
             }
 
-            // Handle checkbox selection
-            $(document).on("change", ".inner-check", function () {
-                let itemId = $(this).data("id");
-                let itemName = $(this).closest("tr").find("td:nth-child(2)").text().trim();
+            updateSelectedItems();
+        });
 
-                if ($(this).is(":checked")) {
-                    selectedItems[itemId] = { id: itemId, name: itemName };
-                } else {
-                    delete selectedItems[itemId];
-                }
+        // Capture selected items when clicking "Add"
+        $("#backToForm").click(function () {
+            console.clear();
+            console.log(" Adding Selected Items...");
+            updateSelectedItems();
+        });
 
-                updateSelectedItems();
-            });
+        // Function to update the selected items display & hidden input field
+        function updateSelectedItems() {
+            let container = $("#selectedItemsContainer");
+            container.empty(); // Clear previous items
+            selectedIds = Object.keys(selectedItems); // Store only modifier IDs
 
-            // Capture selected items when clicking "Add"
-            $("#backToForm").click(function () {
-                console.clear();
-                console.log(" Adding Selected Items...");
-                updateSelectedItems();
-            });
+            if (selectedIds.length > 0) {
+                container.show(); // Show the container
 
-            // Function to update the selected items display & hidden input field
-            function updateSelectedItems() {
-                let container = $("#selectedItemsContainer");
-                container.empty(); // Clear previous items
-                selectedIds = Object.keys(selectedItems); // Store only modifier IDs
-
-                if (selectedIds.length > 0) {
-                    container.show(); // Show the container
-
-                    Object.values(selectedItems).forEach(item => {
-                        container.append(`
+                Object.values(selectedItems).forEach(item => {
+                    container.append(`
                 <div class="selected-item badge text-black me-2 mb-2 p-2 d-flex align-items-center border">
                     <span class="me-2">${item.name}</span>
                     <button type="button" class="btn-close remove-item" aria-label="Close" data-id="${item.id}"></button>
                 </div>
                 `);
-                    });
-                } else {
-                    container.hide(); // Hide when no items
-                }
-
-                // Update hidden input field with selected IDs
-                $("#SelectedModifierIds").val(selectedIds.join(","));
-                console.log("Final Selected Items:", selectedIds);
+                });
+            } else {
+                container.hide(); // Hide when no items
             }
 
-            // Remove item when clicking the close button
-            $(document).on("click", ".remove-item", function () {
-                let itemId = $(this).data("id");
+            // Update hidden input field with selected IDs
+            $("#SelectedModifierIds").val(selectedIds.join(","));
+            console.log("Final Selected Items:", selectedIds);
+        }
 
-                delete selectedItems[itemId];
-                $(`.inner-check[data-id="${itemId}"]`).prop("checked", false); // Uncheck in table
+        // Remove item when clicking the close button
+        $(document).on("click", ".remove-item", function () {
+            let itemId = $(this).data("id");
 
-                updateSelectedItems();
-            });
+            delete selectedItems[itemId];
+            $(`.inner-check[data-id="${itemId}"]`).prop("checked", false); // Uncheck in table
 
-            // Restore checked state when paginating or switching pages
-            $(document).on("click", ".pagination a", function () {
-                setTimeout(() => {
-                    restoreCheckboxState();
-                }, 200); // Delay to ensure new elements are loaded
-            });
-
-            // Reset selected items when modal is closed
-            $("#addmodifer").on("hidden.bs.modal", function () {
-                console.log("Modal closed. Resetting selected items.");
-                selectedItems = {};
-                updateSelectedItems();
-            });
-
-            // Initial restoration (in case of page reload)
-            restoreCheckboxState();
+            updateSelectedItems();
         });
+
+        // Restore checked state when paginating or switching pages
+        $(document).on("click", ".pagination a", function () {
+            setTimeout(() => {
+                restoreCheckboxState();
+            }, 200); // Delay to ensure new elements are loaded
+        });
+
+        // Reset selected items when modal is closed
+        $("#addmodifer").on("hidden.bs.modal", function () {
+            console.log("Modal closed. Resetting selected items.");
+            selectedItems = {};
+            updateSelectedItems();
+        });
+
+        // Initial restoration (in case of page reload)
+        restoreCheckboxState();
+    });
 
     @* ------Load the partail view for all the modifier item---------- *@
         $(document).ready(function () {
@@ -683,4 +733,6 @@
                 });
             }
         });
+
+
 </script>

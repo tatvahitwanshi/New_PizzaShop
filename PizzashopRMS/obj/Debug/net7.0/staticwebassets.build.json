@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ZP63YkkyqAEQIOtmf6ff4JkA6+p8Gz6uJpscNKgMwlI=",
+  "Hash": "EgluMy04pDGTBXiwA39TWQYnTkfHxbjOv/gzQQvsuik=",
   "Source": "PizzashopRMS",
   "BasePath": "_content/PizzashopRMS",
   "Mode": "Default",
@@ -168,6 +168,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\navbar.css"
+    },
+    {
+      "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\css\\orderdetails.css",
+      "SourceId": "PizzashopRMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\",
+      "BasePath": "_content/PizzashopRMS",
+      "RelativePath": "css/orderdetails.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\orderdetails.css"
     },
     {
       "Identity": "D:\\New_PizzaShop\\PizzashopRMS\\wwwroot\\css\\orders.css",

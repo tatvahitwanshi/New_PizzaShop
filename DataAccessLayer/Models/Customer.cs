@@ -37,8 +37,6 @@ public partial class Customer
 
     public DateTime? EditDate { get; set; }
 
-    public virtual ICollection<MergeTable> MergeTables { get; } = new List<MergeTable>();
-
     public virtual ICollection<Order> Orders { get; } = new List<Order>();
 
     public virtual ICollection<WaitingTable> WaitingTables { get; } = new List<WaitingTable>();

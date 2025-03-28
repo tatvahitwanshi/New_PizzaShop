@@ -200,5 +200,109 @@ public class OrdersRepository : IOrders
     }
     
 
+ public async Task<OrderDetailsViewModel> getOrderDetails(int orderId = 1)
+    {
+        OrderDetailsViewModel model = new OrderDetailsViewModel();
+
+        // basic details 
+        model.OrderId = orderId;
+        model.OrderStatus = _db.Orderstatuses.Where(o=>o.Orderstatusid == _db.Orders.Where(o=>o.Orderid == orderId).Select(o=>o.Orderstatusid).FirstOrDefault()).Select(o=>o.Statusname).FirstOrDefault();
+        model.PaymentStatus = _db.Payments.Where(p=>p.Paymentid == _db.Orders.Where(o=>o.Orderid == orderId).Select(o=>o.Paymentid).FirstOrDefault()).Select(p=>p.Paymentmode).FirstOrDefault();
+        model.SubTotal = 0;
+        Invoice? invoice = await _db.Invoices.Where(e=>e.Orderid == orderId).FirstOrDefaultAsync();
+        if(invoice != null)
+        {
+            model.InvoiceId = invoice.Invoiceid;
+            model.PaidOn = invoice?.Paidon ?? default;
+        }
+
+        Order? obj = await _db.Orders.FindAsync(orderId);
+        if(obj != null)
+        {
+            model.CreatedDate = obj.CreatedDate;
+            model.CompletedTime = obj?.Completedtime ?? DateTime.MinValue;
+            model.Personcount = (short)(obj?.Personcount ?? 0);
+        }
+
+        // Customer details 
+        Customer? customer = await _db.Customers.FindAsync(obj?.Customerid);
+        if(customer != null)
+        {
+            model.Customer = new CustomerDetails
+            {
+                Name = customer.Customername,
+                Email = customer.Customeremail,
+                Phone = customer.PhoneNumber
+            };
+        }
+
+        // Table details
+        List<int?> tableIds = _db.MapOrderTables.Where(o => o.Orderid == orderId).Select(o => (int?)o.Tablesid).ToList();
+        model.Tables = new TableDetails();
+        model.Tables.TableList = new List<string?>();
+
+        for(int i=0; i<tableIds.Count; i++)
+        {
+            model.Tables.TableList.Add(_db.Tables.Where(t=>t.Tablesid == tableIds[i]).Select(t=>t.Tablename).FirstOrDefault());
+            model.Tables.SectionName = _db.Sections.Where(s=>s.Sectionid == _db.Tables.Where(t=>t.Tablesid == tableIds[i]).Select(t=>t.Sectionid).FirstOrDefault()).Select(s=>s.Sectionname).FirstOrDefault();
+        }
+
+        // Dish details
+        model.Dishes = (from Dishes in _db.Dishes
+                        where Dishes.Orderid == orderId
+                        select new DishDetails
+                        {
+                            Itemname = Dishes.Itemname,
+                            Quantity = Dishes.Quantity,
+                            Price = Dishes.Price,
+                            Total = Dishes.Quantity * Dishes.Price,
+                            modifiers = (from dishModifier in _db.Dishmodifiers
+                                         where dishModifier.Dishid == Dishes.Dishid
+                                         select new ModifierDetails
+                                         {
+                                            Modifiername = dishModifier.Modifiername,
+                                            Quantity = dishModifier.Quantity,
+                                            Price = dishModifier.Price,
+                                            Total = dishModifier.Quantity *  dishModifier.Price
+                                         }).ToList()
+                        }).ToList();
+
+        foreach(var dish in model.Dishes)
+        {
+            model.SubTotal += dish.Total;
+            foreach(var modifier in dish.modifiers)
+            {
+                model.SubTotal += modifier.Total;
+            }
+        }
+
+        model.Total = model.SubTotal;
+
+        // Taxes details
+        model.Taxes = (from InvoiceTax in _db.Invoicetaxes
+                        where InvoiceTax.Invoiceid == model.InvoiceId
+                        select new TaxDetails
+                        {
+                            Taxname = InvoiceTax.Taxname,
+                            Taxvalue = InvoiceTax.Taxvalue,
+                            Taxvaluetype = InvoiceTax.Taxvaluetype,
+                            AppliedTax = (InvoiceTax.Taxvaluetype == "Percentage") 
+                                          ? Math.Round(model.SubTotal * InvoiceTax.Taxvalue / 100, 2) 
+                                          : Convert.ToDecimal(InvoiceTax.Taxvalue)
+                        }).ToList();
+
+        foreach(var tax in model.Taxes)
+        {
+            model.Total += tax.AppliedTax;
+        }
+
+        Order objc = await _db.Orders.FindAsync(orderId);
+        objc.Totalamount = model.Total;
+
+        _db.SaveChanges();
+        
+        return model;
+    }
+
 
 }

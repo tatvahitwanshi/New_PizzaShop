@@ -45,6 +45,8 @@ public partial class Item
 
     public virtual Category Category { get; set; } = null!;
 
+    public virtual ICollection<Dish> Dishes { get; } = new List<Dish>();
+
     public virtual ICollection<MapItemsModifiersgroup> MapItemsModifiersgroups { get; } = new List<MapItemsModifiersgroup>();
 
     public virtual ICollection<Orderapp> Orderapps { get; } = new List<Orderapp>();

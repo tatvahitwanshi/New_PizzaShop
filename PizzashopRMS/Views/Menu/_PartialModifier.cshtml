@@ -34,7 +34,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col"><input class="form-check-input main-check" type="checkbox" value=""
+                        <th scope="col"><input class="form-check-input main-check-modifier" type="checkbox" value=""
                                 id="selectAllCheckbox"></th>
                         <th scope="col">Name</th>
                         <th scope="col">Unit</th>
@@ -48,7 +48,7 @@
                     {
                         <tr>
                             <td>
-                                <input class="form-check-input inner-check" type="checkbox" data-id="@item.ModifierItemId">
+                                <input class="form-check-input inner-check-modifier" type="checkbox" data-id="@item.ModifierItemId">
                             </td>
                             <td>
                                 @item.ModifierItemName
@@ -63,7 +63,6 @@
                                         <i class="bi bi-pen"></i>
                                     </a>
                                     <a href="#" class="ms-4" style="text-decoration: none; color: grey;"
-                                       data-bs-toggle="modal" data-bs-target="#modifieritemdeleteModal"
                                         onclick="openModifierItemDeleteModal(@item.ModifierItemId)"
                                         ><i class="bi bi-trash"></i></a>
                                 </div>
@@ -139,7 +138,7 @@
 
 
 @* Add Modidfier Item  *@
-<div class="modal " id="addModifieritemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+<div class="modal fade" id="addModifieritemModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="staticBackdropLabel" aria-hidden=" true">
     <div class="modal-dialog modal-dialog-centered modal-xl"  style="width:95% !important">
         <div class="modal-content p-4">
@@ -276,14 +275,35 @@
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 @section Scripts{
-   
     <partial name="_ValidationScriptsPartial" />
-
 }
 
 <script>
+    @* --------------------------------------------------------Delete And Mass Delete Item--------------------------------------------------------- *@
+    @* -------------------------checkbox for delete----------------------- *@
+    
+     $(document).ready(function () {
+        // Handle main checkbox click
+        $('.main-check-modifier').on('click', function () {
+            console.log("main-checkfffffff");
+            var isChecked = $(this).is(':checked');
+            $('.inner-check-modifier').prop('checked', isChecked);
+        });
 
-    deleteModifierItemIds =[]; // Store selected item IDs
+        // Handle individual checkbox clicks
+        $(document).on('click', '.inner-check-modifier', function () {
+            if (!$(this).is(':checked')) {
+                // Uncheck main checkbox if one inner checkbox is unchecked
+                $('.main-check-modifier').prop('checked', false);
+            } else {
+                // Check if all inner checkboxes are checked
+                var allChecked = $('.inner-check-modifier').length === $('.inner-check-modifier:checked').length;
+                $('.main-check-modifier').prop('checked', allChecked);
+            }
+        });
+    });
+
+    @* deleteModifierItemIds =[]; // Store selected item IDs
     function openModifierItemDeleteModal(itemId = null) {
         deleteModifierItemIds = []; // Reset array
 
@@ -292,7 +312,7 @@
             deleteModifierItemIds.push(itemId); // Single delete
         } else {
             console.log("Multiple delete");
-            $(".inner-check:checked").each(function () {
+            $(".inner-check-modifier:checked").each(function () {
                 deleteModifierItemIds.push($(this).data("id")); // Fix selector
             });
         }
@@ -307,7 +327,7 @@
      // Fix mass delete button click event
     $("#massDeleteModifierItemBtn").on("click", function () {
         openModifierItemDeleteModal();
-        @* $('#itemdeleteModal').modal('show'); // Show modal *@
+        $('#itemdeleteModal').modal('show'); // Show modal
 
     });
     // Handle delete confirmation
@@ -320,7 +340,7 @@
             success: function (response) {
                 deleteModifierItemIds = []; // Reset array
                 if (response.success) {
-                    @* alert('Items deleted successfully!'); *@
+                    alert('Items deleted successfully!');
                         location.reload();
                 } else { }
             },
@@ -329,10 +349,17 @@
                 console.log('Error:', error);
             }
         });
-    });
+    }); *@
    
 @* -----------------------------add modifierg Item--------------------------------- *@
+
     $(document).ready(function () {
+        $('#openAddModifierItemModal').click(function () {
+            $('#addModifieritemModal').modal('show'); // Programmatically opens the modal
+        });
+    });
+
+        
         // Track selected modifier group IDs
          @* ---this code is in outer partial view (_PartialViewModifier)--- *@
 

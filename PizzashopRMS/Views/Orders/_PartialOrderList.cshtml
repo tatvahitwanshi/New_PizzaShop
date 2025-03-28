@@ -73,9 +73,9 @@
                                 <a class="btn" title="Download PDF">
                                     <img src="~/images/filetype-pdf.svg" alt="">
                                 </a>
-                                <button class="btn" title="View Order">
+                                <a class="btn" title="View Order" asp-action="OrderDetails" asp-route-orderId="@order.Orderid">
                                     <i class="bi bi-eye-fill"></i>
-                                </button>
+                                </a>
                             </div>
                         </td>
                     </tr>

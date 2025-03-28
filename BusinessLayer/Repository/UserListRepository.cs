@@ -32,7 +32,7 @@ public class UserListRepository : IUserList
                          where user.Isdeleted == false && user.Email != email && (
                          user.Firstname.ToLower().Contains(SearchKey)
 
-                         )
+                         ) 
                          select new UserListViewModel
                          {
                              Userid = user.Userid,

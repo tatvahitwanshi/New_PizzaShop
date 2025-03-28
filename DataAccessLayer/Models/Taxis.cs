@@ -27,5 +27,7 @@ public partial class Taxis
 
     public DateTime? EditDate { get; set; }
 
+    public virtual ICollection<Invoicetax> Invoicetaxes { get; } = new List<Invoicetax>();
+
     public virtual ICollection<Item> Items { get; } = new List<Item>();
 }

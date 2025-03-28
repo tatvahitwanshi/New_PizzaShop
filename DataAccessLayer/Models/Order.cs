@@ -27,7 +27,19 @@ public partial class Order
 
     public short? Rating { get; set; }
 
+    public DateTime? Completedtime { get; set; }
+
+    public string? Instruction { get; set; }
+
+    public int? Personcount { get; set; }
+
     public virtual Customer Customer { get; set; } = null!;
+
+    public virtual ICollection<Dish> Dishes { get; } = new List<Dish>();
+
+    public virtual ICollection<Invoice> Invoices { get; } = new List<Invoice>();
+
+    public virtual ICollection<MapOrderTable> MapOrderTables { get; } = new List<MapOrderTable>();
 
     public virtual ICollection<Orderapp> Orderapps { get; } = new List<Orderapp>();
 
@@ -36,4 +48,6 @@ public partial class Order
     public virtual Payment Payment { get; set; } = null!;
 
     public virtual Table Tables { get; set; } = null!;
+
+    public virtual ICollection<Totalrating> Totalratings { get; } = new List<Totalrating>();
 }

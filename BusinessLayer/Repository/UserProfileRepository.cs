@@ -18,11 +18,7 @@ public class UserProfileRepository : IUserProfile
     private readonly PizzaShopContext _db;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IUserList _userListRepository;
-
-
-
-
-
+    
     public UserProfileRepository(PizzaShopContext db, IWebHostEnvironment webHostEnvironment,IUserList userListRepository)
     {
         _db = db;

@@ -23,7 +23,13 @@ public partial class PizzaShopContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
+    public virtual DbSet<Dish> Dishes { get; set; }
+
+    public virtual DbSet<Dishmodifier> Dishmodifiers { get; set; }
+
     public virtual DbSet<Invoice> Invoices { get; set; }
+
+    public virtual DbSet<Invoicetax> Invoicetaxes { get; set; }
 
     public virtual DbSet<Item> Items { get; set; }
 
@@ -35,7 +41,7 @@ public partial class PizzaShopContext : DbContext
 
     public virtual DbSet<MapModifiersgroupModifier> MapModifiersgroupModifiers { get; set; }
 
-    public virtual DbSet<MergeTable> MergeTables { get; set; }
+    public virtual DbSet<MapOrderTable> MapOrderTables { get; set; }
 
     public virtual DbSet<Modifier> Modifiers { get; set; }
 
@@ -62,6 +68,8 @@ public partial class PizzaShopContext : DbContext
     public virtual DbSet<Table> Tables { get; set; }
 
     public virtual DbSet<Taxis> Taxes { get; set; }
+
+    public virtual DbSet<Totalrating> Totalratings { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -181,6 +189,65 @@ public partial class PizzaShopContext : DbContext
                 .HasColumnName("totalorder");
         });
 
+        modelBuilder.Entity<Dish>(entity =>
+        {
+            entity.HasKey(e => e.Dishid).HasName("dish_pkey");
+
+            entity.ToTable("dish");
+
+            entity.Property(e => e.Dishid).HasColumnName("dishid");
+            entity.Property(e => e.Inprogressquantity)
+                .HasDefaultValueSql("0")
+                .HasColumnName("inprogressquantity");
+            entity.Property(e => e.Itemid).HasColumnName("itemid");
+            entity.Property(e => e.Itemname)
+                .HasColumnType("character varying")
+                .HasColumnName("itemname");
+            entity.Property(e => e.Orderid).HasColumnName("orderid");
+            entity.Property(e => e.Pendingquantity).HasColumnName("pendingquantity");
+            entity.Property(e => e.Price).HasColumnName("price");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.Readyquantity)
+                .HasDefaultValueSql("0")
+                .HasColumnName("readyquantity");
+
+            entity.HasOne(d => d.Item).WithMany(p => p.Dishes)
+                .HasForeignKey(d => d.Itemid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("dish_itemid_fkey");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Dishes)
+                .HasForeignKey(d => d.Orderid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("dish_orderid_fkey");
+        });
+
+        modelBuilder.Entity<Dishmodifier>(entity =>
+        {
+            entity.HasKey(e => e.Dishmodifiersid).HasName("dishmodifiers_pkey");
+
+            entity.ToTable("dishmodifiers");
+
+            entity.Property(e => e.Dishmodifiersid).HasColumnName("dishmodifiersid");
+            entity.Property(e => e.Dishid).HasColumnName("dishid");
+            entity.Property(e => e.Modifierid).HasColumnName("modifierid");
+            entity.Property(e => e.Modifiername)
+                .HasColumnType("character varying")
+                .HasColumnName("modifiername");
+            entity.Property(e => e.Price).HasColumnName("price");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+            entity.HasOne(d => d.Dish).WithMany(p => p.Dishmodifiers)
+                .HasForeignKey(d => d.Dishid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("dishmodifiers_dishid_fkey");
+
+            entity.HasOne(d => d.Modifier).WithMany(p => p.Dishmodifiers)
+                .HasForeignKey(d => d.Modifierid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("dishmodifiers_modifierid_fkey");
+        });
+
         modelBuilder.Entity<Invoice>(entity =>
         {
             entity.HasKey(e => e.Invoiceid).HasName("invoice_pkey");
@@ -191,12 +258,44 @@ public partial class PizzaShopContext : DbContext
             entity.Property(e => e.Invoicenumber)
                 .HasMaxLength(20)
                 .HasColumnName("invoicenumber");
-            entity.Property(e => e.Orderappid).HasColumnName("orderappid");
+            entity.Property(e => e.Orderid).HasColumnName("orderid");
+            entity.Property(e => e.Paidon)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("paidon");
 
-            entity.HasOne(d => d.Orderapp).WithMany(p => p.Invoices)
-                .HasForeignKey(d => d.Orderappid)
+            entity.HasOne(d => d.Order).WithMany(p => p.Invoices)
+                .HasForeignKey(d => d.Orderid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("invoice_orderappid_fkey");
+                .HasConstraintName("invoice_orderid_fkey");
+        });
+
+        modelBuilder.Entity<Invoicetax>(entity =>
+        {
+            entity.HasKey(e => e.Invoicetaxid).HasName("invoicetax_pkey");
+
+            entity.ToTable("invoicetax");
+
+            entity.Property(e => e.Invoicetaxid).HasColumnName("invoicetaxid");
+            entity.Property(e => e.Invoiceid).HasColumnName("invoiceid");
+            entity.Property(e => e.Taxid).HasColumnName("taxid");
+            entity.Property(e => e.Taxname)
+                .HasMaxLength(255)
+                .HasColumnName("taxname");
+            entity.Property(e => e.Taxvalue)
+                .HasPrecision(10, 2)
+                .HasColumnName("taxvalue");
+            entity.Property(e => e.Taxvaluetype)
+                .HasMaxLength(10)
+                .HasColumnName("taxvaluetype");
+
+            entity.HasOne(d => d.Invoice).WithMany(p => p.Invoicetaxes)
+                .HasForeignKey(d => d.Invoiceid)
+                .HasConstraintName("invoicetax_invoiceid_fkey");
+
+            entity.HasOne(d => d.Tax).WithMany(p => p.Invoicetaxes)
+                .HasForeignKey(d => d.Taxid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("invoicetax_taxid_fkey");
         });
 
         modelBuilder.Entity<Item>(entity =>
@@ -356,22 +455,24 @@ public partial class PizzaShopContext : DbContext
                 .HasConstraintName("map_modifiersgroup_modifiers_modifiersid_fkey");
         });
 
-        modelBuilder.Entity<MergeTable>(entity =>
+        modelBuilder.Entity<MapOrderTable>(entity =>
         {
             entity.HasKey(e => e.Mergrid).HasName("merge_table_pkey");
 
-            entity.ToTable("merge_table");
+            entity.ToTable("map_order_table");
 
-            entity.Property(e => e.Mergrid).HasColumnName("mergrid");
-            entity.Property(e => e.Customerid).HasColumnName("customerid");
+            entity.Property(e => e.Mergrid)
+                .HasDefaultValueSql("nextval('merge_table_mergrid_seq'::regclass)")
+                .HasColumnName("mergrid");
+            entity.Property(e => e.Orderid).HasColumnName("orderid");
             entity.Property(e => e.Tablesid).HasColumnName("tablesid");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.MergeTables)
-                .HasForeignKey(d => d.Customerid)
+            entity.HasOne(d => d.Order).WithMany(p => p.MapOrderTables)
+                .HasForeignKey(d => d.Orderid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("merge_table_customerid_fkey");
+                .HasConstraintName("merge_table_orderid_fkey");
 
-            entity.HasOne(d => d.Tables).WithMany(p => p.MergeTables)
+            entity.HasOne(d => d.Tables).WithMany(p => p.MapOrderTables)
                 .HasForeignKey(d => d.Tablesid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("merge_table_tablesid_fkey");
@@ -453,6 +554,9 @@ public partial class PizzaShopContext : DbContext
             entity.ToTable("Order");
 
             entity.Property(e => e.Orderid).HasColumnName("orderid");
+            entity.Property(e => e.Completedtime)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("completedtime");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(50)
                 .HasColumnName("created_by");
@@ -467,8 +571,12 @@ public partial class PizzaShopContext : DbContext
             entity.Property(e => e.EditedBy)
                 .HasMaxLength(50)
                 .HasColumnName("edited_by");
+            entity.Property(e => e.Instruction)
+                .HasMaxLength(200)
+                .HasColumnName("instruction");
             entity.Property(e => e.Orderstatusid).HasColumnName("orderstatusid");
             entity.Property(e => e.Paymentid).HasColumnName("paymentid");
+            entity.Property(e => e.Personcount).HasColumnName("personcount");
             entity.Property(e => e.Rating).HasColumnName("rating");
             entity.Property(e => e.Tablesid).HasColumnName("tablesid");
             entity.Property(e => e.Totalamount)
@@ -755,6 +863,25 @@ public partial class PizzaShopContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("taxtype");
             entity.Property(e => e.Taxvalue).HasColumnName("taxvalue");
+        });
+
+        modelBuilder.Entity<Totalrating>(entity =>
+        {
+            entity.HasKey(e => e.Ratingid).HasName("totalrating_pkey");
+
+            entity.ToTable("totalrating");
+
+            entity.Property(e => e.Ratingid).HasColumnName("ratingid");
+            entity.Property(e => e.Ambiancerating).HasColumnName("ambiancerating");
+            entity.Property(e => e.Comments).HasColumnName("comments");
+            entity.Property(e => e.Foodrating).HasColumnName("foodrating");
+            entity.Property(e => e.Orderid).HasColumnName("orderid");
+            entity.Property(e => e.Servicerating).HasColumnName("servicerating");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Totalratings)
+                .HasForeignKey(d => d.Orderid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("totalrating_orderid_fkey");
         });
 
         modelBuilder.Entity<User>(entity =>

@@ -9,7 +9,11 @@ public partial class Invoice
 
     public string Invoicenumber { get; set; } = null!;
 
-    public int Orderappid { get; set; }
+    public int Orderid { get; set; }
 
-    public virtual Orderapp Orderapp { get; set; } = null!;
+    public DateTime? Paidon { get; set; }
+
+    public virtual ICollection<Invoicetax> Invoicetaxes { get; } = new List<Invoicetax>();
+
+    public virtual Order Order { get; set; } = null!;
 }

@@ -17,8 +17,6 @@ public partial class Orderapp
 
     public string? ItemComment { get; set; }
 
-    public virtual ICollection<Invoice> Invoices { get; } = new List<Invoice>();
-
     public virtual Item Item { get; set; } = null!;
 
     public virtual ICollection<KotTable> KotTables { get; } = new List<KotTable>();

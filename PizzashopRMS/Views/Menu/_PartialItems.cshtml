@@ -1,38 +1,5 @@
 @model DataAccessLayer.ViewModels.MenuViewModel
 
-
-@* <div class="row">
-    <div class="col">
-        <span class="h4 fw-bold " style="color: #0066A7;" data-bs-toggle="offcanvas" href="#offcanvasExample1"
-            role="button1" aria-controls="offcanvasExample1">Items</span>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12 d-flex justify-content-end">
-        <div class="d-flex " role="search">
-            <div class="d-flex  me-2 p-1 position-relative">
-                <input class="search_input form-control me-2 border-0" type="text" placeholder="Search"
-                    aria-label="Search" id="searchInputItem" value="@Model.Items.SearchKey">
-                <div class="" onclick="doSearchItem()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
-                        class="bi bi-search position-absolute search-icon-main" viewBox="0 0 16 16" onclick="">
-                        <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                    </svg>
-                </div>
-
-            </div>
-            <div class="  btn border " id="massDeleteBtn"><i class="bi bi-trash h4 text-muted"></i></div>
-            <button class="btn text-white d-none d-md-block ms-2" style=" background-color: #0066A7;" type="button"
-                data-bs-toggle="modal" data-bs-target="#additemModal">
-                +New Item</button>
-
-            <button class="btn text-white d-md-none ms-2" style=" background-color: #0066A7;">+</button>
-        </div>
-    </div>
-</div> *@
-
-
 <div class="row mt-3">
     <div class="col">
         <div class="table-responsive">
@@ -84,12 +51,11 @@
                             </td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" style="text-decoration: none; color: grey;" data-bs-toggle="modal"
-                                        data-bs-target="#edititemModal" onclick="GetItemDetails(@item.ItemId)">
+                                    <a href="#" style="text-decoration: none; color: grey;" 
+                                        onclick="GetItemDetails(@item.ItemId)">
                                         <i class="bi bi-pen"></i>
                                     </a>
                                     <a href="#" class="ms-4" style="text-decoration: none; color: grey;"
-                                        data-bs-toggle="modal" data-bs-target="#itemdeleteModal"
                                         onclick="openItemDeleteModal(@item.ItemId)"><i class="bi bi-trash"></i></a>
                                 </div>
                             </td>
@@ -544,7 +510,7 @@
 
         loadItems(pageSize, searchKey, pageNumber);
     }
-                       
+
     function updatePageSize() {
         var pageSize = $("#pageSizeDropdownItem").val();
         var searchKey = $("#searchInputItem").val();
@@ -567,10 +533,6 @@
         loadItems(pageSize, searchKey, pageNumber);
     }
 
-
-
-
-
     document.getElementById("defaultTaxToggle").addEventListener("change", function () {
         if (this.checked) {
             this.value = "true";
@@ -586,21 +548,28 @@
         }
     });
     @* -------------------------------------------------------------- Add Item--------------------------------------------------------------------- *@
-        function GetModGroupData() {
-            var modgroupAll = [];
-            $('.mod-group-detail').each(function () {
-                var modifierGroupId = $(this).find('.deleteOneGroup').data('modgroupid');
-                var minValue = $(this).find('.min-Select').val();
-                var maxValue = $(this).find('.max-Select').val();
-                modgroupAll.push({
-                    ModifierGroupId: modifierGroupId,
-                    min: minValue,
-                    max: maxValue
-                });
+    @* -----------------open add item model ----------------- *@
+    $(document).ready(function () {
+        $('#openAddItemModal').click(function () {
+            $('#additemModal').modal('show'); // Programmatically opens the modal
+        });
+    });
+
+    function GetModGroupData() {
+        var modgroupAll = [];
+        $('.mod-group-detail').each(function () {
+            var modifierGroupId = $(this).find('.deleteOneGroup').data('modgroupid');
+            var minValue = $(this).find('.min-Select').val();
+            var maxValue = $(this).find('.max-Select').val();
+            modgroupAll.push({
+                ModifierGroupId: modifierGroupId,
+                min: minValue,
+                max: maxValue
             });
-            console.log(modgroupAll);
-            return modgroupAll; // Return the collected data
-        }
+        });
+        console.log(modgroupAll);
+        return modgroupAll; // Return the collected data
+    }
 
     $(document).ready(function () {
         $(document).on('click', '#savebtn', function (e) {
@@ -687,6 +656,7 @@
 
                     // Fetch and populate modifier group dropdown
                     LoadModifierGroups();
+                     $('#edititemModal').modal('show');
                 }
             },
             error: function () {
@@ -805,8 +775,28 @@
     });
 
     @* --------------------------------------------------------Delete And Mass Delete Item--------------------------------------------------------- *@
+        @* -------------------------checkbox for delete----------------------- *@ 
+        $(document).ready(function () {
+            // Handle main checkbox click
+            $('.main-check').on('click', function () {
+                console.log("main-checkfffffff");
+                var isChecked = $(this).is(':checked');
+                $('.inner-check').prop('checked', isChecked);
+            });
 
-        deleteItemIds =[]; // Store selected item IDs
+            // Handle individual checkbox clicks
+            $(document).on('click', '.inner-check', function () {
+                if (!$(this).is(':checked')) {
+                    // Uncheck main checkbox if one inner checkbox is unchecked
+                    $('.main-check').prop('checked', false);
+                } else {
+                    // Check if all inner checkboxes are checked
+                    var allChecked = $('.inner-check').length === $('.inner-check:checked').length;
+                    $('.main-check').prop('checked', allChecked);
+                }
+            });
+        });
+    deleteItemIds = []; // Store selected item IDs
     function openItemDeleteModal(itemId = null) {
         deleteItemIds = []; // Reset array
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DataAccessLayer.Models;
 
-public partial class MergeTable
+public partial class MapOrderTable
 {
     public int Mergrid { get; set; }
 
